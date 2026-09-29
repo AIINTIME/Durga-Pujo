@@ -1,0 +1,50 @@
+.dp-music {
+  position: fixed;
+  top: max(16px, env(safe-area-inset-top));
+  left: max(16px, env(safe-area-inset-left));
+  z-index: 60;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 205, 120, 0.75);
+  background: linear-gradient(180deg, rgba(122, 6, 10, 0.85), rgba(60, 2, 4, 0.85));
+  box-shadow: 0 0 18px rgba(255, 140, 50, 0.35), inset 0 0 0 1px rgba(255, 220, 150, 0.15);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #ffe2b0;
+  cursor: pointer;
+  opacity: 0;
+  animation: dp-music-in 0.8s ease 1.2s forwards;
+  transition: color 0.3s, box-shadow 0.3s;
+}
+.dp-music svg {
+  width: 20px;
+  height: 20px;
+}
+.dp-music.is-playing {
+  color: #ffd58a;
+  box-shadow: 0 0 18px rgba(255, 170, 70, 0.6), inset 0 0 0 1px rgba(255, 220, 150, 0.2);
+}
+.dp-music__wave {
+  animation: dp-music-pulse 1.8s ease-in-out infinite;
+}
+.dp-music:focus-visible {
+  outline: 2px solid #ffd58a;
+  outline-offset: 2px;
+}
+
+@keyframes dp-music-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes dp-music-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dp-music { animation: none; opacity: 1; }
+  .dp-music__wave { animation: none; }
+}

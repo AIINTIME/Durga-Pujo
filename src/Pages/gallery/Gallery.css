@@ -1,0 +1,264 @@
+/* Laid out on the 1585 x 935 artwork. --p (0 -> 1) is the scroll progress;
+   every .dp-ph element turns it into its own phase --e / --k from --s (start) and --l (length). */
+.dp-gal {
+  position: relative;
+  z-index: 3;
+  height: 500vh;
+  background: #fbe6c0;
+  color: #3a1a10;
+}
+.dp-gal__anchor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+}
+/* gold scalloped edge + shadow where the section slides up over the previous one */
+.dp-gal::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -3.2vw;
+  height: 3.3vw;
+  z-index: 4;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 46' preserveAspectRatio='none'%3E%3Cpath d='M0 46C14 46 22 36 28 22 33 10 37 4 40 0 43 4 47 10 52 22 58 36 66 46 80 46Z' fill='%23fbe6c0'/%3E%3Cpath d='M0 46C14 46 22 36 28 22 33 10 37 4 40 0 43 4 47 10 52 22 58 36 66 46 80 46' fill='none' stroke='%23c8862a' stroke-width='1.8' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") repeat-x 0 0 / 5vw 100%;
+  filter: drop-shadow(0 -6px 16px rgba(0, 0, 0, 0.5));
+}
+.dp-gal::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(-3.2vw - 180px);
+  height: 180px;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(40, 8, 4, 0.55), transparent);
+}
+.dp-gal__pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #fbe6c0;
+}
+.dp-gal__backdrop {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(26px) brightness(0.8);
+  transform: scale(1.12);
+  pointer-events: none;
+}
+.dp-gal__frame {
+  /* the artwork (1585 x 935 under the navbar) is stretched to fill the whole viewport width and the
+     space under the navbar, so there are no side gaps. Positions use --ux / --uy; fonts and borders --u. */
+  --ux: calc(100cqw / 1585);
+  --uy: calc(100cqh / 935);
+  --u: min(var(--ux), var(--uy));
+  --p: 0;
+  container-type: size;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--dp-nav-h, 62px);
+  bottom: 0;
+  overflow: hidden;
+}
+.dp-gal__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+}
+.dp-ph {
+  --e: clamp(0, calc((var(--p, 0) - var(--s, 0)) / var(--l, 0.2)), 1);
+  --k: calc(var(--e) * (2 - var(--e)));
+  opacity: var(--k);
+}
+.dp-gal__stage {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.dp-gal img { -webkit-user-drag: none; user-select: none; }
+
+/* ---- heading ---- */
+.dp-gal__title {
+  position: absolute;
+  left: calc(392 * var(--ux));
+  width: calc(800 * var(--ux));
+  top: calc(40 * var(--uy));
+  margin: 0;
+  text-align: center;
+  white-space: nowrap;
+  font: 700 calc(76 * var(--u)) / 1.2 'Playfair Display', 'Noto Serif Bengali', Georgia, serif;
+  letter-spacing: 0;
+  color: #7a0a1c;
+  text-shadow: 0 calc(3 * var(--u)) calc(12 * var(--u)) rgba(122, 10, 28, 0.18);
+}
+.dp-gal__sub {
+  position: absolute;
+  left: calc(592 * var(--ux));
+  width: calc(400 * var(--ux));
+  top: calc(146 * var(--uy));
+  margin: 0;
+  text-align: center;
+  font: 500 calc(21 * var(--u)) / 1.2 'Crimson Pro', 'Cormorant Garamond', 'Noto Serif Bengali', Georgia, serif;
+  letter-spacing: 0.02em;
+  color: #5c4a3c;
+}
+.dp-gal__tag {
+  position: absolute;
+  left: calc(492 * var(--ux));
+  width: calc(600 * var(--ux));
+  top: calc(204 * var(--uy));
+  margin: 0;
+  text-align: center;
+  font: 500 calc(21 * var(--u)) / 1.2 'Crimson Pro', 'Cormorant Garamond', 'Noto Serif Bengali', Georgia, serif;
+  color: #6b4a30;
+}
+
+/* ---- carousel (coverflow) ---- */
+.dp-gal__carousel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(262 * var(--uy));
+  height: calc(520 * var(--uy));
+  perspective: calc(1500 * var(--ux));
+  transform-style: preserve-3d;
+  touch-action: pan-y;
+}
+.dp-gal__slide {
+  position: absolute;
+  left: calc(452 * var(--ux));
+  top: calc(50 * var(--uy));
+  width: calc(680 * var(--ux));
+  height: calc(420 * var(--uy));
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  cursor: pointer;
+  border: calc(3 * var(--u)) solid transparent;
+  border-radius: calc(16 * var(--u));
+  background: linear-gradient(#2a0a08, #2a0a08) padding-box, linear-gradient(160deg, #f6d27a, #c2801f 45%, #f1c261) border-box;
+  box-shadow: 0 0 calc(14 * var(--u)) rgba(232, 168, 60, 0.6), 0 calc(14 * var(--u)) calc(30 * var(--u)) rgba(70, 20, 8, 0.4);
+  transform: translateX(calc(var(--o) * 760 * var(--ux))) translateZ(calc(var(--a) * -300 * var(--ux))) rotateY(calc(var(--o) * -18deg)) scale(calc(1 - var(--a) * 0.1));
+  opacity: calc(1 - max(0, var(--a) - 1) * 1);
+  filter: brightness(calc(1 - min(1, var(--a)) * 0.42));
+  transition: transform 0.8s cubic-bezier(0.22, 0.7, 0.2, 1), opacity 0.6s, filter 0.6s;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+.dp-gal__slide[data-far='true'] { pointer-events: none; }
+.dp-gal__slide:focus-visible { outline: none; box-shadow: 0 0 calc(22 * var(--u)) rgba(255, 200, 100, 0.95); }
+.dp-gal__slide img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 6s ease-out;
+}
+.dp-gal__slide.is-active img { transform: scale(1.06); }
+.dp-gal__dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(770 * var(--uy));
+  display: flex;
+  justify-content: center;
+  gap: calc(14 * var(--u));
+}
+.dp-gal__dot {
+  width: calc(12 * var(--u));
+  height: calc(12 * var(--u));
+  padding: 0;
+  border-radius: 50%;
+  border: calc(1.5 * var(--u)) solid #c2801f;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+.dp-gal__dot.is-on { background: #c2801f; transform: scale(1.35); }
+:root[lang='bn'] .dp-gal__title { font-size: calc(72 * var(--u)); font-weight: 800; }
+
+/* ---- lightbox ---- */
+.dp-gal__lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: rgba(20, 4, 2, 0.9);
+  backdrop-filter: blur(6px);
+  animation: dp-gal-fade 0.25s ease;
+}
+.dp-gal__lightbox img {
+  display: block;
+  max-width: min(92vw, 1400px);
+  max-height: 88vh;
+  border-radius: 10px;
+  border: 2px solid #d9a24a;
+  box-shadow: 0 0 40px rgba(232, 168, 60, 0.35);
+}
+.dp-gal__nav,
+.dp-gal__close {
+  position: absolute;
+  border: 1.5px solid #d9a24a;
+  background: rgba(60, 10, 12, 0.7);
+  color: #f6dfae;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  font-size: 28px;
+  line-height: 1;
+}
+.dp-gal__nav { top: 50%; margin-top: -23px; }
+.dp-gal__nav.is-prev { left: 18px; }
+.dp-gal__nav.is-next { right: 18px; }
+.dp-gal__close { top: 18px; right: 18px; }
+.dp-gal__nav:hover, .dp-gal__close:hover { background: #7a0d22; }
+@keyframes dp-gal-fade { from { opacity: 0; } }
+
+/* ---- phones / small tablets: no pin, one big swipeable slide ---- */
+@media (max-width: 820px) {
+  .dp-gal { height: auto; }
+  .dp-gal::before, .dp-gal::after { display: none; }
+  .dp-gal__pin { position: relative; height: auto; overflow: visible; }
+  .dp-gal__frame {
+    --ux: 1px; --uy: 1px; --u: 1px;
+    container-type: normal;
+    position: relative;
+    top: auto;
+    bottom: auto;
+    display: block;
+    padding: 96px 14px 56px;
+    background: linear-gradient(#fdf1d8, #f7dfb0);
+  }
+  .dp-gal__bg { display: none; }
+  .dp-ph { opacity: 1; transform: none !important; }
+  .dp-gal__title, .dp-gal__sub, .dp-gal__tag { position: relative; left: auto; top: auto; width: auto; white-space: normal; text-align: center; margin: 0; }
+  .dp-gal__title { font-size: clamp(38px, 11vw, 54px); }
+  :root[lang='bn'] .dp-gal__title { font-size: clamp(34px, 10vw, 48px); }
+  .dp-gal__sub { font-size: 19px; margin-top: 4px; }
+  .dp-gal__tag { font-size: 16px; margin: 6px 0 18px; }
+  .dp-gal__carousel { position: relative; top: auto; left: auto; right: auto; height: 62vw; perspective: none; }
+  .dp-gal__slide { left: 4vw; width: 84vw; top: 0; height: 60vw; border-width: 2px; border-radius: 12px; }
+  .dp-gal__slide { transform: translateX(calc(var(--o) * 92vw)); opacity: calc(1 - min(1, var(--a))); filter: none; }
+        .dp-gal__dots { position: relative; top: auto; margin-top: 16px; }
+  .dp-gal__dot { width: 10px; height: 10px; }
+}

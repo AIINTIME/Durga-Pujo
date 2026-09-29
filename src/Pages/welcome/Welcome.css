@@ -13,6 +13,15 @@ body,
   background: radial-gradient(ellipse at 50% 40%, #5a0404 0%, #1a0000 70%);
 }
 
+.dp-welcome__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .dp-stage,
 .dp-stage canvas {
   position: absolute;
@@ -80,7 +89,7 @@ body,
   filter: brightness(1.25) drop-shadow(0 0 18px rgba(255, 200, 110, 1));
 }
 
-.is-ready .dp-enter {
+.is-ended .dp-enter {
   animation: dp-btn-in 1s cubic-bezier(0.2, 0.8, 0.2, 1) 3.1s forwards;
 }
 .is-leaving .dp-enter {

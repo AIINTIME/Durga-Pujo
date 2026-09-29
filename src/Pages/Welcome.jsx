@@ -2,12 +2,15 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createWelcomeScene } from './welcome/scene.js'
 import { useTransitionLayer } from '../components/transition/context.js'
+import { useMusic } from '../components/music/context.js'
 import { useLanguage } from '../i18n/context.js'
 import btnEn from '../assets/welcome/btn.webp'
 import btnEnMask from '../assets/welcome/btnMask.webp'
 import btnBn from '../assets/welcome/bn/btn.webp'
 import btnBnMask from '../assets/welcome/bn/btnMask.webp'
 import './welcome/Welcome.css'
+
+const VIDEO_SRC = encodeURI('/Video/Welcome.mp4')
 
 const BUTTONS = {
   en: { src: btnEn, mask: btnEnMask },
@@ -17,11 +20,15 @@ const BUTTONS = {
 export default function Welcome() {
   const stageRef = useRef(null)
   const btnRef = useRef(null)
+  const videoRef = useRef(null)
   const sceneRef = useRef(null)
   const [ready, setReady] = useState(false)
+  const [playing, setPlaying] = useState(false)
+  const [ended, setEnded] = useState(false)
   const [leaving, setLeaving] = useState(false)
   const navigate = useNavigate()
   const transition = useTransitionLayer()
+  const music = useMusic()
   const { lang, t } = useLanguage()
   const langRef = useRef(lang)
 
@@ -30,10 +37,26 @@ export default function Welcome() {
       buttonEl: btnRef.current,
       lang: langRef.current,
       onReady: () => setReady(true),
+      overlay: true,
     })
     sceneRef.current = scene
     return () => scene.dispose()
   }, [])
+
+  // play the whole video on arrival (with sound if the browser allows it, otherwise muted)
+  useEffect(() => {
+    const v = videoRef.current
+    v.muted = false
+    v.play().catch(() => {
+      v.muted = true
+      v.play().catch(() => setEnded(true)) // no autoplay at all: go straight to the title + button
+    })
+  }, [])
+
+  // once the video has ended the title reveals and the ENTER button fades in
+  useEffect(() => {
+    if (ended && ready) sceneRef.current?.play()
+  }, [ended, ready])
 
   // crossfade the 3D title when the EN / BN toggle changes
   useEffect(() => {
@@ -45,12 +68,27 @@ export default function Welcome() {
     if (leaving) return
     setLeaving(true)
     transition.start() // particles + golden flash that carry over into Home
+    music.play() // start the background loop on this user gesture
     sceneRef.current?.enter(() => navigate('/home'))
   }
 
   return (
-    <main className={`dp-welcome ${ready ? 'is-ready' : ''} ${leaving ? 'is-leaving' : ''}`}>
+    <main className={`dp-welcome ${ready && playing ? 'is-ready' : ''} ${ended && ready ? 'is-ended' : ''} ${leaving ? 'is-leaving' : ''}`}>
       <h1 className="dp-sr-only">{t({ bn: 'নব রূপে নব দুর্গা — দুর্গাপূজা ২০২৬', en: 'Nobo Rupe Nobo Durga — Durga Pooja 2026' })}</h1>
+      <video
+        ref={videoRef}
+        className="dp-welcome__video"
+        src={VIDEO_SRC}
+        playsInline
+        preload="auto"
+        onPlaying={() => setPlaying(true)}
+        onEnded={() => setEnded(true)}
+        onError={() => {
+          setPlaying(true)
+          setEnded(true)
+        }}
+        aria-hidden="true"
+      />
       <div className="dp-stage" ref={stageRef} aria-hidden="true" />
       <button ref={btnRef} className="dp-enter" onClick={enter} aria-label={t({ bn: 'প্রবেশ করুন', en: 'Enter' })}>
         {Object.entries(BUTTONS).map(([key, b]) => (

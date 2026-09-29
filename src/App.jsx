@@ -1,17 +1,35 @@
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
+import { useEffect } from 'react'
+import { createBrowserRouter, Outlet, RouterProvider, useLocation } from 'react-router-dom'
 import TransitionLayer from './components/transition/TransitionLayer.jsx'
+import MusicPlayer from './components/music/MusicPlayer.jsx'
 import LanguageProvider from './i18n/LanguageProvider.jsx'
 import LanguageToggle from './i18n/LanguageToggle.jsx'
 import Home from './Pages/Home.jsx'
 import Welcome from './Pages/Welcome.jsx'
+import About from './Pages/About.jsx'
+import Committee from './Pages/Committee.jsx'
+import Gallery from './Pages/Gallery.jsx'
+import Contact from './Pages/Contact.jsx'
+import Navbar from './components/navbar/Navbar.jsx'
 
 function RootLayout() {
+  // every page after the welcome screen shares the same navbar
+  const showNav = useLocation().pathname !== '/'
+  useEffect(() => {
+    document.body.classList.toggle('dp-has-nav', showNav)
+    return () => document.body.classList.remove('dp-has-nav')
+  }, [showNav])
   return (
     <LanguageProvider>
-      <TransitionLayer>
-        <Outlet />
-        <LanguageToggle />
-      </TransitionLayer>
+      <MusicPlayer>
+        <TransitionLayer>
+          <div className="dp-app">
+            {showNav && <Navbar />}
+            <Outlet />
+            <LanguageToggle />
+          </div>
+        </TransitionLayer>
+      </MusicPlayer>
     </LanguageProvider>
   )
 }
@@ -22,6 +40,10 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <Welcome /> },
       { path: '/home', element: <Home /> },
+      { path: '/about', element: <About /> },
+      { path: '/committee', element: <Committee /> },
+      { path: '/gallery', element: <Gallery /> },
+      { path: '/contact', element: <Contact /> },
     ],
   },
 ])

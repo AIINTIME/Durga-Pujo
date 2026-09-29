@@ -19,6 +19,7 @@ import bnLine1 from '../../assets/welcome/bn/line1.webp'
 import bnLine2 from '../../assets/welcome/bn/line2.webp'
 import bnOrnBot from '../../assets/welcome/bn/ornBot.webp'
 import LAYOUT from '../../assets/welcome/layers.json'
+import { makeGoldTrails } from './trails.js'
 
 // Mockup is 1672 x 940 px. 1 world unit = 100 px, plate centred at origin.
 const IMG_W = 1672
@@ -412,16 +413,18 @@ function loadTex(loader, url) {
 }
 
 // ---------- main ----------
-export function createWelcomeScene(container, { buttonEl, onReady, lang = 'bn' } = {}) {
+// overlay: the page video is the backdrop, so the canvas is transparent (no plate, no bloom) and
+// stays idle until play() is called when the video ends.
+export function createWelcomeScene(container, { buttonEl, onReady, lang = 'bn', overlay = false } = {}) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const mobile = window.matchMedia('(max-width: 760px)').matches
   const motion = reduced ? 0.25 : 1
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' })
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: overlay, powerPreference: 'high-performance' })
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobile ? 1.5 : 2))
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace // textures are raw sRGB; pass through untouched
   renderer.toneMapping = THREE.NoToneMapping
-  renderer.setClearColor(0x1a0000, 1)
+  renderer.setClearColor(0x1a0000, overlay ? 0 : 1)
   container.appendChild(renderer.domElement)
 
   const scene = new THREE.Scene()
@@ -447,6 +450,7 @@ export function createWelcomeScene(container, { buttonEl, onReady, lang = 'bn' }
     target: new THREE.Vector2(),
     t0: performance.now(),
     enterAt: null,
+    started: !overlay,
     onEntered: null,
     titleScale: 1,
     lang,
@@ -457,9 +461,11 @@ export function createWelcomeScene(container, { buttonEl, onReady, lang = 'bn' }
   const loader = new THREE.TextureLoader()
   Promise.all([plateUrl, maskUrl, ...LAYERS.map((l) => l.url)].map((u) => loadTex(loader, u))).then(([pt, mk, ...lt]) => {
     if (disposed) return
-    plate = makePlate(pt, mk)
-    plate.scale.setScalar(OVERSCAN)
-    scene.add(plate)
+    if (!overlay) {
+      plate = makePlate(pt, mk)
+      plate.scale.setScalar(OVERSCAN)
+      scene.add(plate)
+    }
 
     glow = makeTitleGlow()
     titleGroup.add(glow)
@@ -472,16 +478,7 @@ export function createWelcomeScene(container, { buttonEl, onReady, lang = 'bn' }
     petals = makePetals(mobile ? 38 : 70)
     scene.add(petals)
 
-    const flows = [
-      // side, baseY, amplitude
-      [-1, 3.6, 0.9], [-1, 2.2, 0.7], [-1, 0.6, 0.8], [-1, -2.0, 0.6],
-      [1, 3.4, 0.8], [1, 1.8, 0.9], [1, 0.2, 0.7], [1, -1.6, 0.6],
-    ]
-    streams = makePoints(mobile ? 700 : 1400, 'STREAM', SPARK_FRAG, (i, d, e) => {
-      const f = flows[i % flows.length]
-      d.set([Math.random(), 0.018 + Math.random() * 0.03, Math.random(), Math.random()], i * 4)
-      e.set(f, i * 3)
-    })
+    streams = makeGoldTrails(mobile) // gold sparkles flowing inward along the mockup's trails
     embers = makePoints(mobile ? 90 : 180, 'EMBER', EMBER_FRAG, (i, d, e) => {
       d.set([Math.random(), 0.05 + Math.random() * 0.08, Math.random(), Math.random()], i * 4)
       e.set([(Math.random() * 2 - 1) * 8.5, 0, -0.2 + Math.random() * 2.2], i * 3)
@@ -579,7 +576,7 @@ export function createWelcomeScene(container, { buttonEl, onReady, lang = 'bn' }
 
   let last = performance.now()
   renderer.setAnimationLoop(() => {
-    if (!ready) return
+    if (!ready || !state.started) return
     const now = performance.now()
     const dt = Math.min((now - last) / 1000, 0.05)
     last = now
@@ -605,11 +602,13 @@ export function createWelcomeScene(container, { buttonEl, onReady, lang = 'bn' }
     camera.lookAt(mx * 0.08, my * 0.05 + enterK * 2.1, 0)
 
     // plate
-    const pu = plate.material.uniforms
-    pu.uTime.value = T
-    pu.uMouse.value.set(mx, my)
-    pu.uIntro.value = easeOut(T / 1.6)
-    pu.uFlash.value = enterK * enterK
+    if (plate) {
+      const pu = plate.material.uniforms
+      pu.uTime.value = T
+      pu.uMouse.value.set(mx, my)
+      pu.uIntro.value = easeOut(T / 1.6)
+      pu.uFlash.value = enterK * enterK
+    }
 
     // title: staged reveal, gentle float, 3D tilt, shine sweeps
     titleGroup.rotation.set(-my * 0.05, mx * 0.08, 0)
@@ -650,7 +649,8 @@ export function createWelcomeScene(container, { buttonEl, onReady, lang = 'bn' }
     bloom.strength = 0.45 + 0.08 * Math.sin(t * 1.2) + enterK * 0.9
 
     placeButton()
-    composer.render()
+    if (overlay) renderer.render(scene, camera)
+    else composer.render()
 
     if (state.enterAt !== null && performance.now() - state.enterAt > 1700 && state.onEntered) {
       const cb = state.onEntered
@@ -662,6 +662,11 @@ export function createWelcomeScene(container, { buttonEl, onReady, lang = 'bn' }
   return {
     setLang(next) {
       if (next === 'en' || next === 'bn') state.lang = next
+    },
+    play() {
+      state.started = true
+      state.t0 = performance.now()
+      last = performance.now()
     },
     enter(cb) {
       if (state.enterAt !== null) return

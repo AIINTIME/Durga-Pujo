@@ -158,29 +158,6 @@ export function createTransitionLayer(container, flashEl) {
     o.target = 1
     o.alive = true
   }
-  function petalEnter(o) {
-    // fly in from deep behind the flash toward the viewer, then settle
-    const z = rand(-24, -10)
-    const hh = half(z)
-    o.p.set(rand(-hh.w, hh.w), rand(-hh.h * 0.6, hh.h), z)
-    o.v.set(-o.p.x * rand(0.05, 0.2), rand(-1.5, 0.5), rand(14, 24))
-    o.rv.set(rand(-5, 5), rand(-5, 5), rand(-3, 3))
-    o.s = rand(0.18, 0.34)
-    o.a = 0
-    o.target = 1
-    o.alive = true
-  }
-  function petalAmbient(o, fromTop) {
-    const z = rand(-6, 4)
-    const hh = half(z)
-    o.p.set(rand(-hh.w, hh.w), fromTop ? hh.h + rand(0.3, 2) : rand(-hh.h, hh.h), z)
-    o.v.set(0, -o.fall, 0)
-    o.rv.set(rand(-1.5, 1.5), rand(-1.5, 1.5), rand(-1, 1))
-    o.s = rand(0.2, 0.36)
-    o.a = fromTop ? 1 : 0
-    o.target = 1
-    o.alive = true
-  }
   function sparkBurst(o) {
     const ang = Math.random() * Math.PI * 2
     const sp = rand(3, 13)
@@ -215,7 +192,6 @@ export function createTransitionLayer(container, flashEl) {
   let ambient = false
   let running = false
   let last = performance.now()
-  const ambientPetals = Math.round(NP * 0.45)
   const ambientSparks = Math.round(NS * 0.35)
   const dummy = new THREE.Object3D()
 
@@ -245,9 +221,11 @@ export function createTransitionLayer(container, flashEl) {
     const time = now / 1000
 
     // switch from burst to fly-in exactly when the route changes
+    // petals stay behind on the Welcome page (the Home gate video is petal-free);
+    // only the gold sparks fly through the flash and settle onto Home.
     if (mode === 'burst' && T >= BURST_END) {
       mode = 'live'
-      P.forEach(petalEnter)
+      P.forEach((o) => (o.target = 0)) // fade the petals out instead of carrying them onto Home
       S.forEach(sparkEnter)
     }
 
@@ -279,12 +257,7 @@ export function createTransitionLayer(container, flashEl) {
         o.a += (o.target - o.a) * Math.min(1, dt * 3)
         const hh = half(o.p.z)
         const out = o.p.y < -hh.h - 1 || o.p.z > CAM_Z - 1 || Math.abs(o.p.x) > hh.w + 3
-        if (out && mode === 'live') {
-          if (ambient && i < ambientPetals) petalAmbient(o, true)
-          else o.alive = false
-        }
-        // when leaving the Home page, fade everything away
-        if (mode === 'live' && !ambient && T > 4) o.target = 0
+        if (out && mode === 'live') o.alive = false
         if (o.target === 0 && o.a < 0.02) o.alive = false
       }
       dummy.position.copy(o.p)
@@ -344,14 +317,13 @@ export function createTransitionLayer(container, flashEl) {
       S.forEach(sparkBurst)
       run()
     },
-    // keep a gentle drift of petals & gold dust while on the Home page
+    // keep a gentle drift of gold dust (no petals) while on the Home page
     setAmbient(on) {
       ambient = on
       if (on && mode === 'idle') {
         // landed on /home directly (refresh / deep link): fade particles in
         mode = 'live'
         t0 = performance.now() - (BURST_END + 3) * 1000
-        P.forEach((o, i) => (i < ambientPetals ? petalAmbient(o, false) : (o.alive = false)))
         S.forEach((o, i) => (i < ambientSparks ? sparkAmbient(o) : (o.alive = false)))
         run()
       }

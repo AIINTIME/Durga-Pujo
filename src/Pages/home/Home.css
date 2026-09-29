@@ -1,0 +1,121 @@
+.dp-home {
+  background: radial-gradient(ellipse at 50% 30%, #6a0707 0%, #2a0202 60%, #160000 100%);
+}
+
+/* tall track — its height sets how much scrolling it takes to play the clip */
+.dp-scrollvideo {
+  position: relative;
+  height: 400vh;
+}
+
+.dp-scrollvideo__pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #0c0000;
+}
+
+.dp-scrollvideo__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.dp-scrollvideo__hint {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  color: rgba(255, 224, 180, 0.85);
+  font: 500 13px/1 system-ui, sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  opacity: 1;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.dp-scrollvideo__hint::after {
+  content: '';
+  display: block;
+  margin: 10px auto 0;
+  width: 1px;
+  height: 26px;
+  background: linear-gradient(rgba(255, 224, 180, 0.9), transparent);
+  animation: dp-hint-drift 1.6s ease-in-out infinite;
+}
+.dp-scrollvideo.is-scrolled .dp-scrollvideo__hint {
+  opacity: 0;
+}
+
+@keyframes dp-hint-drift {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(8px); opacity: 0.3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dp-scrollvideo__hint::after {
+    animation: none;
+  }
+}
+
+/* About stays pinned (bottom edge on the viewport bottom) while Recognition slides up over it.
+   The hold adds one screen of scroll; Recognition pulls itself back over that spare screen. */
+.dp-about-hold {
+  position: relative;
+  height: calc(var(--about-h, 58.77vw) + 100vh);
+}
+.dp-about-hold > .dp-about {
+  position: sticky;
+  top: min(0px, calc(100vh - var(--about-h, 58.77vw)));
+  transform-origin: 50% 60%;
+  transform: scale(calc(1 - var(--enter, 0) * 0.05));
+  filter: brightness(calc(1 - var(--enter, 0) * 0.6));
+}
+.dp-home .dp-rec {
+  margin-top: -100vh;
+  height: 480vh;
+}
+/* Recognition stays pinned while the Committee section slides up over it */
+.dp-home .dp-rec__pin {
+  transform: scale(calc(1 - var(--cover, 0) * 0.05));
+  filter: brightness(calc(1 - var(--cover, 0) * 0.6));
+  transform-origin: 50% 60%;
+}
+.dp-home .dp-org {
+  margin-top: -100vh;
+}
+/* Committee stays pinned while the Gallery slides up over it */
+.dp-home .dp-org__pin {
+  transform: scale(calc(1 - var(--cover2, 0) * 0.05));
+  filter: brightness(calc(1 - var(--cover2, 0) * 0.6));
+  transform-origin: 50% 60%;
+}
+.dp-home .dp-gal {
+  margin-top: -100vh;
+}
+/* Gallery stays pinned while Contact slides up over it */
+.dp-home .dp-gal__pin {
+  transform: scale(calc(1 - var(--cover3, 0) * 0.05));
+  filter: brightness(calc(1 - var(--cover3, 0) * 0.6));
+  transform-origin: 50% 60%;
+}
+.dp-home .dp-ct {
+  margin-top: -100vh;
+}
+@media (max-width: 820px) {
+  .dp-about-hold { height: auto; }
+  .dp-about-hold > .dp-about { position: relative; top: auto; transform: none; filter: none; }
+  .dp-home .dp-rec { margin-top: 0; height: auto; }
+  .dp-home .dp-rec__pin { transform: none; filter: none; }
+  .dp-home .dp-org { margin-top: 0; }
+  .dp-home .dp-org__pin { transform: none; filter: none; }
+  .dp-home .dp-gal { margin-top: 0; }
+  .dp-home .dp-gal__pin { transform: none; filter: none; }
+  .dp-home .dp-ct { margin-top: 0; }
+}

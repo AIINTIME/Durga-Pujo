@@ -1,0 +1,190 @@
+:root {
+  --dp-nav-h: 62px;
+}
+
+.dp-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: var(--dp-nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(16px, 3vw, 44px);
+  background:
+    linear-gradient(180deg, rgba(140, 12, 20, 0.97), rgba(84, 3, 8, 0.97));
+  border-bottom: 1px solid rgba(255, 205, 120, 0.7);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45), 0 1px 14px rgba(255, 160, 60, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: dp-nav-in 0.7s ease both;
+}
+/* thin gold inner rule, like the mockup's trim */
+.dp-nav::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 205, 120, 0.35) 20%, rgba(255, 205, 120, 0.35) 80%, transparent);
+  pointer-events: none;
+}
+
+.dp-nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffd58a;
+  text-decoration: none;
+  z-index: 1;
+}
+.dp-nav__lotus {
+  width: 38px;
+  height: 32px;
+  filter: drop-shadow(0 0 6px rgba(255, 190, 90, 0.6));
+}
+.dp-nav__brandtext {
+  display: grid;
+  gap: 3px;
+  font: 600 14px/1 'Cinzel', Georgia, serif;
+  letter-spacing: 0.14em;
+  color: #ffe2b0;
+}
+.dp-nav__year {
+  position: relative;
+  justify-self: center;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: #ffd58a;
+}
+.dp-nav__year::before,
+.dp-nav__year::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 22px;
+  height: 1px;
+  background: rgba(255, 205, 120, 0.6);
+}
+.dp-nav__year::before { right: calc(100% + 8px); }
+.dp-nav__year::after { left: calc(100% + 8px); }
+
+.dp-nav__links {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 100%;
+  transform: translateX(-50%);
+}
+.dp-nav__links ul {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.6vw, 44px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dp-nav__links a {
+  position: relative;
+  display: block;
+  padding: 8px 2px;
+  color: #ffe2b0;
+  font: 600 15px/1 'Cormorant Garamond', 'Noto Serif Bengali', Georgia, serif;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+.dp-nav__links a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #ffd58a, transparent);
+  transform: translateX(-50%);
+  transition: width 0.35s ease;
+}
+.dp-nav__links a:hover,
+.dp-nav__links a:focus-visible,
+.dp-nav__links a.is-active {
+  color: #ffc766;
+  text-shadow: 0 0 12px rgba(255, 170, 70, 0.55);
+  outline: none;
+}
+.dp-nav__links a:hover::after,
+.dp-nav__links a:focus-visible::after,
+.dp-nav__links a.is-active::after {
+  width: 100%;
+}
+.dp-nav__links a.is-active::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 5px;
+  height: 5px;
+  background: #ffc766;
+  transform: translateX(-50%) rotate(45deg);
+  box-shadow: 0 0 8px rgba(255, 190, 90, 0.9);
+}
+
+/* ---- music + language buttons ride inside the bar on every page but the welcome screen ---- */
+.dp-has-nav .dp-lang {
+  top: calc((var(--dp-nav-h) - 42px) / 2);
+  right: clamp(16px, 3vw, 44px);
+}
+.dp-has-nav .dp-music {
+  top: calc((var(--dp-nav-h) - 40px) / 2);
+  left: auto;
+  right: calc(clamp(16px, 3vw, 44px) + 124px);
+  width: 36px;
+  height: 36px;
+  box-shadow: none;
+}
+
+/* narrow screens: brand + buttons on the first row, links scroll on a second row */
+@media (max-width: 980px) {
+  :root { --dp-nav-h: 104px; }
+  .dp-nav {
+    align-items: flex-start;
+    padding-top: 12px;
+  }
+  .dp-nav__links {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 46px;
+    transform: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-top: 1px solid rgba(255, 205, 120, 0.25);
+  }
+  .dp-nav__links::-webkit-scrollbar { display: none; }
+  .dp-nav__links ul {
+    width: max-content;
+    min-width: 100%;
+    justify-content: center;
+    padding: 0 16px;
+    gap: 22px;
+  }
+  .dp-has-nav .dp-lang { top: 8px; }
+  .dp-has-nav .dp-music { top: 10px; }
+}
+@media (max-width: 480px) {
+  .dp-nav__brandtext { display: none; }
+}
+
+@keyframes dp-nav-in {
+  from { opacity: 0; transform: translateY(-100%); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dp-nav { animation: none; }
+}
