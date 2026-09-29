@@ -1,0 +1,8 @@
+services:
+  web:
+    build: .
+    image: hit_durgapuja_img
+    container_name: hit_durgapuja_container
+    ports:
+      - "8021:80"
+    restart: unless-stopped

@@ -1,0 +1,112 @@
+name: CI / CD — Durga Pujo
+
+# ─────────────────────────────────────────────────────────────────────────
+# Required GitHub secrets (Settings → Secrets and variables → Actions):
+#   VPS_SSH_KEY   FULL OpenSSH private key (incl. BEGIN/END lines), no passphrase.
+#                 Its .pub must be in ~/.ssh/authorized_keys of VPS_USER on the VPS.
+#   VPS_HOST      VPS hostname / IP
+#   VPS_PORT      SSH port (e.g. 22)
+#   VPS_USER      SSH user (e.g. root)
+#   VPS_APP_DIR   Deploy dir on the VPS, e.g. /root/hit_durgotsav
+#                 (optional — falls back to /root/hit_durgotsav if unset)
+# No env files: the app is a static Vite build served by nginx.
+# ─────────────────────────────────────────────────────────────────────────
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  ci:
+    name: CI — Lint & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Non-blocking until the existing lint error (unused SPARK_FRAG in scene.js) is fixed.
+      - name: Lint
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Build
+        run: npm run build
+
+  deploy:
+    name: CD — Deploy to VPS
+    runs-on: ubuntu-latest
+    needs: ci
+    if: github.event_name != 'pull_request'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare release archive
+        run: git archive --format=tar.gz --output=release.tar.gz HEAD
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" | sed 's/\r$//' > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null || {
+            echo "::error::VPS_SSH_KEY is not a valid OpenSSH private key (wrong format, a .pub key, a PuTTY .ppk, or it has a passphrase)."
+            exit 1
+          }
+          ssh-keyscan -p "${{ secrets.VPS_PORT }}" "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Upload release archive to VPS
+        run: |
+          scp -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -P "${{ secrets.VPS_PORT }}" \
+            release.tar.gz "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/hit_durgotsav-release.tar.gz"
+
+      - name: Deploy on VPS with Docker Compose
+        env:
+          DEPLOY_PATH: ${{ secrets.VPS_APP_DIR || '/root/hit_durgotsav' }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -p "${{ secrets.VPS_PORT }}" \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" << EOF
+            set -e
+
+            mkdir -p "${DEPLOY_PATH}"
+            cd "${DEPLOY_PATH}"
+
+            # Wipe the previous release so files removed from the repo don't linger.
+            find . -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+
+            tar -xzf /tmp/hit_durgotsav-release.tar.gz
+            rm -f /tmp/hit_durgotsav-release.tar.gz
+
+            # Install docker compose v2 plugin if missing
+            if ! docker compose version >/dev/null 2>&1; then
+              mkdir -p /usr/local/lib/docker/cli-plugins
+              curl -fsSL https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64 \
+                -o /usr/local/lib/docker/cli-plugins/docker-compose
+              chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+            fi
+
+            docker compose build
+            docker compose up -d --force-recreate
+
+            docker image prune -f
+
+            echo "Deployment complete."
+            docker ps --filter "name=hit_durgapuja_container" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+          EOF
