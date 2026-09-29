@@ -9,7 +9,7 @@ import Contact from './Contact.jsx'
 import { useLanguage } from '../i18n/context.js'
 import './home/Home.css'
 
-const VIDEO_SRC = encodeURI('/Video/Walkthrough.mp4')
+const VIDEO_SRC = encodeURI('/Video/Ram.webm')
 
 export default function Home() {
   const trackRef = useRef(null)
