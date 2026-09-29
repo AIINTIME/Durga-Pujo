@@ -42,7 +42,7 @@ export default function Recognition() {
     return () => scene.dispose()
   }, [])
 
-  useScrollPhase(trackRef, frameRef, { coverVar: '--enter', hold: true })
+  useScrollPhase(trackRef, frameRef, { coverVar: '--cover0', hold: true })
 
   const ph = (s, l) => ({ '--s': s, '--l': l })
 

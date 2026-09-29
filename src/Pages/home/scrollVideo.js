@@ -9,7 +9,9 @@
 // - a new seek is only issued once the previous one has actually landed
 //   (`!videoEl.seeking`), so quick scrolling can't pile up a queue of seeks
 //   the browser falls behind on — it always catches up to the latest position.
-export function createScrollVideoScene(track, videoEl, { onProgress, smoothing = 0.12 } = {}) {
+// `reserve`: extra viewport heights at the end of the track that are NOT part of the clip (the next section
+// slides up over the pinned video during them).
+export function createScrollVideoScene(track, videoEl, { onProgress, smoothing = 0.12, reserve = 0 } = {}) {
   let duration = 0
   let raf = 0
   let active = false
@@ -24,7 +26,7 @@ export function createScrollVideoScene(track, videoEl, { onProgress, smoothing =
 
   function progress() {
     const rect = track.getBoundingClientRect()
-    const span = rect.height - window.innerHeight
+    const span = rect.height - window.innerHeight * (1 + reserve)
     if (span <= 0) return 0
     return Math.min(1, Math.max(0, -rect.top / span))
   }

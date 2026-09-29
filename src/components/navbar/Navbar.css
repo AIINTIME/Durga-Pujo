@@ -188,3 +188,27 @@
 @media (prefers-reduced-motion: reduce) {
   .dp-nav { animation: none; }
 }
+
+/* ---- Home: the bar (with the music / language buttons) stays out of the way of the scroll video and
+   slides in when the About section starts ---- */
+.dp-has-nav .dp-lang,
+.dp-has-nav .dp-music {
+  animation: none;
+  opacity: 1;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.dp-nav {
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease;
+}
+.dp-nav-off .dp-nav {
+  animation: none;
+  transform: translateY(-110%);
+  opacity: 0;
+  pointer-events: none;
+}
+.dp-nav-off .dp-lang,
+.dp-nav-off .dp-music {
+  opacity: 0;
+  transform: translateY(-16px);
+  pointer-events: none;
+}

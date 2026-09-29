@@ -46,10 +46,11 @@
 .dp-about__title {
   left: calc(250 * var(--u));
   width: calc(700 * var(--u));
-  top: calc(252 * var(--u));
+  top: calc(247 * var(--u));
+  padding-bottom: calc(10 * var(--u));
   text-align: center;
   white-space: nowrap;
-  font: 600 calc(62 * var(--u)) / 1.08 'Playfair Display', 'Noto Serif Bengali', Georgia, serif;
+  font: 600 calc(62 * var(--u)) / 1.18 'Playfair Display', 'Noto Serif Bengali', Georgia, serif;
   letter-spacing: -0.01em;
   color: #6f0a17;
   background: linear-gradient(100deg, #6a0612 34%, #b3142c 44%, #f6c976 50%, #b3142c 56%, #6a0612 66%);
@@ -68,7 +69,8 @@
   left: calc(292 * var(--u));
   width: calc(600 * var(--u));
   top: calc(405 * var(--u));
-  text-align: left;
+  text-align: justify;
+  text-justify: inter-word;
   font: 400 calc(16.5 * var(--u)) / calc(23 * var(--u)) 'Crimson Pro', 'Cormorant Garamond', 'Noto Serif Bengali', Georgia, serif;
   color: #2d1a12;
 }
@@ -79,6 +81,7 @@
   height: calc(40 * var(--u));
   display: flex;
   align-items: center;
+  justify-content: center;
   font: 500 calc(13 * var(--u)) / 1 'Cinzel', 'Noto Serif Bengali', Georgia, serif;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -90,7 +93,7 @@
 .dp-about__patron {
   left: calc(1010 * var(--u));
   width: calc(346 * var(--u));
-  top: calc(608 * var(--u));
+  top: calc(615 * var(--u));
 }
 .dp-about__patron figcaption {
   display: grid;
@@ -111,7 +114,7 @@
 .dp-about__spirit {
   left: calc(480 * var(--u));
   width: calc(626 * var(--u));
-  top: calc(672 * var(--u));
+  top: calc(652 * var(--u));
   display: grid;
   justify-items: center;
   gap: calc(2 * var(--u));
@@ -150,14 +153,14 @@
 .dp-about__heading::after { left: calc(100% - 160 * var(--u)); transform: scaleX(-1); }
 
 .dp-about__card {
-  top: calc(748 * var(--u));
+  top: calc(726 * var(--u));
   width: calc(335 * var(--u));
   height: calc(126 * var(--u));
   box-sizing: border-box;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: calc(16 * var(--u));
-  padding: 0 calc(18 * var(--u));
+  padding: calc(22 * var(--u)) calc(18 * var(--u)) 0;
   border: 1.5px solid #dcae5c;
   border-radius: calc(6 * var(--u));
   background: linear-gradient(180deg, rgba(255, 251, 240, 0.85), rgba(251, 236, 204, 0.75));

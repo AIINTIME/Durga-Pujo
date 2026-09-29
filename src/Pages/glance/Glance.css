@@ -1,0 +1,165 @@
+/* Laid out on the 1585 x 935 artwork. --p (0 -> 1) is the scroll progress;
+   every .dp-ph element turns it into its own phase --e / --k from --s (start) and --l (length). */
+.dp-gl {
+  /* soft blended top edge: the section fades in over the previous one instead of a hard scalloped edge */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22vh);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 22vh);
+  position: relative;
+  z-index: 1;
+  height: 420vh;
+  margin: 0;
+  background: #fbe6c0;
+  color: #3a1a10;
+}
+.dp-gl__pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #fbe6c0;
+}
+.dp-gl__backdrop {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(26px) brightness(0.8);
+  transform: scale(1.12);
+  pointer-events: none;
+}
+.dp-gl__frame {
+  /* the artwork (1585 x 935 under the navbar) is stretched to fill the whole viewport width and the
+     space under the navbar, so there are no side gaps. Positions use --ux / --uy; fonts and borders --u. */
+  --ux: calc(100cqw / 1585);
+  --uy: calc(100cqh / 935);
+  --u: min(var(--ux), var(--uy));
+  --p: 0;
+  container-type: size;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--dp-nav-h, 62px);
+  bottom: 0;
+  overflow: hidden;
+}
+.dp-gl__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+}
+.dp-ph {
+  --e: clamp(0, calc((var(--p, 0) - var(--s, 0)) / var(--l, 0.2)), 1);
+  --k: calc(var(--e) * (2 - var(--e)));
+  opacity: var(--k);
+}
+.dp-gl__stage {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.dp-gl img { -webkit-user-drag: none; user-select: none; }
+
+
+
+/* ---- heading ---- */
+.dp-gl__h1,
+.dp-gl__h2 {
+  position: absolute;
+  margin: 0;
+  text-align: center;
+  white-space: nowrap;
+  transform: translateY(-50%);
+}
+.dp-gl__h1 {
+  left: calc(295 * var(--ux));
+  width: calc(1000 * var(--ux));
+  top: calc(108 * var(--uy));
+  font: 700 calc(70 * var(--u)) / 1.2 'Playfair Display', 'Noto Serif Bengali', Georgia, serif;
+  color: #6f0a1c;
+  text-shadow: 0 calc(3 * var(--u)) calc(12 * var(--u)) rgba(122, 10, 28, 0.18);
+}
+.dp-gl__h2 {
+  left: calc(395 * var(--ux));
+  width: calc(800 * var(--ux));
+  top: calc(159 * var(--uy));
+  font: 500 calc(21 * var(--u)) / 1.2 'Crimson Pro', 'Cormorant Garamond', 'Noto Serif Bengali', Georgia, serif;
+  color: #3a2a20;
+}
+.dp-gl__h1.dp-ph { transform: translateY(calc(-50% + (1 - var(--k)) * -34 * var(--u))) scale(calc(0.94 + var(--k) * 0.06)); }
+.dp-gl__h2.dp-ph { transform: translateY(calc(-50% + (1 - var(--k)) * 16 * var(--u))); }
+
+/* ---- table rows / core panel ---- */
+.dp-gl__row,
+.dp-gl__core {
+  position: absolute;
+  will-change: transform, opacity, clip-path;
+}
+.dp-gl__row { transform: translateX(calc((1 - var(--k)) * -120 * var(--ux))); clip-path: inset(0 calc((1 - var(--k)) * 100%) 0 0); }
+.dp-gl__core { transform-origin: 50% 100%; transform: perspective(calc(1400 * var(--ux))) translateY(calc((1 - var(--k)) * 60 * var(--uy))) rotateX(calc((1 - var(--k)) * -20deg)); }
+.dp-gl__row > img,
+.dp-gl__core > img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+
+.dp-gl__tx {
+  position: absolute;
+  margin: 0;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  opacity: clamp(0, calc((var(--e, 1) - 0.3) * 2), 1);
+}
+.dp-gl__tx.is-th { font: 600 calc(17 * var(--u)) / 1.2 'Playfair Display', 'Noto Serif Bengali', Georgia, serif; color: #f7e2b8; }
+.dp-gl__tx.is-label { font: 600 calc(19 * var(--u)) / 1.2 'Playfair Display', 'Noto Serif Bengali', Georgia, serif; color: #7a1428; }
+.dp-gl__tx.is-detail { font: 400 calc(15.5 * var(--u)) / calc(20 * var(--uy)) Roboto, system-ui, -apple-system, 'Segoe UI', 'Noto Serif Bengali', sans-serif; color: #3a2a22; }
+.dp-gl__tx.is-detail.is-wrap { white-space: normal; transform: translateY(calc(-10 * var(--uy))); }
+.dp-gl__tx.is-coretitle { font: 600 calc(20 * var(--u)) / 1.2 'Playfair Display', 'Noto Serif Bengali', Georgia, serif; color: #f6dfb2; }
+.dp-gl__pilltx { display: contents; }
+.dp-gl__pilltx .dp-gl__tx { opacity: var(--k, 1); }
+.dp-gl__tx.is-name { font: 500 calc(15.5 * var(--u)) / 1.2 'Playfair Display', 'Noto Serif Bengali', Georgia, serif; color: #fff1de; }
+.dp-gl__tx.is-role { font: 400 calc(13.5 * var(--u)) / 1.2 Roboto, system-ui, 'Noto Serif Bengali', sans-serif; color: #f0c4bc; }
+
+:root[lang='bn'] .dp-gl__h1 { font-size: calc(62 * var(--u)); font-weight: 800; }
+:root[lang='bn'] .dp-gl__h2 { font-size: calc(19 * var(--u)); }
+:root[lang='bn'] .dp-gl__tx.is-label { font-size: calc(17.5 * var(--u)); font-weight: 700; }
+:root[lang='bn'] .dp-gl__tx.is-detail { font-size: calc(14.5 * var(--u)); }
+:root[lang='bn'] .dp-gl__tx.is-name { font-size: calc(14.5 * var(--u)); font-weight: 700; }
+
+/* ---- phones / small tablets: no pin, the table becomes a list ---- */
+@media (max-width: 820px) {
+  .dp-gl { height: auto; -webkit-mask-image: none; mask-image: none; }
+  .dp-gl__pin { position: relative; height: auto; overflow: visible; }
+  .dp-gl__frame {
+    --ux: 1px; --uy: 1px; --u: 1px;
+    container-type: normal;
+    position: relative;
+    top: auto;
+    bottom: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 96px 14px 56px;
+    background: linear-gradient(#fdf1d8, #f7dfb0);
+  }
+  .dp-gl__bg, .dp-gl__stage { display: none; }
+  .dp-ph { opacity: 1; transform: none !important; clip-path: none !important; }
+  .dp-gl__h1, .dp-gl__h2 { position: relative; left: auto !important; top: auto !important; width: auto !important; white-space: normal; transform: none; }
+  .dp-gl__h1 { font-size: clamp(34px, 9.5vw, 48px); }
+  :root[lang='bn'] .dp-gl__h1 { font-size: clamp(30px, 8.5vw, 42px); }
+  .dp-gl__h2 { font-size: 17px; margin-bottom: 16px; }
+  .dp-gl__row { position: relative; left: auto !important; top: auto !important; width: auto !important; height: auto !important; padding: 12px 14px; background: rgba(255, 250, 236, 0.9); border-bottom: 1px solid #e8cfa0; }
+  .dp-gl__row:nth-of-type(even) { background: rgba(245, 226, 190, 0.7); }
+  .dp-gl__row.is-head, .dp-gl__row > img, .dp-gl__core > img { display: none; }
+  .dp-gl__tx { position: static; left: auto !important; top: auto !important; width: auto !important; transform: none !important; white-space: normal; opacity: 1; display: block; }
+  .dp-gl__tx.is-label, :root[lang='bn'] .dp-gl__tx.is-label { font-size: 18px; margin-bottom: 4px; }
+  .dp-gl__tx.is-detail, :root[lang='bn'] .dp-gl__tx.is-detail { font-size: 15px; line-height: 1.45; }
+  .dp-gl__core { position: relative; left: auto !important; top: auto !important; width: auto !important; height: auto !important; margin-top: 16px; padding: 18px; border-radius: 14px; background: linear-gradient(160deg, #6a0a1e, #40051a); border: 1.5px solid #e2ac4f; display: grid; gap: 8px; }
+  .dp-gl__tx.is-coretitle { font-size: 22px; margin-bottom: 6px; }
+  .dp-gl__pilltx { display: block; padding: 10px 12px; border-radius: 10px; background: rgba(255, 255, 255, 0.07); }
+  .dp-gl__tx.is-name, :root[lang='bn'] .dp-gl__tx.is-name { font-size: 16px; }
+  .dp-gl__tx.is-role { font-size: 13px; }
+}

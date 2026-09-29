@@ -30,6 +30,10 @@
   border-radius: 999px;
   transition: color 0.3s;
 }
+.dp-lang button.is-bn {
+  font: 700 15px/1 'Noto Serif Bengali', 'Cinzel', serif;
+  letter-spacing: 0;
+}
 .dp-lang button.is-active {
   color: #5a0205;
 }

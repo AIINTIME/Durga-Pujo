@@ -7,7 +7,6 @@ import LanguageToggle from './i18n/LanguageToggle.jsx'
 import Home from './Pages/Home.jsx'
 import Welcome from './Pages/Welcome.jsx'
 import About from './Pages/About.jsx'
-import Committee from './Pages/Committee.jsx'
 import Gallery from './Pages/Gallery.jsx'
 import Contact from './Pages/Contact.jsx'
 import Navbar from './components/navbar/Navbar.jsx'
@@ -41,7 +40,7 @@ const router = createBrowserRouter([
       { path: '/', element: <Welcome /> },
       { path: '/home', element: <Home /> },
       { path: '/about', element: <About /> },
-      { path: '/committee', element: <Committee /> },
+      // { path: '/committee', element: <Committee /> }, // Organising Committee page is switched off
       { path: '/gallery', element: <Gallery /> },
       { path: '/contact', element: <Contact /> },
     ],

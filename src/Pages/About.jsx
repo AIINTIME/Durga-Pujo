@@ -73,7 +73,7 @@ export default function About({ embedded = false }) {
   }, [])
 
   const page = (
-    <section id="about" className={`dp-about ${embedded ? 'is-embedded' : ''}`} ref={rootRef}>
+    <section id={embedded ? undefined : 'about'} className={`dp-about ${embedded ? 'is-embedded' : ''}`} ref={rootRef}>
       {/* the artwork (temple, pillars, portrait, diyas) is the background; all text below is live */}
       <div className="dp-about__frame">
         <p className="dp-about__kicker dp-at" data-r style={{ '--d': '0.2s' }}>

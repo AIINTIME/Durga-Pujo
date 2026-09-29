@@ -16,11 +16,11 @@ export default function LanguageToggle() {
       </button>
       <button
         type="button"
-        className={lang === 'bn' ? 'is-active' : ''}
+        className={`is-bn ${lang === 'bn' ? 'is-active' : ''}`}
         aria-pressed={lang === 'bn'}
         onClick={() => setLang('bn')}
       >
-        BN
+        বাংলা
       </button>
     </div>
   )

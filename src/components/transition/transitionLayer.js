@@ -9,10 +9,6 @@ const TAN = Math.tan(THREE.MathUtils.degToRad(FOV / 2))
 const BURST_END = 1.75 // seconds — matches the Welcome page navigate delay (1.7s)
 
 const rand = (a, b) => a + Math.random() * (b - a)
-const smooth = (a, b, x) => {
-  const t = Math.min(1, Math.max(0, (x - a) / (b - a)))
-  return t * t * (3 - 2 * t)
-}
 
 function petalGeometry() {
   const g = new THREE.PlaneGeometry(1, 1.35, 5, 8)
@@ -229,11 +225,7 @@ export function createTransitionLayer(container, flashEl) {
       S.forEach(sparkEnter)
     }
 
-    // golden flash that bridges the two pages
-    if (flashEl) {
-      const f = mode === 'idle' ? 0 : smooth(0.95, 1.7, T) * (1 - smooth(1.85, 3.0, T))
-      flashEl.style.opacity = f.toFixed(3)
-    }
+    // (the golden flash that used to bridge the two pages is gone: the particles carry the transition alone)
 
     let anyAlive = false
 
