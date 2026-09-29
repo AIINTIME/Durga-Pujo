@@ -68,7 +68,7 @@ export default function Welcome() {
   const enter = () => {
     if (leaving) return
     setLeaving(true)
-    transition.start() // particles + golden flash that carry over into Home
+    transition.start() // particles that carry over into Home
     music.play() // start the background loop on this user gesture
     sceneRef.current?.enter(() => navigate('/home'))
   }

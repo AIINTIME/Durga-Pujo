@@ -134,17 +134,14 @@
   box-shadow: 0 0 8px rgba(255, 190, 90, 0.9);
 }
 
-/* ---- music + language buttons ride inside the bar on every page but the welcome screen ---- */
+/* ---- language pill + separate music button ride inside the bar on every page but the welcome screen ---- */
 .dp-has-nav .dp-lang {
   top: calc((var(--dp-nav-h) - 42px) / 2);
-  right: clamp(16px, 3vw, 44px);
+  right: calc(clamp(16px, 3vw, 44px) + 50px);
 }
 .dp-has-nav .dp-music {
   top: calc((var(--dp-nav-h) - 40px) / 2);
-  left: auto;
-  right: calc(clamp(16px, 3vw, 44px) + 124px);
-  width: 36px;
-  height: 36px;
+  right: clamp(16px, 3vw, 44px);
   box-shadow: none;
 }
 
@@ -175,7 +172,7 @@
     gap: 22px;
   }
   .dp-has-nav .dp-lang { top: 8px; }
-  .dp-has-nav .dp-music { top: 10px; }
+  .dp-has-nav .dp-music { top: 8px; }
 }
 @media (max-width: 480px) {
   .dp-nav__brandtext { display: none; }

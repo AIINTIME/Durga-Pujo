@@ -5,6 +5,7 @@ export default function LanguageToggle() {
   const { lang, setLang } = useLanguage()
   return (
     <div className="dp-lang" role="group" aria-label="Language / ভাষা">
+      <div className="dp-lang__seg">
       <span className={`dp-lang__thumb ${lang === 'bn' ? 'is-right' : ''}`} aria-hidden="true" />
       <button
         type="button"
@@ -22,6 +23,7 @@ export default function LanguageToggle() {
       >
         বাংলা
       </button>
+      </div>
     </div>
   )
 }

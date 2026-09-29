@@ -1,6 +1,6 @@
 // Persistent Three.js particle layer that lives above the router.
 // It survives route changes, so the same petals & gold sparks that burst on the
-// Welcome page fly through the golden flash and settle into the Home page.
+// Welcome page fly across and settle into the Home page.
 import * as THREE from 'three'
 
 const CAM_Z = 10
@@ -84,7 +84,7 @@ const sparkMaterial = (pixel) =>
     blending: THREE.AdditiveBlending,
   })
 
-export function createTransitionLayer(container, flashEl) {
+export function createTransitionLayer(container) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const mobile = window.matchMedia('(max-width: 760px)').matches
   const NP = reduced ? 30 : mobile ? 55 : 95
@@ -218,7 +218,7 @@ export function createTransitionLayer(container, flashEl) {
 
     // switch from burst to fly-in exactly when the route changes
     // petals stay behind on the Welcome page (the Home gate video is petal-free);
-    // only the gold sparks fly through the flash and settle onto Home.
+    // only the gold sparks fly across and settle onto Home.
     if (mode === 'burst' && T >= BURST_END) {
       mode = 'live'
       P.forEach((o) => (o.target = 0)) // fade the petals out instead of carrying them onto Home
@@ -295,7 +295,6 @@ export function createTransitionLayer(container, flashEl) {
       running = false
       renderer.setAnimationLoop(null)
       renderer.clear()
-      if (flashEl) flashEl.style.opacity = '0'
     }
   }
 
