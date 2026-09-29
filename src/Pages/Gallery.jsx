@@ -95,9 +95,6 @@ export default function Gallery() {
           <h2 className="dp-gal__title">
             {t({ bn: 'গ্যালারি', en: 'Gallery' })}
           </h2>
-          <p className="dp-gal__sub">
-            {t({ bn: 'হলদিয়া দুর্গোৎসব ২০২৬', en: 'Haldia Durgotsav 2026' })}
-          </p>
           <p className="dp-gal__tag">
             {t({ bn: 'বিশ্বাস, সংস্কৃতি ও সম্প্রদায়ের মুহূর্ত', en: 'Moments of Faith, Culture and Community' })}
           </p>

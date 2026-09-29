@@ -10,7 +10,8 @@ import btnBn from '../assets/welcome/bn/btn.webp'
 import btnBnMask from '../assets/welcome/bn/btnMask.webp'
 import './welcome/Welcome.css'
 
-const VIDEO_SRC = encodeURI('/Video/Welcome.mp4')
+const VIDEO_WEBM = '/Video/Welcome.webm'
+const VIDEO_MP4 = '/Video/Welcome.mp4'
 
 const BUTTONS = {
   en: { src: btnEn, mask: btnEnMask },
@@ -78,17 +79,22 @@ export default function Welcome() {
       <video
         ref={videoRef}
         className="dp-welcome__video"
-        src={VIDEO_SRC}
         playsInline
         preload="auto"
         onPlaying={() => setPlaying(true)}
         onEnded={() => setEnded(true)}
-        onError={() => {
-          setPlaying(true)
-          setEnded(true)
-        }}
         aria-hidden="true"
-      />
+      >
+        <source src={VIDEO_WEBM} type="video/webm; codecs=vp9,opus" />
+        <source
+          src={VIDEO_MP4}
+          type="video/mp4"
+          onError={() => {
+            setPlaying(true)
+            setEnded(true)
+          }}
+        />
+      </video>
       <div className="dp-stage" ref={stageRef} aria-hidden="true" />
       <button ref={btnRef} className="dp-enter" onClick={enter} aria-label={t({ bn: 'প্রবেশ করুন', en: 'Enter' })}>
         {Object.entries(BUTTONS).map(([key, b]) => (
