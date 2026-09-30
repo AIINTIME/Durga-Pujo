@@ -42,7 +42,7 @@ export default function Recognition() {
     return () => scene.dispose()
   }, [])
 
-  useScrollPhase(trackRef, frameRef, { coverVar: '--cover0', hold: true })
+  useScrollPhase(trackRef, frameRef, { coverVar: '--cover4', hold: true })
 
   const ph = (s, l) => ({ '--s': s, '--l': l })
 
@@ -54,7 +54,7 @@ export default function Recognition() {
           <img className="dp-rec__bg" src={bg} alt="" draggable="false" />
 
           <h2 className="dp-rec__title dp-ph" style={ph(0.04, 0.2)}>
-            <span className="dp-rec__t1">{t({ bn: 'স্বীকৃত সেখানে', en: 'Recognised' })}</span>{' '}
+            <span className="dp-rec__t1">{t({ bn: 'স্বীকৃতি সেখানে', en: 'Recognised' })}</span>{' '}
             <span className="dp-rec__t2">{t({ bn: 'যেখানে গুরুত্ব পায়', en: 'Where It Counts' })}</span>
           </h2>
           <p className="dp-rec__lead dp-ph" style={ph(0.16, 0.16)}>

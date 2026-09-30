@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { createBrowserRouter, Outlet, RouterProvider, useLocation } from 'react-router-dom'
 import TransitionLayer from './components/transition/TransitionLayer.jsx'
-import MusicPlayer from './components/music/MusicPlayer.jsx'
 import LanguageProvider from './i18n/LanguageProvider.jsx'
 import LanguageToggle from './i18n/LanguageToggle.jsx'
 import Home from './Pages/Home.jsx'
@@ -20,15 +19,13 @@ function RootLayout() {
   }, [showNav])
   return (
     <LanguageProvider>
-      <MusicPlayer>
-        <TransitionLayer>
-          <div className="dp-app">
-            {showNav && <Navbar />}
-            <Outlet />
-            <LanguageToggle />
-          </div>
-        </TransitionLayer>
-      </MusicPlayer>
+      <TransitionLayer>
+        <div className="dp-app">
+          {showNav && <Navbar />}
+          <Outlet />
+          <LanguageToggle />
+        </div>
+      </TransitionLayer>
     </LanguageProvider>
   )
 }

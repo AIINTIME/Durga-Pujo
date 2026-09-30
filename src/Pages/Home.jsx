@@ -3,9 +3,11 @@ import { createScrollVideoScene } from './home/scrollVideo.js'
 import About from './About.jsx'
 import Glance from './Glance.jsx'
 import Artist from './Artist.jsx'
+import ArtistYear from './ArtistYear.jsx'
 import Recognition from './Recognition.jsx'
 import Gallery from './Gallery.jsx'
 import Contact from './Contact.jsx'
+import MusicPlayer from '../components/music/MusicPlayer.jsx'
 import { useLanguage } from '../i18n/context.js'
 import './home/Home.css'
 
@@ -58,34 +60,37 @@ export default function Home() {
   }, [])
 
   return (
-    <main className="dp-home">
-      <section className="dp-scrollvideo" ref={trackRef}>
-        <div className="dp-scrollvideo__pin">
-          <video
-            ref={videoRef}
-            className="dp-scrollvideo__video"
-            src={VIDEO_SRC}
-            muted
-            playsInline
-            preload="auto"
-            aria-label={t({ bn: 'দুর্গা পূজা', en: 'Durga Puja' })}
-          />
-          <span className="dp-scrollvideo__hint" aria-hidden="true">
-            {t({ bn: 'স্ক্রল করুন', en: 'Scroll' })}
-          </span>
+    <MusicPlayer>
+      <main className="dp-home">
+        <section className="dp-scrollvideo" ref={trackRef}>
+          <div className="dp-scrollvideo__pin">
+            <video
+              ref={videoRef}
+              className="dp-scrollvideo__video"
+              src={VIDEO_SRC}
+              muted
+              playsInline
+              preload="auto"
+              aria-label={t({ bn: 'দুর্গা পূজা', en: 'Durga Puja' })}
+            />
+            <span className="dp-scrollvideo__hint" aria-hidden="true">
+              {t({ bn: 'স্ক্রল করুন', en: 'Scroll' })}
+            </span>
+          </div>
+        </section>
+        {/* the navbar scrolls here: the hold is not sticky, so its position is stable (the About inside it is) */}
+        <div id="about" className="dp-about-hold" ref={holdRef}>
+          <About embedded />
         </div>
-      </section>
-      {/* the navbar scrolls here: the hold is not sticky, so its position is stable (the About inside it is) */}
-      <div id="about" className="dp-about-hold" ref={holdRef}>
-        <About embedded />
-      </div>
-      <Glance />
-      <Artist />
-      <Recognition />
-      {/* Organising Committee page is switched off: Committee.jsx stays in the repo, re-add <Committee /> here
-          (and its route in App.jsx / link in Navbar.jsx) to bring it back */}
-      <Gallery />
-      <Contact />
-    </main>
+        <Glance />
+        <Artist />
+        <ArtistYear />
+        <Recognition />
+        {/* Organising Committee page is switched off: Committee.jsx stays in the repo, re-add <Committee /> here
+            (and its route in App.jsx / link in Navbar.jsx) to bring it back */}
+        <Gallery />
+        <Contact />
+      </main>
+    </MusicPlayer>
   )
 }

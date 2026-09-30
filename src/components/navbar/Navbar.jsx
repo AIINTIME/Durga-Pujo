@@ -28,6 +28,7 @@ export default function Navbar() {
     const SECTIONS = [
       ['contact', '.dp-ct'],
       ['gallery', '.dp-gal'],
+      ['artist', '.dp-ay'],
       ['artist', '.dp-ar'],
       ['glance', '.dp-gl'],
     ]

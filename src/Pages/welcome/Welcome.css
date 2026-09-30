@@ -122,7 +122,7 @@ body,
   transition: opacity 0.8s ease 0.2s, visibility 0s linear 1s;
   z-index: 3;
 }
-.dp-loader span {
+.dp-loader__spinner {
   width: 46px;
   height: 46px;
   border-radius: 50%;
@@ -138,6 +138,72 @@ body,
   to { transform: rotate(360deg); }
 }
 
+/* entry gate: shown once every asset (video + 3D scene) has finished loading,
+   so the visitor's tap is the gesture that unlocks audio playback */
+.dp-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 0 24px;
+  text-align: center;
+  animation: dp-gate-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.dp-gate__title {
+  margin: 0;
+  font-family: 'Cinzel', serif;
+  font-size: clamp(15px, 2.4vw, 19px);
+  letter-spacing: 0.04em;
+  color: #ffe3ba;
+  text-shadow: 0 0 18px rgba(255, 150, 60, 0.4);
+}
+.dp-gate__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+.dp-gate__btn {
+  padding: 13px 28px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 197, 107, 0.55);
+  background: rgba(90, 4, 4, 0.55);
+  color: #ffe3ba;
+  font-family: 'Cinzel', serif;
+  font-size: clamp(13px, 1.8vw, 15px);
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.dp-gate__btn:hover,
+.dp-gate__btn:focus-visible {
+  transform: translateY(-1px);
+  border-color: #ffc56b;
+  box-shadow: 0 0 16px rgba(255, 170, 70, 0.45);
+}
+.dp-gate__btn:active {
+  transform: translateY(0);
+}
+.dp-gate__btn:focus-visible {
+  outline: none;
+}
+.dp-gate__btn--primary {
+  background: linear-gradient(180deg, #ffc56b, #d98b2e);
+  border-color: #ffd98a;
+  color: #3a1400;
+  font-weight: 600;
+}
+.dp-gate__btn--primary:hover,
+.dp-gate__btn--primary:focus-visible {
+  box-shadow: 0 0 20px rgba(255, 197, 107, 0.65);
+}
+
+@keyframes dp-gate-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .dp-sr-only {
   position: absolute;
   width: 1px;
@@ -149,7 +215,8 @@ body,
 
 @media (prefers-reduced-motion: reduce) {
   .dp-enter__art img,
-  .dp-enter__sheen {
+  .dp-enter__sheen,
+  .dp-gate {
     animation: none;
   }
 }

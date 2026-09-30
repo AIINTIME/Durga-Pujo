@@ -43,7 +43,7 @@ export default function Artist() {
           <img className="dp-ar__bg" src={bg} alt="" draggable="false" />
 
           <h2 className="dp-ar__h1 dp-ph" style={{ ...ph(0.02, 0.12), ...at(184, 108, 1216) }}>
-            {t({ bn: 'এ বছরের রূপের নেপথ্যের শিল্পী', en: 'The Artist Behind This Year’s Look' })}
+            {t({ bn: 'এ বছরের রূপের নেপথ্য শিল্পী', en: 'The Artist Behind This Year’s Look' })}
           </h2>
           <p className="dp-ar__h2 dp-ph" style={{ ...ph(0.07, 0.1), ...at(292, 186.5, 1000) }}>
             {t({

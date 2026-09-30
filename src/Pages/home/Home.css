@@ -104,6 +104,15 @@
   filter: brightness(calc(1 - var(--cover0, 0) * 0.6));
   transform-origin: 50% 60%;
 }
+.dp-home .dp-ay {
+  margin-top: -100vh;
+}
+/* Artist of the Year stays pinned while Recognition slides up over it */
+.dp-home .dp-ay__pin {
+  transform: scale(calc(1 - var(--cover4, 0) * 0.05));
+  filter: brightness(calc(1 - var(--cover4, 0) * 0.6));
+  transform-origin: 50% 60%;
+}
 .dp-home .dp-rec {
   margin-top: -100vh;
   height: 480vh;

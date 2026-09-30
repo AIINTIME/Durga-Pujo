@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createWelcomeScene } from './welcome/scene.js'
 import { useTransitionLayer } from '../components/transition/context.js'
-import { useMusic } from '../components/music/context.js'
 import { useLanguage } from '../i18n/context.js'
 import btnEn from '../assets/welcome/btn.webp'
 import btnEnMask from '../assets/welcome/btnMask.webp'
@@ -25,12 +24,13 @@ export default function Welcome() {
   const videoRef = useRef(null)
   const sceneRef = useRef(null)
   const [ready, setReady] = useState(false)
-  const [playing, setPlaying] = useState(false)
+  const [videoReady, setVideoReady] = useState(false)
+  const [choice, setChoice] = useState(null) // null | 'audio' | 'silent'
   const [ended, setEnded] = useState(false)
   const [leaving, setLeaving] = useState(false)
+  const assetsReady = ready && videoReady
   const navigate = useNavigate()
   const transition = useTransitionLayer()
-  const music = useMusic()
   const { lang, t } = useLanguage()
   const langRef = useRef(lang)
 
@@ -45,15 +45,25 @@ export default function Welcome() {
     return () => scene.dispose()
   }, [])
 
-  // play the whole video on arrival (with sound if the browser allows it, otherwise muted)
+  // wait for the video to be fully bufferable before offering the audio choice
   useEffect(() => {
     const v = videoRef.current
-    v.muted = false
-    v.play().catch(() => {
-      v.muted = true
-      v.play().catch(() => setEnded(true)) // no autoplay at all: go straight to the title + button
-    })
+    if (v.readyState >= 4) {
+      setVideoReady(true)
+      return
+    }
+    const onCanPlay = () => setVideoReady(true)
+    v.addEventListener('canplaythrough', onCanPlay)
+    return () => v.removeEventListener('canplaythrough', onCanPlay)
   }, [])
+
+  // once the visitor picks an entry mode, play the whole video from the start accordingly
+  useEffect(() => {
+    if (!choice) return
+    const v = videoRef.current
+    v.muted = choice === 'silent'
+    v.play().catch(() => setEnded(true)) // no autoplay at all: go straight to the title + button
+  }, [choice])
 
   // once the video has ended the title reveals and the ENTER button fades in
   useEffect(() => {
@@ -70,19 +80,17 @@ export default function Welcome() {
     if (leaving) return
     setLeaving(true)
     transition.start() // particles that carry over into Home
-    music.play() // start the background loop on this user gesture
     sceneRef.current?.enter(() => navigate('/home'))
   }
 
   return (
-    <main className={`dp-welcome ${ready && playing ? 'is-ready' : ''} ${ended && ready ? 'is-ended' : ''} ${leaving ? 'is-leaving' : ''}`}>
+    <main className={`dp-welcome ${choice ? 'is-ready' : ''} ${ended && ready ? 'is-ended' : ''} ${leaving ? 'is-leaving' : ''}`}>
       <h1 className="dp-sr-only">{t({ bn: 'নব রূপে নব দুর্গা — দুর্গাপূজা ২০২৬', en: 'Naba Rupe Naba Shakti — Durga Pooja 2026' })}</h1>
       <video
         ref={videoRef}
         className="dp-welcome__video"
         playsInline
         preload="auto"
-        onPlaying={() => setPlaying(true)}
         onEnded={() => setEnded(true)}
         aria-hidden="true"
       >
@@ -90,7 +98,8 @@ export default function Welcome() {
           src={isMobile() ? VIDEO_WEBM_MOBILE : VIDEO_WEBM}
           type="video/webm; codecs=vp9,opus"
           onError={() => {
-            setPlaying(true)
+            // no playable video: skip the audio choice and go straight to the title + button
+            setChoice('silent')
             setEnded(true)
           }}
         />
@@ -107,8 +116,21 @@ export default function Welcome() {
           </span>
         ))}
       </button>
-      <div className="dp-loader" aria-hidden="true">
-        <span />
+      <div className="dp-loader" aria-hidden={assetsReady ? undefined : true}>
+        {!assetsReady && <span className="dp-loader__spinner" />}
+        {assetsReady && !choice && (
+          <div className="dp-gate" role="group" aria-label={t({ bn: 'প্রবেশের ধরন বেছে নিন', en: 'Choose how to enter' })}>
+            <p className="dp-gate__title">{t({ bn: 'কীভাবে প্রবেশ করতে চান?', en: 'How would you like to enter?' })}</p>
+            <div className="dp-gate__actions">
+              <button type="button" className="dp-gate__btn dp-gate__btn--primary" onClick={() => setChoice('audio')}>
+                {t({ bn: 'শব্দসহ প্রবেশ করুন', en: 'Enter with Audio' })}
+              </button>
+              <button type="button" className="dp-gate__btn" onClick={() => setChoice('silent')}>
+                {t({ bn: 'শব্দ ছাড়া প্রবেশ করুন', en: 'Enter Without Audio' })}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   )
