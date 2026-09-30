@@ -67,7 +67,7 @@ export default function Recognition() {
           {CARDS.map((c, i) => (
             <div
               key={c.title.en}
-              className="dp-rec__card dp-ph is-card"
+              className={`dp-rec__card dp-ph is-card ${i === CARDS.length - 1 ? 'is-last' : ''}`}
               style={{ ...ph(0.26 + i * 0.075, 0.2), left: `calc(${c.x} * var(--u))`, width: `calc(${c.w} * var(--u))` }}
             >
               <img src={c.img} alt="" draggable="false" />

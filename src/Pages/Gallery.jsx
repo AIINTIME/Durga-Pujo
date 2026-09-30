@@ -45,8 +45,10 @@ export default function Gallery() {
   // scrolling drives the carousel: further down = next photo, back up = previous photo
   useEffect(() => {
     const track = trackRef.current
-    const span = () => track.offsetHeight - window.innerHeight * (track.closest('.dp-home') ? 2 : 1) // Home keeps one extra screen for the curtain
-    const pinned = () => window.matchMedia('(min-width: 821px)').matches && span() > 0
+    const desktop = () => window.matchMedia('(min-width: 821px)').matches
+    // on desktop Home keeps one extra screen for the next section's curtain; on phones the gallery is simply pinned
+    const span = () => track.offsetHeight - window.innerHeight * (desktop() && track.closest('.dp-home') ? 2 : 1)
+    const pinned = () => span() > 0
     const onScroll = () => {
       if (!pinned()) return
       const prog = Math.min(1, Math.max(0, -track.getBoundingClientRect().top / span()))

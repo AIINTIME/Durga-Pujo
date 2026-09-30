@@ -74,7 +74,8 @@ export default function Artist() {
             })}
           </p>
 
-          <p className="dp-ar__p dp-ph" style={{ ...ph(0.46, 0.12), ...at(143, 754.5, 655, { '--n': 5 }) }}>
+          <div className="dp-ar__story" style={at(143, 726, 660)}>
+          <p className="dp-ar__p dp-ph" style={ph(0.46, 0.12)}>
             {t({
               bn: 'গত দুই পাতার প্রতিটি ছবি — প্যান্ডেল, আলোকিত প্রবেশপথ, যে ভিড় তা টেনে আনে — সবকিছুর পেছনে একটি নাম আছে। অভিজিৎ ঘটক কলকাতার একজন থিম শিল্পী, যাঁর কাজ শহরের পূজা-চক্রে ঠিক এই কারণেই পরিচিত: সাধারণ, এমনকি ফেলে দেওয়া উপকরণকে এমন কিছুতে রূপ দেওয়া যার সামনে মানুষ থমকে দাঁড়ায়। সন্তোষপুর লেক পল্লীর ',
               en: 'Every image on the last two pages — the pandal, the lit approach, the crowd it pulls — has a name behind it. Avijit Ghatak is a Kolkata theme artist whose work is known across the city’s Puja circuit for exactly this: taking ordinary, even discarded, material and turning it into something people stop walking to look at. It’s the same hand behind ',
@@ -82,12 +83,13 @@ export default function Artist() {
             <i>{t({ bn: '“চলচ্চিত্র: অজন্তার প্রতি শ্রদ্ধা”', en: '“Chalchitra: A Tribute to Ajanta”' })}</i>
             {t({ bn: '-র পেছনেও একই হাত।', en: ' at Santoshpur Lake Pally.' })}
           </p>
-          <p className="dp-ar__p dp-ph" style={{ ...ph(0.54, 0.12), ...at(143, 883.5, 655, { '--n': 3 }) }}>
+          <p className="dp-ar__p dp-ph" style={ph(0.54, 0.12)}>
             {t({
               bn: 'এই মরসুমে তিনি একসঙ্গে দুটি বড় প্রকল্প সামলাচ্ছেন — জগৎ মুখার্জি পার্কে ১ নং ওয়ার্ডের সাধারণ দুর্গোৎসবের জন্য “শঙ্কর নামা”, এবং অহিরীটোলা সার্বজনীন শারদোৎসবের ৫৬তম বর্ষের ঐতিহাসিক আয়োজনে শিল্প নির্দেশক হিসেবে “শেষ বেলায়”।',
               en: 'This season he’s running two large productions at once — “শঙ্কর নামা” (Shankar Nama) for Ward No. 1’s Sadharan Durgotsav at Jagat Mukherjee Park, and “শেষ বেলায়” (Shesh Belay) as art director for Ahiritola Sarbojanin Sharodotsav’s landmark 56th year.',
             })}
           </p>
+          </div>
 
           <div className="dp-ar__box dp-ph" style={{ ...ph(0.62, 0.2), left: ux(838), top: uy(738 - TOP), width: ux(650), height: uy(216) }}>
             <img src={box} alt="" draggable="false" />

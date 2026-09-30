@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { createAboutScene } from './about/aboutScene.js'
 import { useLanguage } from '../i18n/context.js'
 import Lotus from '../components/navbar/Lotus.jsx'
+import portrait from '../assets/about/portrait.webp'
 import './about/About.css'
 
 const PATRON = {
@@ -84,6 +85,15 @@ export default function About({ embedded = false }) {
           <br />
           {t({ bn: 'দুর্গা পূজা', en: 'Durga Puja' })}
         </h1>
+        {/* phones only: the portrait from the artwork, shown between the heading and the story */}
+        <img className="dp-about__portrait" src={portrait} alt={t(PATRON.name)} draggable="false" />
+        <figure className="dp-about__patron dp-at" data-r style={{ '--d': '0.9s' }}>
+          <figcaption>
+            <strong>{t(PATRON.name)}</strong>
+            <span>{t(PATRON.role)}</span>
+          </figcaption>
+        </figure>
+
         <p className="dp-about__text dp-at" data-r style={{ '--d': '0.65s' }}>
           {t({ bn: 'খুদিরাম নগর, হলদিয়ার দুর্গোৎসব ময়দানে ', en: 'Organised by the ' })}
           <b>{t({ bn: 'হলদিয়া দুর্গোৎসব কমিটির', en: 'Haldia Durgotsav Committee' })}</b>
@@ -95,13 +105,6 @@ export default function About({ embedded = false }) {
         <p className="dp-about__place dp-at" data-r style={{ '--d': '0.8s' }}>
           {t({ bn: 'হলদিয়া, পশ্চিমবঙ্গ', en: 'Haldia, West Bengal' })}
         </p>
-
-        <figure className="dp-about__patron dp-at" data-r style={{ '--d': '0.9s' }}>
-          <figcaption>
-            <strong>{t(PATRON.name)}</strong>
-            <span>{t(PATRON.role)}</span>
-          </figcaption>
-        </figure>
 
         <div className="dp-about__spirit dp-at" data-r style={{ '--d': '1s' }}>
           <Lotus className="dp-about__spirit-lotus" />

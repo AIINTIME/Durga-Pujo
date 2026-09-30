@@ -90,13 +90,12 @@
 .dp-ar__cap { position: absolute; margin: 0; text-align: center; transform: translateY(calc(-50% + (1 - var(--k)) * 14 * var(--u))); font: 400 calc(17 * var(--u)) / calc(23 * var(--uy)) 'Crimson Pro', 'Noto Serif Bengali', Georgia, serif; color: #3a2a20; }
 
 /* ---- story ---- */
+.dp-ar__story { position: absolute; }
 .dp-ar__p {
-  position: absolute;
-  margin: 0;
+  margin: 0 0 calc(var(--fs-body) * 0.5);
   text-align: left;
-  transform: translateY(calc(-11.85 * var(--uy)));
   clip-path: inset(0 calc((1 - var(--k)) * 100%) 0 0); /* the text wipes in from the left */
-  font: 400 calc(17 * var(--u)) / calc(23.7 * var(--uy)) 'Crimson Pro', 'Noto Serif Bengali', Georgia, serif;
+  font: 400 var(--fs-body) / 1.32 'Crimson Pro', 'Noto Serif Bengali', Georgia, serif;
   color: #2d1a12;
 }
 .dp-ar__p i { font-style: italic; }
@@ -111,13 +110,12 @@
 }
 .dp-ar__body {
   position: absolute; margin: 0;
-  transform: translateY(calc(-12.25 * var(--uy)));
-  font: 400 calc(17 * var(--u)) / calc(24.5 * var(--uy)) 'Crimson Pro', 'Noto Serif Bengali', Georgia, serif; color: #fbe6d0;
+  transform: translateY(calc(var(--fs-body) * -0.7));
+  font: 400 var(--fs-body) / 1.4 'Crimson Pro', 'Noto Serif Bengali', Georgia, serif; color: #fbe6d0;
   opacity: clamp(0, calc((var(--e, 1) - 0.45) * 2), 1);
 }
 :root[lang='bn'] .dp-ar__h1 { font-size: calc(52 * var(--u)); font-weight: 800; }
 :root[lang='bn'] .dp-ar__h2 { font-size: calc(18 * var(--u)); }
-:root[lang='bn'] .dp-ar__p, :root[lang='bn'] .dp-ar__body { font-size: calc(15.5 * var(--u)); }
 :root[lang='bn'] .dp-ar__cap { font-size: calc(16 * var(--u)); }
 :root[lang='bn'] .dp-ar__why { font-size: calc(25 * var(--u)); font-weight: 700; }
 
@@ -128,23 +126,24 @@
   .dp-ar__frame {
     --ux: 1px; --uy: 1px; --u: 1px;
     container-type: normal; position: relative; top: auto; bottom: auto;
-    display: flex; flex-direction: column; gap: 14px; padding: 96px 16px 56px;
+    display: flex; flex-direction: column; gap: 14px; padding: 96px 24px 56px;
     background: linear-gradient(#fdf1d8, #f7dfb0);
   }
   .dp-ar__bg, .dp-ar__stage { display: none; }
   .dp-ph { opacity: 1; transform: none !important; clip-path: none !important; filter: none !important; letter-spacing: normal !important; }
   .dp-ar__patch { display: none; }
-  .dp-ar__h1, .dp-ar__h2, .dp-ar__cap, .dp-ar__p { position: relative; left: auto !important; top: auto !important; width: auto !important; white-space: normal; transform: none; }
+  .dp-ar__story { position: static; left: auto !important; top: auto !important; width: auto !important; }
+  .dp-ar__h1, .dp-ar__h2, .dp-ar__cap { position: relative; left: auto !important; top: auto !important; width: auto !important; white-space: normal; transform: none; }
   .dp-ar__h1 { font-size: clamp(30px, 8.5vw, 42px); }
   :root[lang='bn'] .dp-ar__h1 { font-size: clamp(28px, 8vw, 38px); }
   .dp-ar__h2 { font-size: 17px; }
   .dp-ar__pic { position: relative; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; }
   .dp-ar__pic > img { position: static; }
   .dp-ar__cap { font-size: 15px; }
-  .dp-ar__p, :root[lang='bn'] .dp-ar__p { font-size: 16px; line-height: 1.6; }
+  .dp-ar__p, :root[lang='bn'] .dp-ar__p { font-size: var(--fs-body); line-height: 1.6; }
   .dp-ar__box { position: relative; left: auto !important; top: auto !important; width: auto !important; height: auto !important; padding: 18px; border-radius: 14px; background: linear-gradient(160deg, #7a0d22, #4a0616); border: 1.5px solid #e2ac4f; }
   .dp-ar__box > img { display: none; }
   .dp-ar__why, .dp-ar__body { position: static; left: auto !important; top: auto !important; width: auto !important; transform: none; white-space: normal; opacity: 1; }
   .dp-ar__why { font-size: 22px; margin-bottom: 8px; }
-  .dp-ar__body, :root[lang='bn'] .dp-ar__body { font-size: 16px; line-height: 1.55; }
+  .dp-ar__body, :root[lang='bn'] .dp-ar__body { font-size: var(--fs-body); line-height: 1.55; }
 }
