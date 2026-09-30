@@ -7,11 +7,12 @@ import ArtistYear from './ArtistYear.jsx'
 import Recognition from './Recognition.jsx'
 import Gallery from './Gallery.jsx'
 import Contact from './Contact.jsx'
-import MusicPlayer from '../components/music/MusicPlayer.jsx'
 import { useLanguage } from '../i18n/context.js'
 import './home/Home.css'
 
 const VIDEO_SRC = encodeURI('/Video/Ram.webm')
+const VIDEO_SRC_MOBILE = encodeURI('/Video/Mobile Ram.webm')
+const isMobile = () => window.matchMedia('(max-width: 820px)').matches
 
 export default function Home() {
   const trackRef = useRef(null)
@@ -60,14 +61,14 @@ export default function Home() {
   }, [])
 
   return (
-    <MusicPlayer>
+    <>
       <main className="dp-home">
         <section className="dp-scrollvideo" ref={trackRef}>
           <div className="dp-scrollvideo__pin">
             <video
               ref={videoRef}
               className="dp-scrollvideo__video"
-              src={VIDEO_SRC}
+              src={isMobile() ? VIDEO_SRC_MOBILE : VIDEO_SRC}
               muted
               playsInline
               preload="auto"
@@ -91,6 +92,6 @@ export default function Home() {
         <Gallery />
         <Contact />
       </main>
-    </MusicPlayer>
+    </>
   )
 }

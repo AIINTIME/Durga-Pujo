@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createWelcomeScene } from './welcome/scene.js'
 import { useTransitionLayer } from '../components/transition/context.js'
+import { useMusic } from '../components/music/context.js'
 import { useLanguage } from '../i18n/context.js'
 import btnEn from '../assets/welcome/btn.webp'
 import btnEnMask from '../assets/welcome/btnMask.webp'
 import btnBn from '../assets/welcome/bn/btn.webp'
 import btnBnMask from '../assets/welcome/bn/btnMask.webp'
+import '../components/music/MusicToggle.css'
 import './welcome/Welcome.css'
 
 const VIDEO_WEBM = '/Video/Welcome.webm'
@@ -25,12 +27,14 @@ export default function Welcome() {
   const sceneRef = useRef(null)
   const [ready, setReady] = useState(false)
   const [videoReady, setVideoReady] = useState(false)
-  const [choice, setChoice] = useState(null) // null | 'audio' | 'silent'
+  const [started, setStarted] = useState(false)
+  const [soundOn, setSoundOn] = useState(false)
   const [ended, setEnded] = useState(false)
   const [leaving, setLeaving] = useState(false)
   const assetsReady = ready && videoReady
   const navigate = useNavigate()
   const transition = useTransitionLayer()
+  const music = useMusic()
   const { lang, t } = useLanguage()
   const langRef = useRef(lang)
 
@@ -45,7 +49,7 @@ export default function Welcome() {
     return () => scene.dispose()
   }, [])
 
-  // wait for the video to be fully bufferable before offering the audio choice
+  // the video counts as loaded once it can play through without stalling
   useEffect(() => {
     const v = videoRef.current
     if (v.readyState >= 4) {
@@ -57,24 +61,66 @@ export default function Welcome() {
     return () => v.removeEventListener('canplaythrough', onCanPlay)
   }, [])
 
-  // once the visitor picks an entry mode, play the whole video from the start accordingly
+  // the sound icon follows what is actually audible
   useEffect(() => {
-    if (!choice) return
     const v = videoRef.current
-    v.muted = choice === 'silent'
-    v.play().catch(() => setEnded(true)) // no autoplay at all: go straight to the title + button
-  }, [choice])
+    const sync = () => setSoundOn(!v.paused && !v.ended && !v.muted && v.volume > 0)
+    const evs = ['play', 'playing', 'pause', 'ended', 'volumechange']
+    evs.forEach((e) => v.addEventListener(e, sync))
+    return () => evs.forEach((e) => v.removeEventListener(e, sync))
+  }, [])
 
-  // once the video has ended the title reveals and the ENTER button fades in
+  // once everything is loaded the video plays from the start with sound; if the browser blocks sound before any
+  // interaction it starts muted and gets its sound back on the visitor's first tap / click / key press
+  useEffect(() => {
+    if (!assetsReady) return
+    const v = videoRef.current
+    const events = ['pointerdown', 'keydown', 'touchend']
+    const unmute = (e) => {
+      if (e.target instanceof Element && e.target.closest('.dp-music')) return // the sound button handles its own click
+      v.muted = false
+      events.forEach((e) => window.removeEventListener(e, unmute, true))
+    }
+    v.muted = false
+    v.play().then(
+      () => setStarted(true),
+      () => {
+        v.muted = true
+        v.play().then(
+          () => {
+            setStarted(true)
+            events.forEach((e) => window.addEventListener(e, unmute, true))
+          },
+          () => {
+            setStarted(true)
+            setEnded(true) // no autoplay at all: go straight to the title + button
+          },
+        )
+      },
+    )
+    return () => events.forEach((e) => window.removeEventListener(e, unmute, true))
+  }, [assetsReady])
+
+  // once the video has ended the title reveals and the ENTER button fades in, and the Landing Background music starts
   useEffect(() => {
     if (ended && ready) sceneRef.current?.play()
   }, [ended, ready])
+  const { welcomeEnded } = music
+  useEffect(() => {
+    welcomeEnded(ended)
+    return () => welcomeEnded(false)
+  }, [ended, welcomeEnded])
 
   // crossfade the 3D title when the EN / BN toggle changes
   useEffect(() => {
     langRef.current = lang
     sceneRef.current?.setLang(lang)
   }, [lang])
+
+  const toggleSound = () => {
+    const v = videoRef.current
+    v.muted = !v.muted
+  }
 
   const enter = () => {
     if (leaving) return
@@ -84,7 +130,7 @@ export default function Welcome() {
   }
 
   return (
-    <main className={`dp-welcome ${choice ? 'is-ready' : ''} ${ended && ready ? 'is-ended' : ''} ${leaving ? 'is-leaving' : ''}`}>
+    <main className={`dp-welcome ${started ? 'is-ready' : ''} ${ended && ready ? 'is-ended' : ''} ${leaving ? 'is-leaving' : ''}`}>
       <h1 className="dp-sr-only">{t({ bn: 'নব রূপে নব দুর্গা — দুর্গাপূজা ২০২৬', en: 'Naba Rupe Naba Shakti — Durga Pooja 2026' })}</h1>
       <video
         ref={videoRef}
@@ -98,8 +144,8 @@ export default function Welcome() {
           src={isMobile() ? VIDEO_WEBM_MOBILE : VIDEO_WEBM}
           type="video/webm; codecs=vp9,opus"
           onError={() => {
-            // no playable video: skip the audio choice and go straight to the title + button
-            setChoice('silent')
+            // no playable video: go straight to the title + button
+            setStarted(true)
             setEnded(true)
           }}
         />
@@ -116,21 +162,26 @@ export default function Welcome() {
           </span>
         ))}
       </button>
-      <div className="dp-loader" aria-hidden={assetsReady ? undefined : true}>
-        {!assetsReady && <span className="dp-loader__spinner" />}
-        {assetsReady && !choice && (
-          <div className="dp-gate" role="group" aria-label={t({ bn: 'প্রবেশের ধরন বেছে নিন', en: 'Choose how to enter' })}>
-            <p className="dp-gate__title">{t({ bn: 'কীভাবে প্রবেশ করতে চান?', en: 'How would you like to enter?' })}</p>
-            <div className="dp-gate__actions">
-              <button type="button" className="dp-gate__btn dp-gate__btn--primary" onClick={() => setChoice('audio')}>
-                {t({ bn: 'শব্দসহ প্রবেশ করুন', en: 'Enter with Audio' })}
-              </button>
-              <button type="button" className="dp-gate__btn" onClick={() => setChoice('silent')}>
-                {t({ bn: 'শব্দ ছাড়া প্রবেশ করুন', en: 'Enter Without Audio' })}
-              </button>
-            </div>
-          </div>
-        )}
+      {started && !ended && (
+        <button
+          type="button"
+          className={`dp-music ${soundOn ? 'is-playing' : ''}`}
+          onClick={toggleSound}
+          aria-pressed={soundOn}
+          aria-label={soundOn ? t({ bn: 'শব্দ বন্ধ করুন', en: 'Turn sound off' }) : t({ bn: 'শব্দ চালু করুন', en: 'Turn sound on' })}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M4 9v6h4l5 5V4L8 9H4z" fill="currentColor" />
+            {soundOn ? (
+              <path className="dp-music__wave" d="M16.2 8.3a5.4 5.4 0 0 1 0 7.4M18.6 6a8.8 8.8 0 0 1 0 12" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            ) : (
+              <path d="M16.5 9l4.5 4.5M21 9l-4.5 4.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            )}
+          </svg>
+        </button>
+      )}
+      <div className="dp-loader" aria-hidden="true">
+        <span className="dp-loader__spinner" />
       </div>
     </main>
   )
