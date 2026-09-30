@@ -39,6 +39,8 @@ export default function Welcome() {
   const langRef = useRef(lang)
 
   useEffect(() => {
+    // if the 3D layer is slow or cannot start (some phones), show the page anyway after a few seconds
+    const watchdog = setTimeout(() => setReady(true), 8000)
     const scene = createWelcomeScene(stageRef.current, {
       buttonEl: btnRef.current,
       lang: langRef.current,
@@ -46,19 +48,26 @@ export default function Welcome() {
       overlay: true,
     })
     sceneRef.current = scene
-    return () => scene.dispose()
+    return () => {
+      clearTimeout(watchdog)
+      scene.dispose()
+    }
   }, [])
 
-  // the video counts as loaded once it can play through without stalling
+  // The video counts as loaded once it can play. iPhone Safari does not pre-load video (it only fetches after play()),
+  // so "can play through" may never fire there: settle for the first frame being ready, and never wait more than a few seconds.
   useEffect(() => {
     const v = videoRef.current
-    if (v.readyState >= 4) {
-      setVideoReady(true)
-      return
+    const done = () => setVideoReady(true)
+    // a browser that cannot play WebM at all skips ahead (play() then fails and the title shows) instead of loading forever
+    const wait = v.canPlayType('video/webm; codecs="vp9,opus"') ? 5000 : 0
+    const evs = ['canplaythrough', 'canplay', 'loadeddata']
+    evs.forEach((e) => v.addEventListener(e, done))
+    const timer = setTimeout(done, v.readyState >= 2 ? 0 : wait)
+    return () => {
+      evs.forEach((e) => v.removeEventListener(e, done))
+      clearTimeout(timer)
     }
-    const onCanPlay = () => setVideoReady(true)
-    v.addEventListener('canplaythrough', onCanPlay)
-    return () => v.removeEventListener('canplaythrough', onCanPlay)
   }, [])
 
   // the sound icon follows what is actually audible
@@ -126,7 +135,14 @@ export default function Welcome() {
     if (leaving) return
     setLeaving(true)
     transition.start() // particles that carry over into Home
-    sceneRef.current?.enter(() => navigate('/home'))
+    let gone = false
+    const go = () => {
+      if (gone) return
+      gone = true
+      navigate('/home')
+    }
+    sceneRef.current?.enter(go)
+    setTimeout(go, 3500) // never get stuck here if the 3D scene could not run
   }
 
   return (

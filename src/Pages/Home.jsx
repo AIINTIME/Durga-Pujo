@@ -27,6 +27,9 @@ export default function Home() {
       reserve,
       onProgress: (p) => trackRef.current?.classList.toggle('is-scrolled', p > 0.02),
     })
+    // iPhone Safari does not fetch a video until it has been played once: prime it so scrolling can show frames
+    const v = videoRef.current
+    v.play().then(() => v.pause()).catch(() => {})
     return () => scene.dispose()
   }, [])
 
