@@ -11,7 +11,8 @@ import btnBnMask from '../assets/welcome/bn/btnMask.webp'
 import './welcome/Welcome.css'
 
 const VIDEO_WEBM = '/Video/Welcome.webm'
-const VIDEO_MP4 = '/Video/Welcome.mp4'
+const VIDEO_WEBM_MOBILE = '/Video/Mobile Welcome.webm'
+const isMobile = () => window.matchMedia('(max-width: 760px)').matches
 
 const BUTTONS = {
   en: { src: btnEn, mask: btnEnMask },
@@ -75,7 +76,7 @@ export default function Welcome() {
 
   return (
     <main className={`dp-welcome ${ready && playing ? 'is-ready' : ''} ${ended && ready ? 'is-ended' : ''} ${leaving ? 'is-leaving' : ''}`}>
-      <h1 className="dp-sr-only">{t({ bn: 'নব রূপে নব দুর্গা — দুর্গাপূজা ২০২৬', en: 'Nobo Rupe Nobo Durga — Durga Pooja 2026' })}</h1>
+      <h1 className="dp-sr-only">{t({ bn: 'নব রূপে নব দুর্গা — দুর্গাপূজা ২০২৬', en: 'Naba Rupe Naba Shakti — Durga Pooja 2026' })}</h1>
       <video
         ref={videoRef}
         className="dp-welcome__video"
@@ -85,10 +86,9 @@ export default function Welcome() {
         onEnded={() => setEnded(true)}
         aria-hidden="true"
       >
-        <source src={VIDEO_WEBM} type="video/webm; codecs=vp9,opus" />
         <source
-          src={VIDEO_MP4}
-          type="video/mp4"
+          src={isMobile() ? VIDEO_WEBM_MOBILE : VIDEO_WEBM}
+          type="video/webm; codecs=vp9,opus"
           onError={() => {
             setPlaying(true)
             setEnded(true)

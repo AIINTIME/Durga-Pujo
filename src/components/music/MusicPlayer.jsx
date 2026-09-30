@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { MusicContext } from './context.js'
 import MusicToggle from './MusicToggle.jsx'
-import { useLanguage } from '../../i18n/context.js'
 
 const MUSIC_SRC = '/Video/Music.mp3'
 
@@ -10,15 +9,12 @@ const MUSIC_SRC = '/Video/Music.mp3'
 export default function MusicPlayer({ children }) {
   const audioRef = useRef(null)
   const [playing, setPlaying] = useState(false)
-  const [silent, setSilent] = useState(false) // running, but the browser is still holding the sound back
-  const { t } = useLanguage()
 
   // the icon means "is there sound?": the music loop, or a page video (Welcome) playing with its sound on
   const [videoSound, setVideoSound] = useState(false)
   useEffect(() => {
     const audio = audioRef.current
     const sync = () => {
-      setSilent(!audio.paused && audio.muted)
       setPlaying(!audio.paused && !audio.muted) // "on" only when it is actually audible
       setVideoSound([...document.querySelectorAll('video:not([data-music])')].some((v) => !v.paused && !v.ended && !v.muted && v.volume > 0))
     }
@@ -96,12 +92,6 @@ export default function MusicPlayer({ children }) {
           until the first click), and the first interaction then un-mutes it */}
       <video ref={audioRef} src={MUSIC_SRC} data-music loop muted autoPlay playsInline preload="auto" className="dp-music-carrier" aria-hidden="true" />
       <MusicToggle />
-      {/* the browser will not release sound before the first touch: a light, non-blocking nudge, gone once sound is on */}
-      {silent && (
-        <p className="dp-soundhint" role="status">
-          {t({ bn: 'সাউন্ড চালু করতে যেকোনো জায়গায় ট্যাপ করুন', en: 'Tap anywhere for sound' })}
-        </p>
-      )}
     </MusicContext.Provider>
   )
 }
