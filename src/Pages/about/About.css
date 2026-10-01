@@ -208,10 +208,14 @@
 :root[lang='bn'] .dp-about__card h4 { font-size: calc(18.5 * var(--u)); font-weight: 700; }
 :root[lang='bn'] .dp-about__card p { font-size: calc(var(--fs-body) * 0.77); line-height: 1.32; }
 :root[lang='bn'] .dp-about__heading { font-size: calc(21 * var(--u)); }
-:root[lang='bn'] .dp-about__place { font-size: calc(15.5 * var(--u)); }
+:root[lang='bn'] .dp-about__place { font-size: calc(19.5 * var(--u)); }
+/* desktop: the pin is in the artwork at the left of the pill, so the text sits right next to it instead of floating in the middle */
+@media (min-width: 821px) {
+  .dp-about__place { justify-content: flex-start; box-sizing: border-box; padding-left: calc(12 * var(--u)); }
+}
 :root[lang='bn'] .dp-about__patron strong { font-size: calc(26 * var(--u)); }
 :root[lang='bn'] .dp-about__patron span { font-size: calc(19.5 * var(--u)); }
-:root[lang='bn'] .dp-about__text { font-size: calc(var(--fs-body) * 1.06); }
+:root[lang='bn'] .dp-about__text { font-size: calc(16.5 * var(--u)); line-height: 1.36; left: calc(268 * var(--u)); width: calc(648 * var(--u)); top: calc(398 * var(--u)); }
 
 /* ---- entrance ---- */
 .dp-about [data-r] {
@@ -252,6 +256,7 @@
   :root[lang='bn'] .dp-about__title { font-size: clamp(34px, 10vw, 54px); }
   .dp-about__text { font-size: var(--fs-body); line-height: 1.7; text-align: center; }
   :root[lang='bn'] .dp-about__text { font-size: calc(var(--fs-body) * 1.06); line-height: 1.7; text-align: center; }
+  :root[lang='bn'] .dp-about__place { font-size: 16px; }
   .dp-about__place { font-size: 13px; padding: 10px 22px; border: 1.5px solid #d3a04a; border-radius: 999px; height: auto; }
   .dp-about__patron strong { font-size: 24px; }
   .dp-about__patron span { font-size: 18px; }

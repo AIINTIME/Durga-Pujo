@@ -149,7 +149,7 @@ export default function Contact() {
             <ul className="dp-ct__info">
               <li>
                 <Icon name="phone" />
-                <span><a href="tel:+919876543210">+91 98765 43210</a><small>{t({ bn: '(কমিটি হেল্পলাইন)', en: '(Committee Helpline)' })}</small></span>
+                <span><a href="tel:+919830727075">+91 98307 27075</a><small>{t({ bn: '(কমিটি হেল্পলাইন)', en: '(Committee Helpline)' })}</small></span>
               </li>
               <li>
                 <Icon name="mail" />
