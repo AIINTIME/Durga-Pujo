@@ -9,9 +9,8 @@ import btnBn from '../assets/welcome/bn/btn.webp'
 import btnBnMask from '../assets/welcome/bn/btnMask.webp'
 import './welcome/Welcome.css'
 
-const VIDEO_WEBM = '/Video/Welcome.webm'
-const VIDEO_WEBM_MOBILE = '/Video/Mobile Welcome.webm'
-const isMobile = () => window.matchMedia('(max-width: 760px)').matches
+// silent intro: H.264 MP4 first (every iPhone), WebM as the fallback
+const VIDEO_BASE = encodeURI(window.matchMedia('(max-width: 760px)').matches ? '/Video/Welcome Mobile' : '/Video/Welcome')
 
 const BUTTONS = {
   en: { src: btnEn, mask: btnEnMask },
@@ -55,8 +54,8 @@ export default function Welcome() {
   useEffect(() => {
     const v = videoRef.current
     const done = () => setVideoReady(true)
-    // a browser that cannot play WebM at all skips ahead (play() then fails and the title shows) instead of loading forever
-    const wait = v.canPlayType('video/webm; codecs="vp9"') ? 5000 : 0
+    // a browser that can play neither MP4 nor WebM skips ahead (play() then fails and the title shows) instead of loading forever
+    const wait = v.canPlayType('video/mp4') || v.canPlayType('video/webm') ? 5000 : 0
     const evs = ['canplaythrough', 'canplay', 'loadeddata']
     evs.forEach((e) => v.addEventListener(e, done))
     const timer = setTimeout(done, v.readyState >= 2 ? 0 : wait)
@@ -66,7 +65,7 @@ export default function Welcome() {
     }
   }, [])
 
-  // once everything is loaded the (silent) intro video plays from the start; the Landing Background music is separate
+  // once everything is loaded the (silent) intro video plays from the start; the Background Music is separate
   useEffect(() => {
     if (!assetsReady) return
     const v = videoRef.current
@@ -117,9 +116,10 @@ export default function Welcome() {
         onEnded={() => setEnded(true)}
         aria-hidden="true"
       >
+        <source src={`${VIDEO_BASE}.mp4`} type="video/mp4" />
         <source
-          src={isMobile() ? VIDEO_WEBM_MOBILE : VIDEO_WEBM}
-          type="video/webm; codecs=vp9"
+          src={`${VIDEO_BASE}.webm`}
+          type="video/webm"
           onError={() => {
             // no playable video: go straight to the title + button
             setStarted(true)

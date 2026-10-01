@@ -1,0 +1,174 @@
+/* Laid out on the 1672 x 941 artwork (--ux / --uy = one artwork pixel at the current frame size, --u the smaller of the two).
+   --p (0 -> 1) is the scroll progress; every .dp-ph element turns it into its own phase --e / --k from --s (start) and --l (length). */
+.dp-cr {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22vh);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 22vh);
+  position: relative;
+  z-index: 2;
+  height: 420vh;
+  margin: 0;
+  background: #fbe6c0;
+  color: #3a1a10;
+}
+.dp-cr__pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #fbe6c0;
+}
+.dp-cr__frame {
+  --ux: calc(100cqw / 1672);
+  --uy: calc(100cqh / 941);
+  --u: min(var(--ux), var(--uy));
+  --p: 0;
+  container-type: size;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--dp-nav-h, 62px);
+  bottom: 0;
+  overflow: hidden;
+}
+.dp-cr__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+}
+.dp-cr__bg.is-off { display: none; }
+.dp-cr .dp-ph {
+  --e: clamp(0, calc((var(--p, 0) - var(--s, 0)) / var(--l, 0.2)), 1);
+  --k: calc(var(--e) * (2 - var(--e)));
+  opacity: var(--k);
+}
+.dp-cr__stage {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+.dp-cr img { -webkit-user-drag: none; user-select: none; }
+.dp-cr__pic { display: none; }
+
+/* every line is placed by its centre */
+.dp-cr__org, .dp-cr__pres, .dp-cr__ann, .dp-cr__year, .dp-cr__t1, .dp-cr__t2, .dp-cr__sub, .dp-cr__body {
+  position: absolute;
+  margin: 0;
+  text-align: center;
+  transform: translate(-50%, calc(-50% + (1 - var(--k)) * 14 * var(--u)));
+}
+.dp-cr__org, .dp-cr__pres, .dp-cr__ann, .dp-cr__year, .dp-cr__t1, .dp-cr__t2, .dp-cr__sub { white-space: nowrap; }
+.dp-cr__ln { display: block; white-space: nowrap; }
+.dp-cr__title { margin: 0; font-weight: 400; }
+
+/* ---- English ---- */
+.dp-cr__org, .dp-cr__pres, .dp-cr__ann, .dp-cr__year, .dp-cr__sub {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+  text-transform: uppercase;
+}
+.dp-cr__org { font-size: calc(16.6 * var(--u)); font-weight: 600; letter-spacing: 0.085em; color: #5b2a1c; }
+.dp-cr__pres { font-size: calc(12 * var(--u)); font-weight: 600; letter-spacing: 0.34em; color: #9a6a24; }
+.dp-cr__ann { font-size: calc(14.5 * var(--u)); font-weight: 500; letter-spacing: 0.155em; color: #6b3d22; }
+.dp-cr__year { font-size: calc(22 * var(--u)); font-weight: 600; letter-spacing: 0.2em; color: #94621c; }
+.dp-cr__t1, .dp-cr__t2 {
+  font: 700 calc(62 * var(--u)) / 1.4 'Playfair Display', 'Noto Serif Bengali', Georgia, serif;
+  letter-spacing: -0.015em;
+  color: #7a0c22;
+  background: linear-gradient(180deg, #8f1429 6%, #650818 75%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 0 0.04em 0.1em; /* room under the baseline so g / j are not clipped by the gradient */
+  filter: blur(calc((1 - var(--k)) * 10px));
+}
+.dp-cr__sub { font-size: calc(16 * var(--u)); font-weight: 600; letter-spacing: 0.045em; color: #6d1626; }
+.dp-cr__body {
+  font: 400 calc(19 * var(--u)) / calc(24.5 * var(--uy)) 'Crimson Pro', 'Noto Serif Bengali', Georgia, serif;
+  color: #2e1a10;
+}
+
+/* ---- Bengali ---- */
+:root[lang='bn'] .dp-cr__org, :root[lang='bn'] .dp-cr__ann, :root[lang='bn'] .dp-cr__sub {
+  font-family: 'Noto Serif Bengali', Georgia, serif;
+  text-transform: none;
+  letter-spacing: 0;
+}
+:root[lang='bn'] .dp-cr__org { font-size: calc(32 * var(--u)); font-weight: 500; color: #6b0f22; }
+:root[lang='bn'] .dp-cr__ann { font-size: calc(31.5 * var(--u)); font-weight: 500; color: #b07a22; }
+:root[lang='bn'] .dp-cr__t1, :root[lang='bn'] .dp-cr__t2 {
+  font-family: 'Noto Serif Bengali', Georgia, serif;
+  font-weight: 800;
+  background-image: linear-gradient(180deg, #7e0b22 6%, #5a0618 80%);
+  font-size: calc(116 * var(--u));
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+:root[lang='bn'] .dp-cr__sub { font-size: calc(32 * var(--u)); font-weight: 700; color: #6f0a1c; }
+:root[lang='bn'] .dp-cr__body {
+  font-family: 'Noto Serif Bengali', Georgia, serif;
+  font-weight: 500;
+  font-size: calc(21.9 * var(--u));
+  line-height: calc(31 * var(--uy));
+}
+
+/* the Bengali artwork carries its own lettering: the live text is only used when stacked on phones */
+@media (min-width: 821px) {
+  :root[lang='bn'] .dp-cr__frame .dp-ph { display: none; }
+}
+
+/* ---- phones / small tablets: no pin, everything stacks ---- */
+@media (max-width: 820px) {
+  .dp-cr { height: auto; -webkit-mask-image: none; mask-image: none; }
+  .dp-cr__pin { position: relative; height: auto; overflow: visible; }
+  .dp-cr__frame {
+    --u: 1px;
+    container-type: normal;
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 96px 24px 56px;
+    background: linear-gradient(#fdf1d8, #f7dfb0);
+  }
+  .dp-cr__bg, .dp-cr__stage { display: none; }
+  .dp-cr .dp-ph { opacity: 1; transform: none !important; filter: none !important; }
+  .dp-cr__org, .dp-cr__pres, .dp-cr__ann, .dp-cr__year, .dp-cr__t1, .dp-cr__t2, .dp-cr__sub, .dp-cr__body {
+    position: static;
+    left: auto !important;
+    top: auto !important;
+    width: auto !important;
+    white-space: normal;
+    transform: none;
+  }
+  .dp-cr__title { display: flex; flex-direction: column; align-items: center; }
+  .dp-cr__org { font-size: clamp(14px, 4vw, 18px); }
+  .dp-cr__pres { font-size: 12px; }
+  .dp-cr__ann { font-size: clamp(15px, 4.4vw, 19px); }
+  .dp-cr__year { font-size: clamp(24px, 7vw, 30px); }
+  .dp-cr__t1, .dp-cr__t2 { font-size: clamp(34px, 10.5vw, 46px); line-height: 1.2; padding-bottom: 0.12em; }
+  .dp-cr__sub { font-size: clamp(13px, 3.8vw, 16px); }
+  :root[lang='bn'] .dp-cr__org { font-size: clamp(20px, 5.6vw, 24px); }
+  :root[lang='bn'] .dp-cr__ann { font-size: clamp(18px, 5vw, 22px); }
+  :root[lang='bn'] .dp-cr__t1, :root[lang='bn'] .dp-cr__t2 { font-size: clamp(44px, 14vw, 62px); line-height: 1.25; }
+  :root[lang='bn'] .dp-cr__sub { font-size: clamp(17px, 4.8vw, 21px); }
+  .dp-cr__pic {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 8px 0;
+    border-radius: 14px;
+    border: 1.5px solid #e2ac4f;
+    box-shadow: 0 8px 24px rgba(90, 20, 20, 0.25);
+  }
+  .dp-cr__sub { margin-bottom: 8px; }
+  .dp-cr__ln { display: inline; white-space: normal; }
+  .dp-cr__body, :root[lang='bn'] .dp-cr__body { font-size: var(--fs-body); line-height: 1.6; text-wrap: pretty; }
+}

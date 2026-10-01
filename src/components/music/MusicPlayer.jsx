@@ -2,9 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { MusicContext } from './context.js'
 import MusicToggle from './MusicToggle.jsx'
 
-const MUSIC_SRC = '/Video/Landing Background.mp3'
+const MUSIC_SRC = encodeURI('/Video/Background Music.mp3')
 
-// Landing Background loop: the only audio on the site. It starts as soon as the site opens (Welcome) and keeps
+// Background Music loop: the only audio on the site. It starts as soon as the site opens (Welcome) and keeps
 // playing, without restarting, on every page. Sits above the router so it survives navigation.
 export default function MusicPlayer({ children }) {
   const audioRef = useRef(null)

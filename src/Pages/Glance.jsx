@@ -56,7 +56,7 @@ const PILLS = [
   { x: 531, y: 793.5, ry: 813.5, name: { bn: 'সুদীপ্তন শেঠ', en: 'Sudipton Seth' }, role: { bn: 'সভাপতি', en: 'President' } },
   { x: 779, y: 793.5, ry: 813.5, name: { bn: 'প্রণব দাস', en: 'Pranab Das' }, role: { bn: 'সম্পাদক', en: 'Secretary' } },
   { x: 1005, y: 805, name: { bn: 'সায়ন্তন শেঠ', en: 'Sayantan Seth' } },
-  { x: 1271, y: 803.5, name: { bn: 'অসীম লাহিড়ী', en: 'Asish Lahiri' } },
+  { x: 1271, y: 803.5, name: { bn: 'আশীষ লাহিড়ী', en: 'Asish Lahiri' } },
   { x: 282, y: 873.5, name: { bn: 'মানসী শেঠ', en: 'Manasi Seth' } },
   { x: 539, y: 873.5, name: { bn: 'সুস্মিতা সাহু শেঠ', en: 'Sushmita Sahoo Seth' } },
   { x: 863, y: 875.5, name: { bn: 'স্পর্শিতা পান্ডা শেঠ', en: 'Sparshita Panda Seth' } },

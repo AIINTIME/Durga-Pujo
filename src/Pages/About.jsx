@@ -19,7 +19,12 @@ const SPIRIT = [
       en: 'A celebration of our deep-rooted faith, bringing people together in the devotion of Maa Durga.',
     },
     icon: (
-      <path d="M32 12c-3 7-4 13-4 20 0 6 2 10 4 14 2-4 4-8 4-14 0-7-1-13-4-20zM28 30c-5 3-9 8-11 15l7 3c3-5 6-9 8-12M36 30c5 3 9 8 11 15l-7 3c-3-5-6-9-8-12" />
+      <>
+        <path d="M32 7c6 7 9 12 9 17a9 9 0 0 1-18 0c0-5 3-10 9-17z" />
+        <path d="M32 24c2.5 3 3.5 5 3.5 7a3.5 3.5 0 0 1-7 0c0-2 1-4 3.5-7z" />
+        <path d="M8 40h48c0 10-9 17-24 17S8 50 8 40z" />
+        <path d="M22 60h20" />
+      </>
     ),
   },
   {
@@ -30,7 +35,14 @@ const SPIRIT = [
       en: 'For 2026, our pandal is inspired by the rich art, architecture and craftsmanship of Gujarat, blending it with the timeless essence of Bengal’s Durga Puja.',
     },
     icon: (
-      <path d="M32 9v6M32 15c-8 0-12 6-12 12h24c0-6-4-12-12-12zM18 27h28M22 27v20M42 27v20M27 47V36c0-3 2-5 5-5s5 2 5 5v11M16 47h32M14 52h36" />
+      <>
+        <path d="M32 5v6M29 8h6" />
+        <path d="M17 28c0-10 6-17 15-17s15 7 15 17z" />
+        <path d="M12 28h40" />
+        <path d="M19 28v24M45 28v24" />
+        <path d="M26 52V41c0-4 2.5-7 6-7s6 3 6 7v11" />
+        <path d="M10 52h44M7 58h50" />
+      </>
     ),
   },
   {
@@ -41,7 +53,13 @@ const SPIRIT = [
       en: 'A festival that unites people from Haldia and nearby areas, celebrating our shared heritage, culture and community spirit.',
     },
     icon: (
-      <path d="M32 11a5 5 0 1 0 0.01 0M17 21a4 4 0 1 0 0.01 0M47 21a4 4 0 1 0 0.01 0M22 44c0-8 4-13 10-13s10 5 10 13zM9 40c0-6 3-10 8-10M55 40c0-6-3-10-8-10" />
+      <>
+        <path d="M26 19a6 6 0 1 0 12 0a6 6 0 1 0-12 0" />
+        <path d="M19 52c0-10 5-17 13-17s13 7 13 17z" />
+        <path d="M10 28a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0-9 0" />
+        <path d="M45 28a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0-9 0" />
+        <path d="M6 50c0-8 3-13 9-14M58 50c0-8-3-13-9-14" />
+      </>
     ),
   },
 ]
@@ -95,7 +113,7 @@ export default function About({ embedded = false }) {
         </figure>
 
         <p className="dp-about__text dp-at" data-r style={{ '--d': '0.65s' }}>
-          {t({ bn: 'খুদিরাম নগর, হলদিয়ার দুর্গোৎসব ময়দানে ', en: 'Organised by the ' })}
+          {t({ bn: 'ক্ষুদিরাম নগর, হলদিয়ার দুর্গোৎসব ময়দানে ', en: 'Organised by the ' })}
           <b>{t({ bn: 'হলদিয়া দুর্গোৎসব কমিটির', en: 'Haldia Durgotsav Committee' })}</b>
           {t({
             bn: ' উদ্যোগে আয়োজিত এই সর্বজনীন দুর্গাপূজা হলদিয়া ও পার্শ্ববর্তী অঞ্চলের মানুষকে বিশ্বাস, সংস্কৃতি ও সম্প্রদায়ের চেতনার উদযাপনে একত্র করে। লক্ষ্মণ শেঠের দুর্গাপূজা নামে পরিচিত এই উৎসবের নেতৃত্বে রয়েছেন প্রধান পৃষ্ঠপোষক ডঃ লক্ষ্মণ চন্দ্র শেঠ। ২০২৬ সালে প্যান্ডেল অনুপ্রেরণা নিয়েছে গুজরাটের সমৃদ্ধ শিল্প, স্থাপত্য ও কারুকৌশল থেকে, যা সযত্নে মিশেছে বাংলার দুর্গাপূজার চিরন্তন ঐতিহ্যের সঙ্গে।',
@@ -114,7 +132,7 @@ export default function About({ embedded = false }) {
           <article key={c.id} className={`dp-about__card is-${i} dp-at`} data-r style={{ '--d': `${1.1 + i * 0.12}s` }}>
             <span className="dp-about__icon">
               <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                <g fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <g fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                   {c.icon}
                 </g>
               </svg>

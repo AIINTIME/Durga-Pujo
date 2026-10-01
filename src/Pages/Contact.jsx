@@ -15,6 +15,7 @@ const MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Haldia+Durga+U
 const FOOT_LINKS = [
   { id: 'about', to: '/about', label: { bn: 'আমাদের সম্পর্কে', en: 'About' } },
   { id: 'glance', to: '/home', label: { bn: 'এক নজরে পূজা', en: 'Puja at a Glance' } },
+  { id: 'theme-archive', to: '/home', label: { bn: 'থিম আর্কাইভ', en: 'Theme Archive' } },
   { id: 'artist', to: '/home', label: { bn: 'শিল্পী', en: 'Artist' } },
   { id: 'gallery', to: '/gallery', label: { bn: 'গ্যালারি', en: 'Gallery' } },
   { id: 'contact', to: '/contact', label: { bn: 'যোগাযোগ', en: 'Contact Us' } },
@@ -65,7 +66,7 @@ export default function Contact() {
   const rootRef = useRef(null)
   const pageRef = useRef(null)
   const navigate = useNavigate()
-  const { t } = useLanguage()
+  const { lang, t } = useLanguage()
 
   useScrollPhase(rootRef, pageRef, { coverVar: '--cover3' })
 
@@ -105,13 +106,19 @@ export default function Contact() {
       <div className="dp-ct__page" ref={pageRef}>
         {/* ---- hero ---- */}
         <header className="dp-ct__hero">
-          <img className="dp-ct__heroimg" src={hero} alt="" draggable="false" />
+          {/* the goddess inside an arched frame: three concentric arches (pale fill, thin gold line, the photo) with a lotus finial on top */}
+          <div className="dp-ct__heroimg" aria-hidden="true">
+            <span className="dp-ct__arch is-back" />
+            <span className="dp-ct__arch is-line" />
+            <Lotus className="dp-ct__lotus is-top" />
+            <img className="dp-ct__archpic" src={hero} alt="" draggable="false" />
+          </div>
           <div className="dp-ct__herotx">
-            <p className="dp-ct__kicker dp-ct__rv" style={{ '--d': '0ms' }}>
-              {t({ bn: 'দেখুন · যুক্ত হোন · অংশ হোন', en: 'VISIT · CONNECT · BE A PART OF' })}
-            </p>
+            {lang === 'en' && (
+              <p className="dp-ct__kicker dp-ct__rv" style={{ '--d': '0ms' }}>VISIT · CONNECT · BE A PART OF</p>
+            )}
             <h2 className="dp-ct__h1 dp-ct__rv" style={{ '--d': '80ms' }}>{t({ bn: 'যোগাযোগ', en: 'Contact Us' })}</h2>
-            <p className="dp-ct__h2 dp-ct__rv" style={{ '--d': '160ms' }}>{t({ bn: 'যোগাযোগ করুন ও ঘুরে যান', en: 'Get in Touch & Visit Us' })}</p>
+            <p className="dp-ct__h2 dp-ct__rv" style={{ '--d': '160ms' }}>{t({ bn: 'আসুন, আমাদের মণ্ডপে এসে\nমা-কে দর্শন করে যান।', en: 'Get in Touch & Visit Us' })}</p>
             <p className="dp-ct__lead dp-ct__rv" style={{ '--d': '240ms' }}>
               {t({
                 bn: 'হলদিয়া দুর্গোৎসব ২০২৬-এ আমন্ত্রণ —\nবিশ্বাস, সংস্কৃতি ও সম্প্রদায়ের এক উদযাপন।',

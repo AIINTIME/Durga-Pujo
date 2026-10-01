@@ -95,6 +95,8 @@
   font: 400 var(--fs-body) / 1.4 'Crimson Pro', 'Noto Serif Bengali', Georgia, serif;
   color: #3a2418;
 }
+/* the longer English heading is a little smaller so it stays inside the ornament lines */
+:root[lang='en'] .dp-ay__kick { font-size: calc(43 * var(--u)); }
 :root[lang='bn'] .dp-ay__kick { font-size: calc(44 * var(--u)); }
 :root[lang='bn'] .dp-ay__name { font-size: calc(80 * var(--u)); }
 

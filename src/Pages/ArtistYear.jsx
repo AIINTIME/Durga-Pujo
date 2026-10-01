@@ -18,7 +18,7 @@ export default function ArtistYear() {
     const scene = createAboutScene(stageRef.current, { artW: 1862, artH: 1026, diyas: [], band: 0.1 })
     return () => scene.dispose()
   }, [])
-  useScrollPhase(trackRef, frameRef, { coverVar: '--cover0', hold: true })
+  useScrollPhase(trackRef, frameRef, { coverVar: '--cover6', hold: true })
 
   const ph = (s, l) => ({ '--s': s, '--l': l })
   const ux = (v) => `calc(${v} * var(--ux))`
@@ -26,6 +26,8 @@ export default function ArtistYear() {
 
   return (
     <section className="dp-ay" ref={trackRef}>
+      {/* scroll target for the navbar's "Artist" link: the point where everything has built */}
+      <span id="artist" aria-hidden="true" style={{ position: 'absolute', left: 0, top: '220vh', width: 1, height: 1 }} />
       <div className="dp-ay__pin">
         <img className="dp-ay__backdrop" src={bg} alt="" draggable="false" aria-hidden="true" />
         <div className="dp-ay__frame" ref={frameRef}>
@@ -33,7 +35,7 @@ export default function ArtistYear() {
 
           <h2 className="dp-ay__head">
             <span className="dp-ay__kick dp-ph" style={{ ...ph(0.03, 0.1), left: ux(1369), top: uy(108) }}>
-              {t({ bn: 'বর্ষসেরা শিল্পী', en: 'Artist of the Year' })}
+              {t({ bn: 'এ বছরের রূপের নেপথ্য শিল্পী', en: 'The Artist Behind This Year’s Look' })}
             </span>
             <span className="dp-ay__name dp-ph" style={{ ...ph(0.08, 0.14), left: ux(1398), top: uy(178) }}>
               {t({ bn: 'অভিজিৎ ঘটক', en: 'Avijit Ghatak' })}

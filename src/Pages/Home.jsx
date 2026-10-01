@@ -2,7 +2,8 @@ import { useEffect, useLayoutEffect, useRef } from 'react'
 import { createScrollVideoScene } from './home/scrollVideo.js'
 import About from './About.jsx'
 import Glance from './Glance.jsx'
-import Artist from './Artist.jsx'
+import Craft from './Craft.jsx'
+import Theme from './Theme.jsx'
 import ArtistYear from './ArtistYear.jsx'
 import Recognition from './Recognition.jsx'
 import Gallery from './Gallery.jsx'
@@ -10,9 +11,8 @@ import Contact from './Contact.jsx'
 import { useLanguage } from '../i18n/context.js'
 import './home/Home.css'
 
-const VIDEO_SRC = encodeURI('/Video/Ram.webm')
-const VIDEO_SRC_MOBILE = encodeURI('/Video/Mobile Ram.webm')
-const isMobile = () => window.matchMedia('(max-width: 820px)').matches
+// H.264 MP4 first (plays on every iPhone, with a keyframe every half second so scrubbing stays quick), WebM as the fallback
+const VIDEO_BASE = encodeURI(window.matchMedia('(max-width: 820px)').matches ? '/Video/Pandal Mobile' : '/Video/Pandal')
 
 export default function Home() {
   const trackRef = useRef(null)
@@ -71,12 +71,14 @@ export default function Home() {
             <video
               ref={videoRef}
               className="dp-scrollvideo__video"
-              src={isMobile() ? VIDEO_SRC_MOBILE : VIDEO_SRC}
               muted
               playsInline
               preload="auto"
               aria-label={t({ bn: 'দুর্গা পূজা', en: 'Durga Puja' })}
-            />
+            >
+              <source src={`${VIDEO_BASE}.mp4`} type="video/mp4" />
+              <source src={`${VIDEO_BASE}.webm`} type="video/webm" />
+            </video>
             <span className="dp-scrollvideo__hint" aria-hidden="true">
               {t({ bn: 'স্ক্রল করুন', en: 'Scroll' })}
             </span>
@@ -87,7 +89,10 @@ export default function Home() {
           <About embedded />
         </div>
         <Glance />
-        <Artist />
+        {/* "The Artist Behind This Year's Look" page is switched off: Artist.jsx stays in the repo, re-add <Artist /> here
+            (plus its import, and set Craft's coverVar back to '--cover0') to bring it back */}
+        <Craft />
+        <Theme />
         <ArtistYear />
         <Recognition />
         {/* Organising Committee page is switched off: Committee.jsx stays in the repo, re-add <Committee /> here
