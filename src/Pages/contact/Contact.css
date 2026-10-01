@@ -182,6 +182,9 @@
 .dp-ct__info span { display: grid; gap: calc(3 * var(--u)); min-width: 0; }
 .dp-ct__info a, .dp-ct__info b { font-size: calc(11.4 * var(--u)); font-weight: 700; color: #1d130d; white-space: nowrap; }
 .dp-ct__info a:hover { color: var(--wine); }
+/* a row with no sub-line (the website): centre the text on its icon */
+.dp-ct__info .dp-ct__info--solo { align-items: center; }
+.dp-ct__info .dp-ct__info--solo .dp-ct__ic { margin-top: 0; }
 .dp-ct__info small { font-size: calc(10 * var(--u)); color: #7a6a60; }
 .dp-ct__follow { position: absolute; left: calc(18 * var(--u)); right: calc(18 * var(--u)); bottom: calc(14 * var(--u)); border-top: 1px solid var(--line); padding-top: calc(14 * var(--u)); }
 .dp-ct__follow p { font-size: calc(11.4 * var(--u)); font-weight: 700; color: #33241b; }

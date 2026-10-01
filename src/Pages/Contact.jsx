@@ -153,11 +153,11 @@ export default function Contact() {
               </li>
               <li>
                 <Icon name="mail" />
-                <span><a href="mailto:haldiadurgotsav2026@gmail.com">haldiadurgotsav2026@gmail.com</a><small>{t({ bn: '(সাধারণ জিজ্ঞাসা)', en: '(General Inquiries)' })}</small></span>
+                <span><a href="mailto:haldiadurgotsav@gmail.com">haldiadurgotsav@gmail.com</a><small>{t({ bn: '(সাধারণ জিজ্ঞাসা)', en: '(General Inquiries)' })}</small></span>
               </li>
-              <li>
+              <li className="dp-ct__info--solo">
                 <Icon name="globe" />
-                <span><b>www.haldiadurgotsav.in</b><small>{t({ bn: '(শীঘ্রই আসছে)', en: '(Coming Soon)' })}</small></span>
+                <span><b>www.haldiadurgotsav.com</b></span>
               </li>
             </ul>
             <div className="dp-ct__follow">
