@@ -86,7 +86,7 @@ export default function Glance() {
       <span id="glance" aria-hidden="true" style={{ position: 'absolute', left: 0, top: '220vh', width: 1, height: 1 }} />
       <div className="dp-gl__pin">
         <div className="dp-gl__frame" ref={frameRef}>
-          <img className="dp-gl__bg" src={bg} alt="" draggable="false" />
+          <img loading="lazy" decoding="async" className="dp-gl__bg" src={bg} alt="" draggable="false" />
 
           <h2 className="dp-gl__h1 dp-ph" style={ph(0.02, 0.12)}>
             {t({ bn: 'এক নজরে পূজা', en: 'Puja at a Glance' })}
@@ -96,7 +96,7 @@ export default function Glance() {
           </p>
 
           <div className="dp-gl__row is-head dp-ph" style={{ ...ph(0.12, 0.1), left: ux(PX), top: uy(263 - TOP), width: ux(PW), height: uy(50) }}>
-            <img src={th} alt="" draggable="false" />
+            <img loading="lazy" decoding="async" src={th} alt="" draggable="false" />
             <span className="dp-gl__tx is-th" style={{ left: ux(156 - PX), top: uy(288 - 263) }}>{t({ bn: 'বিষয়', en: 'Field' })}</span>
             <span className="dp-gl__tx is-th" style={{ left: ux(506 - PX), top: uy(288 - 263) }}>{t({ bn: 'বিবরণ', en: 'Detail' })}</span>
           </div>
@@ -107,7 +107,7 @@ export default function Glance() {
               className="dp-gl__row dp-ph"
               style={{ ...ph(0.18 + i * 0.07, 0.12), left: ux(PX), top: uy(r.y0 - TOP), width: ux(PW), height: uy(r.y1 - r.y0) }}
             >
-              <img src={r.img} alt="" draggable="false" />
+              <img loading="lazy" decoding="async" src={r.img} alt="" draggable="false" />
               <span className="dp-gl__tx is-label" style={{ left: ux(r.lx - PX), top: uy(r.yc - r.y0) }}>{t(r.label)}</span>
               <span
                 className={`dp-gl__tx is-detail ${r.wrap ? 'is-wrap' : ''}`}
@@ -119,7 +119,7 @@ export default function Glance() {
           ))}
 
           <div className="dp-gl__core dp-ph" style={{ ...ph(0.72, 0.16), left: ux(PX), top: uy(715 - TOP), width: ux(PW), height: uy(197) }}>
-            <img src={core} alt="" draggable="false" />
+            <img loading="lazy" decoding="async" src={core} alt="" draggable="false" />
             <span className="dp-gl__tx is-coretitle" style={{ left: ux(179 - PX), top: uy(743.5 - 715) }}>{t({ bn: 'মূল কমিটি', en: 'Core Committee' })}</span>
             {PILLS.map((p, i) => (
               <span key={i} className="dp-gl__pilltx dp-ph" style={ph(0.78 + i * 0.02, 0.06)}>

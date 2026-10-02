@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../i18n/context.js'
-import Lotus from './Lotus.jsx'
+import emblem from '../../assets/brand/emblem.png'
+import wordmark from '../../assets/brand/wordmark.png'
 import './Navbar.css'
 
 const LINKS = [
   { id: 'about', to: '/about', hash: 'about', match: ['/about', '/home'], label: { bn: 'আমাদের সম্পর্কে', en: 'About' } },
   { id: 'glance', to: '/home', hash: 'glance', match: [], label: { bn: 'এক নজরে পূজা', en: 'Puja at a Glance' } },
+  { id: 'culture', to: '/home', hash: 'culture', match: [], label: { bn: 'সাংস্কৃতিক অনুষ্ঠান', en: 'Cultural Events' } },
+  { id: 'schedule', to: '/home', hash: 'schedule', match: [], label: { bn: 'পূজার সূচি', en: 'Puja Schedule' } },
+  { id: 'pushpanjali', to: '/home', hash: 'pushpanjali', match: [], label: { bn: 'পুষ্পাঞ্জলি', en: 'Pushpanjali' } },
   { id: 'themes', to: '/home', hash: 'theme-archive', match: [], label: { bn: 'থিম আর্কাইভ', en: 'Theme Archive' } },
   { id: 'artist', to: '/home', hash: 'artist', match: [], label: { bn: 'শিল্পী', en: 'Artist' } },
   // Organization Committee page is switched off (Committee.jsx is kept): restore this link to bring it back
@@ -30,8 +34,12 @@ export default function Navbar() {
       ['contact', '.dp-ct'],
       ['gallery', '.dp-gal'],
       ['artist', '.dp-ay'],
+      ['themes', '.dp-cc'],
       ['themes', '.dp-th'],
       ['themes', '.dp-cr'],
+      ['pushpanjali', '.dp-pj'],
+      ['schedule', '.dp-sc'],
+      ['culture', '.dp-cu'],
       ['glance', '.dp-gl'],
     ]
     const update = () => {
@@ -132,11 +140,8 @@ export default function Navbar() {
         }}
         aria-label="Haldia Durgotsav 2026"
       >
-        <Lotus className="dp-nav__lotus" />
-        <span className="dp-nav__brandtext">
-          <span>HALDIA DURGOTSAV</span>
-          <span className="dp-nav__year">2026</span>
-        </span>
+        <span className="dp-nav__emblem" aria-hidden="true"><img src={emblem} alt="" draggable="false" /></span>
+        <img className="dp-nav__brandtext" src={wordmark} alt="" aria-hidden="true" draggable="false" />
       </a>
       <nav className="dp-nav__links" aria-label={t({ bn: 'প্রধান মেনু', en: 'Main menu' })}>
         {linkItems}
@@ -152,11 +157,8 @@ export default function Navbar() {
     >
       <div className="dp-side__top">
         <span className="dp-side__brand">
-          <Lotus className="dp-nav__lotus" />
-          <span className="dp-nav__brandtext">
-            <span>HALDIA DURGOTSAV</span>
-            <span className="dp-nav__year">2026</span>
-          </span>
+          <span className="dp-nav__emblem" aria-hidden="true"><img src={emblem} alt="" draggable="false" /></span>
+          <img className="dp-nav__brandtext" src={wordmark} alt="" aria-hidden="true" draggable="false" />
         </span>
         <button ref={closeRef} type="button" className="dp-side__close" aria-label={t({ bn: 'মেনু বন্ধ করুন', en: 'Close menu' })} onClick={() => setOpen(false)}>
           <span aria-hidden="true" />

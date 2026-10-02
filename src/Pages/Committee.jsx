@@ -56,9 +56,9 @@ export default function Committee() {
       {/* scroll target for the navbar's "Organization Committee" link: the point where everything has built */}
       <span id="committee" className="dp-org__anchor" aria-hidden="true" />
       <div className="dp-org__pin">
-        <img className="dp-org__backdrop" src={bg} alt="" draggable="false" aria-hidden="true" />
+        <img loading="lazy" decoding="async" className="dp-org__backdrop" src={bg} alt="" draggable="false" aria-hidden="true" />
         <div className="dp-org__frame" ref={frameRef}>
-          <img className="dp-org__bg" src={bg} alt="" draggable="false" />
+          <img loading="lazy" decoding="async" className="dp-org__bg" src={bg} alt="" draggable="false" />
 
           <h2 className="dp-org__title dp-ph" style={ph(0.03, 0.2)}>
             {t({ bn: 'সংগঠন কমিটি', en: 'Organising Committee' })}
@@ -68,7 +68,7 @@ export default function Committee() {
           </p>
 
           <article className="dp-org__patron dp-ph" style={ph(0.2, 0.22)}>
-            <img src={patron} alt="" draggable="false" />
+            <img loading="lazy" decoding="async" src={patron} alt="" draggable="false" />
             <h3>{t({ bn: 'ডঃ লক্ষ্মণ চন্দ্র শেঠ', en: 'Dr. Lakshman Chandra Seth' })}</h3>
             <p className="dp-org__role">{t({ bn: 'প্রধান পৃষ্ঠপোষক', en: 'Chief Patron' })}</p>
             <p className="dp-org__desc">
@@ -80,20 +80,20 @@ export default function Committee() {
           </article>
 
           <article className="dp-org__person is-ss dp-ph" style={ph(0.34, 0.2)}>
-            <img src={ss} alt="" draggable="false" />
+            <img loading="lazy" decoding="async" src={ss} alt="" draggable="false" />
             <span className="dp-org__badge" aria-hidden="true" style={{ '--i': 0 }} />
             <h3>{t({ bn: 'সুদীপ্তন শেঠ', en: 'Sudipton Seth' })}</h3>
             <p>{t({ bn: 'সভাপতি', en: 'President' })}</p>
           </article>
           <article className="dp-org__person is-pd dp-ph" style={ph(0.42, 0.2)}>
-            <img src={pd} alt="" draggable="false" />
+            <img loading="lazy" decoding="async" src={pd} alt="" draggable="false" />
             <span className="dp-org__badge" aria-hidden="true" style={{ '--i': 1 }} />
             <h3>{t({ bn: 'প্রণব দাস', en: 'Pranab Das' })}</h3>
             <p>{t({ bn: 'সম্পাদক', en: 'Secretary' })}</p>
           </article>
 
           <div className="dp-org__team dp-ph is-wipe" style={ph(0.58, 0.18)}>
-            <img src={team} alt="" draggable="false" />
+            <img loading="lazy" decoding="async" src={team} alt="" draggable="false" />
             <h3 className="dp-ph" style={ph(0.68, 0.12)}>
               {t({ bn: 'মূল দল', en: 'Core Team' })}
             </h3>
@@ -104,7 +104,7 @@ export default function Committee() {
               className="dp-org__pill dp-ph"
               style={{ ...ph(0.7 + i * 0.045, 0.12), left: `calc(${c.x} * var(--u))`, width: `calc(${c.w} * var(--u))` }}
             >
-              <img src={c.img} alt="" draggable="false" />
+              <img loading="lazy" decoding="async" src={c.img} alt="" draggable="false" />
               <span style={{ left: `calc(${c.cx} * var(--u))` }}>{t(c.name)}</span>
             </div>
           ))}

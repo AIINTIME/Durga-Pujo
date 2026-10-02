@@ -42,8 +42,8 @@ export default function Theme() {
     <section className="dp-th" ref={trackRef}>
       <div className="dp-th__pin">
         <div className="dp-th__frame" ref={frameRef}>
-          <img className={`dp-th__bg${lang === 'en' ? '' : ' is-off'}`} src={frame} alt="" draggable="false" />
-          <img className={`dp-th__bg${lang === 'bn' ? '' : ' is-off'}`} src={bgBn} alt="হলদিয়া দুর্গোৎসব কমিটি — ২০২৫ সালের থিম — উত্তরণ" draggable="false" />
+          <img loading="lazy" decoding="async" className={`dp-th__bg${lang === 'en' ? '' : ' is-off'}`} src={frame} alt="" draggable="false" />
+          <img loading="lazy" decoding="async" className={`dp-th__bg${lang === 'bn' ? '' : ' is-off'}`} src={bgBn} alt="হলদিয়া দুর্গোৎসব কমিটি — ২০২৫ সালের থিম — উত্তরণ" draggable="false" />
 
           <p className="dp-th__org dp-ph" style={at(452, 158, 0.02, 0.1)}>
             {t({ bn: 'হলদিয়া দুর্গোৎসব কমিটি', en: 'Haldia Durgotsav Committee' })}
@@ -84,7 +84,7 @@ export default function Theme() {
             {t({ bn: 'ভাবনা ও রূপায়ণে: শিল্পী তপন সেন ও তাঁর দল', en: 'Concept & Execution: Shilpi Tapan Sen & His Team' })}
           </p>
 
-          <img
+          <img loading="lazy" decoding="async"
             className="dp-th__pic"
             src={art}
             alt={t({ bn: 'দেবী দুর্গার প্রতিমা', en: 'The Durga idol with her children' })}

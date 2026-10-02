@@ -239,7 +239,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: stretch;
     gap: 14px;
-    padding: 90px 24px 70px;
+    padding: 90px 16px 70px;
     background: radial-gradient(ellipse at 50% 0%, #4a0a0e 0%, #1a0402 70%);
   }
   .dp-rec__backdrop { display: none; }

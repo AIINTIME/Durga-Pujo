@@ -40,7 +40,7 @@ export default function Artist() {
       <span id="artist" aria-hidden="true" style={{ position: 'absolute', left: 0, top: '220vh', width: 1, height: 1 }} />
       <div className="dp-ar__pin">
         <div className="dp-ar__frame" ref={frameRef}>
-          <img className="dp-ar__bg" src={bg} alt="" draggable="false" />
+          <img loading="lazy" decoding="async" className="dp-ar__bg" src={bg} alt="" draggable="false" />
 
           <h2 className="dp-ar__h1 dp-ph" style={{ ...ph(0.02, 0.12), ...at(184, 108, 1216) }}>
             {t({ bn: 'এ বছরের রূপের নেপথ্য শিল্পী', en: 'The Artist Behind This Year’s Look' })}
@@ -58,10 +58,10 @@ export default function Artist() {
           <span className="dp-ar__patch" style={{ left: ux(836), top: uy(736 - TOP), width: ux(654), height: uy(220) }} aria-hidden="true" />
 
           <figure className="dp-ar__pic is-l dp-ph" style={{ ...ph(0.12, 0.2), left: ux(190), top: uy(224 - TOP), width: ux(722), height: uy(444) }}>
-            <img src={photoL} alt={t({ bn: 'অভিজিৎ ঘটক আলোচনায়', en: 'Avijit Ghatak in concept discussions' })} draggable="false" />
+            <img loading="lazy" decoding="async" src={photoL} alt={t({ bn: 'অভিজিৎ ঘটক আলোচনায়', en: 'Avijit Ghatak in concept discussions' })} draggable="false" />
           </figure>
           <figure className="dp-ar__pic is-r dp-ph" style={{ ...ph(0.22, 0.2), left: ux(927), top: uy(224 - TOP), width: ux(411), height: uy(444) }}>
-            <img src={photoR} alt={t({ bn: '“শঙ্কর নামা”-র পোস্টার', en: '“শঙ্কর নামা” (Shankar Nama) poster' })} draggable="false" />
+            <img loading="lazy" decoding="async" src={photoR} alt={t({ bn: '“শঙ্কর নামা”-র পোস্টার', en: '“শঙ্কর নামা” (Shankar Nama) poster' })} draggable="false" />
           </figure>
 
           <p className="dp-ar__cap is-l dp-ph" style={{ ...ph(0.34, 0.1), ...at(273, 691, 560) }}>
@@ -92,7 +92,7 @@ export default function Artist() {
           </div>
 
           <div className="dp-ar__box dp-ph" style={{ ...ph(0.62, 0.2), left: ux(838), top: uy(738 - TOP), width: ux(650), height: uy(216) }}>
-            <img src={box} alt="" draggable="false" />
+            <img loading="lazy" decoding="async" src={box} alt="" draggable="false" />
             <h3 className="dp-ar__why" style={{ left: ux(947 - 838), top: uy(787 - 738) }}>
               {t({ bn: 'স্পনসরের জন্য কেন গুরুত্বপূর্ণ', en: 'Why this matters for a sponsor' })}
             </h3>

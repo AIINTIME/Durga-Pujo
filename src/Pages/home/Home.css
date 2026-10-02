@@ -17,9 +17,7 @@
   overflow: hidden;
   background: #0c0000;
   /* the video settles back and dims as About blends in over it */
-  transform: scale(calc(1 - var(--vid, 0) * 0.05));
   filter: brightness(calc(1 - var(--vid, 0) * 0.6));
-  transform-origin: 50% 60%;
 }
 
 .dp-scrollvideo__video {
@@ -82,54 +80,70 @@
 .dp-about-hold > .dp-about {
   position: sticky;
   top: min(0px, calc(100vh - var(--about-h, 58.77vw)));
-  transform-origin: 50% 60%;
-  transform: scale(calc(1 - var(--enter, 0) * 0.05));
   filter: brightness(calc(1 - var(--enter, 0) * 0.6));
 }
 .dp-home .dp-gl {
   margin-top: -100vh;
 }
-/* Glance stays pinned while Recognition slides up over it */
+/* Glance stays pinned while Cultural Events slides up over it */
 .dp-home .dp-gl__pin {
-  transform: scale(calc(1 - var(--cover1, 0) * 0.05));
   filter: brightness(calc(1 - var(--cover1, 0) * 0.6));
-  transform-origin: 50% 60%;
+}
+.dp-home .dp-cu {
+  margin-top: -100vh;
+}
+/* Cultural Events stays pinned while the Puja Schedule slides up over it */
+.dp-home .dp-cu__pin {
+  filter: brightness(calc(1 - var(--cover7, 0) * 0.6));
+}
+.dp-home .dp-sc {
+  margin-top: -100vh;
+}
+/* the Puja Schedule stays pinned while Pushpanjali slides up over it */
+.dp-home .dp-sc__pin {
+  filter: brightness(calc(1 - var(--cover9, 0) * 0.6));
+}
+.dp-home .dp-pj {
+  margin-top: -100vh;
+}
+/* Pushpanjali stays pinned while Craft slides up over it */
+.dp-home .dp-pj__pin {
+  filter: brightness(calc(1 - var(--cover10, 0) * 0.6));
 }
 .dp-home .dp-ar {
   margin-top: -100vh;
 }
 /* the artist page stays pinned while the Craft section slides up over it */
 .dp-home .dp-ar__pin {
-  transform: scale(calc(1 - var(--cover0, 0) * 0.05));
   filter: brightness(calc(1 - var(--cover0, 0) * 0.6));
-  transform-origin: 50% 60%;
 }
 .dp-home .dp-cr {
   margin-top: -100vh;
 }
 /* Craft stays pinned while the 2025 theme slides up over it */
 .dp-home .dp-cr__pin {
-  transform: scale(calc(1 - var(--cover5, 0) * 0.05));
   filter: brightness(calc(1 - var(--cover5, 0) * 0.6));
-  transform-origin: 50% 60%;
 }
 .dp-home .dp-th {
   margin-top: -100vh;
 }
-/* the 2025 theme stays pinned while Artist of the Year slides up over it */
+/* the 2025 theme stays pinned while the 2026 concept slides up over it */
 .dp-home .dp-th__pin {
-  transform: scale(calc(1 - var(--cover6, 0) * 0.05));
   filter: brightness(calc(1 - var(--cover6, 0) * 0.6));
-  transform-origin: 50% 60%;
+}
+.dp-home .dp-cc {
+  margin-top: -100vh;
+}
+/* the 2026 concept stays pinned while Artist of the Year slides up over it */
+.dp-home .dp-cc__pin {
+  filter: brightness(calc(1 - var(--cover8, 0) * 0.6));
 }
 .dp-home .dp-ay {
   margin-top: -100vh;
 }
 /* Artist of the Year stays pinned while Recognition slides up over it */
 .dp-home .dp-ay__pin {
-  transform: scale(calc(1 - var(--cover4, 0) * 0.05));
   filter: brightness(calc(1 - var(--cover4, 0) * 0.6));
-  transform-origin: 50% 60%;
 }
 .dp-home .dp-rec {
   margin-top: -100vh;
@@ -137,27 +151,21 @@
 }
 /* Recognition stays pinned while the Committee section slides up over it */
 .dp-home .dp-rec__pin {
-  transform: scale(calc(1 - var(--cover, 0) * 0.05));
   filter: brightness(calc(1 - var(--cover, 0) * 0.6));
-  transform-origin: 50% 60%;
 }
 .dp-home .dp-org {
   margin-top: -100vh;
 }
 /* Committee stays pinned while the Gallery slides up over it */
 .dp-home .dp-org__pin {
-  transform: scale(calc(1 - var(--cover2, 0) * 0.05));
   filter: brightness(calc(1 - var(--cover2, 0) * 0.6));
-  transform-origin: 50% 60%;
 }
 .dp-home .dp-gal {
   margin-top: -100vh;
 }
 /* Gallery stays pinned while Contact slides up over it */
 .dp-home .dp-gal__pin {
-  transform: scale(calc(1 - var(--cover3, 0) * 0.05));
   filter: brightness(calc(1 - var(--cover3, 0) * 0.6));
-  transform-origin: 50% 60%;
 }
 .dp-home .dp-ct {
   margin-top: -100vh;
@@ -168,6 +176,14 @@
   .dp-about-hold { height: auto; margin-top: 0; -webkit-mask-image: none; mask-image: none; }
   .dp-about-hold > .dp-about { position: relative; top: auto; transform: none; filter: none; }
   .dp-home .dp-gl { margin-top: 0; }
+  .dp-home .dp-cu { margin-top: 0; }
+  .dp-home .dp-cu__pin { filter: none; }
+  .dp-home .dp-sc { margin-top: 0; }
+  .dp-home .dp-sc__pin { filter: none; }
+  .dp-home .dp-pj { margin-top: 0; }
+  .dp-home .dp-pj__pin { filter: none; }
+  .dp-home .dp-cc { margin-top: 0; }
+  .dp-home .dp-cc__pin { filter: none; }
   .dp-home .dp-gl__pin { transform: none; filter: none; }
   .dp-home .dp-ar { margin-top: 0; }
   .dp-home .dp-ar__pin { transform: none; filter: none; }

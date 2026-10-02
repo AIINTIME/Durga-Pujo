@@ -5,6 +5,8 @@ import { useLanguage } from '../i18n/context.js'
 import Lotus from '../components/navbar/Lotus.jsx'
 import Icon from './contact/Icon.jsx'
 import hero from '../assets/contact2/hero.webp'
+import emblem from '../assets/brand/emblem.png'
+import wordmark from '../assets/brand/wordmark.png'
 import venue from '../assets/contact2/venue.webp'
 import map from '../assets/contact2/map.webp'
 import banner from '../assets/contact2/banner.webp'
@@ -57,7 +59,11 @@ const PARKING = [
   { icon: 'ambulance', c: { bn: 'জরুরি প্রবেশপথ — অ্যাম্বুলেন্স, ফায়ার রুট ও পুলিশ পয়েন্ট — নিশ্চিতভাবে রয়েছে।', en: 'Emergency access — ambulance, fire route & police point — confirmed in place.' } },
 ]
 
-const SOCIAL = ['facebook', 'instagram', 'youtube']
+const SOCIAL = [
+  { name: 'facebook', url: 'https://www.facebook.com/profile.php?id=61594621753259' },
+  { name: 'instagram', url: 'https://www.instagram.com/haldiadurgotsav?stkn=MXhkNnFlemEzNzRjcw%3D%3D&utm_source=qr' },
+  { name: 'youtube', url: 'https://www.youtube.com/@HaldiaDurgotsavCommittee' },
+]
 
 // Contact page: hero, contact cards, "How to Reach", accessibility note, closing banner and the site footer.
 // Everything is sized in `--u` (page width / 842, the mockup's width), so it scales as one piece on desktop
@@ -111,7 +117,7 @@ export default function Contact() {
             <span className="dp-ct__arch is-back" />
             <span className="dp-ct__arch is-line" />
             <Lotus className="dp-ct__lotus is-top" />
-            <img className="dp-ct__archpic" src={hero} alt="" draggable="false" />
+            <img loading="lazy" decoding="async" className="dp-ct__archpic" src={hero} alt="" draggable="false" />
           </div>
           <div className="dp-ct__herotx">
             {lang === 'en' && (
@@ -140,7 +146,7 @@ export default function Contact() {
                 en: 'Haldia Durga Utsav Maidan,\nKhudiram Nagar\nP.S. Haldia  ·  P.O. Hatiberia\nPurba Medinipur, West Bengal — 721657',
               })}
             </p>
-            <img className="dp-ct__venue" src={venue} alt={t({ bn: 'উৎসব প্রাঙ্গণের প্রবেশদ্বার', en: 'The festival gate at night' })} draggable="false" />
+            <img loading="lazy" decoding="async" className="dp-ct__venue" src={venue} alt={t({ bn: 'উৎসব প্রাঙ্গণের প্রবেশদ্বার', en: 'The festival gate at night' })} draggable="false" />
           </article>
 
           <article {...rv(1)} className="dp-ct__rv dp-ct__card">
@@ -164,7 +170,7 @@ export default function Contact() {
               <p>{t({ bn: 'আমাদের অনুসরণ করুন', en: 'Follow Us' })}</p>
               <div>
                 {SOCIAL.map((s) => (
-                  <a key={s} href="#" onClick={(e) => e.preventDefault()} aria-label={s}><Icon name={s} /></a>
+                  <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name}><Icon name={s.name} /></a>
                 ))}
               </div>
             </div>
@@ -174,7 +180,7 @@ export default function Contact() {
             <span className="dp-ct__badge"><Icon name="map" /></span>
             <h3 className="dp-ct__ctitle">{t({ bn: 'অবস্থান মানচিত্র', en: 'Location Map' })}</h3>
             <a className="dp-ct__mapimg" href={MAPS_URL} target="_blank" rel="noreferrer" aria-label={t({ bn: 'গুগল ম্যাপে দেখুন', en: 'View on Google Maps' })}>
-              <img src={map} alt="" draggable="false" />
+              <img loading="lazy" decoding="async" src={map} alt="" draggable="false" />
             </a>
             <a className="dp-ct__btn" href={MAPS_URL} target="_blank" rel="noreferrer">
               <span>{t({ bn: 'গুগল ম্যাপে দেখুন', en: 'View on Google Maps' })}</span>
@@ -236,7 +242,7 @@ export default function Contact() {
 
         {/* ---- closing banner ---- */}
         <div className="dp-ct__banner">
-          <img src={banner} alt="" draggable="false" />
+          <img loading="lazy" decoding="async" src={banner} alt="" draggable="false" />
           <div className="dp-ct__bantx">
             <h3 className="dp-ct__rv">{t({ bn: 'দেখা হবে\nহলদিয়া দুর্গোৎসব ২০২৬-এ', en: 'See You at\nHaldia Durgotsav 2026' })}</h3>
             <p className="dp-ct__rv" style={{ '--d': '90ms' }}>{t({ bn: 'ভক্তি, সংস্কৃতি ও\nসম্প্রদায়ের উদযাপন।', en: 'Celebrating devotion,\nculture and community.' })}</p>
@@ -251,10 +257,9 @@ export default function Contact() {
         {/* ---- footer ---- */}
         <footer className="dp-ct__foot">
           <a className="dp-ct__fbrand" href="/home" onClick={(e) => { e.preventDefault(); navigate('/home') }} aria-label="Haldia Durgotsav 2026">
-            <Lotus className="dp-ct__flotus" />
+            <img className="dp-ct__femblem" src={emblem} alt="" draggable="false" />
             <span>
-              <b>HALDIA DURGOTSAV</b>
-              <i>2026</i>
+              <img className="dp-ct__fword" src={wordmark} alt="Haldia Durgotsav Committee" draggable="false" />
               <small>{t({ bn: 'বিশ্বাস, সংস্কৃতি ও সম্প্রদায়ের উদযাপন', en: 'A Celebration of Faith, Culture and Community' })}</small>
             </span>
           </a>
@@ -267,7 +272,7 @@ export default function Contact() {
             <p>{t({ bn: 'অনুসরণ করুন', en: 'Follow Us' })}</p>
             <div>
               {SOCIAL.map((s) => (
-                <a key={s} href="#" onClick={(e) => e.preventDefault()} aria-label={s}><Icon name={s} /></a>
+                <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name}><Icon name={s.name} /></a>
               ))}
             </div>
           </div>

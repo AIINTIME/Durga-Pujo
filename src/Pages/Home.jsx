@@ -2,8 +2,12 @@ import { useEffect, useLayoutEffect, useRef } from 'react'
 import { createScrollVideoScene } from './home/scrollVideo.js'
 import About from './About.jsx'
 import Glance from './Glance.jsx'
+import Culture from './Culture.jsx'
+import Schedule from './Schedule.jsx'
+import Pushpanjali from './Pushpanjali.jsx'
 import Craft from './Craft.jsx'
 import Theme from './Theme.jsx'
+import Concept from './Concept.jsx'
 import ArtistYear from './ArtistYear.jsx'
 import Recognition from './Recognition.jsx'
 import Gallery from './Gallery.jsx'
@@ -89,10 +93,14 @@ export default function Home() {
           <About embedded />
         </div>
         <Glance />
+        <Culture />
+        <Schedule />
+        <Pushpanjali />
         {/* "The Artist Behind This Year's Look" page is switched off: Artist.jsx stays in the repo, re-add <Artist /> here
             (plus its import, and set Craft's coverVar back to '--cover0') to bring it back */}
         <Craft />
         <Theme />
+        <Concept />
         <ArtistYear />
         <Recognition />
         {/* Organising Committee page is switched off: Committee.jsx stays in the repo, re-add <Committee /> here

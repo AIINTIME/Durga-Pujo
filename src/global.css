@@ -5,3 +5,11 @@
 @media (max-width: 820px) {
   :root { --fs-body: 17px; }
 }
+
+/* shown for a moment while a page's code chunk downloads (Home is normally already fetched from the welcome screen) */
+.dp-route-wait { position: fixed; inset: 0; background: #1a0000; }
+
+/* phones: nothing may widen the page beyond the screen (keeps the side gaps even; clip, unlike hidden, leaves sticky sections working) */
+@media (max-width: 820px) {
+  html, body { overflow-x: clip; }
+}

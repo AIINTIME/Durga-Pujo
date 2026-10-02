@@ -29,7 +29,7 @@ export default function Craft() {
     const scene = createAboutScene(stageRef.current, { artW: 1672, artH: 941, diyas: DIYAS, band: 0.1 })
     return () => scene.dispose()
   }, [])
-  useScrollPhase(trackRef, frameRef, { coverVar: '--cover1', hold: true })
+  useScrollPhase(trackRef, frameRef, { coverVar: '--cover10', hold: true })
 
   const ph = (s, l) => ({ '--s': s, '--l': l })
   const ux = (v) => `calc(${v} * var(--ux))`
@@ -43,8 +43,8 @@ export default function Craft() {
       <span id="theme-archive" aria-hidden="true" style={{ position: 'absolute', left: 0, top: '220vh', width: 1, height: 1 }} />
       <div className="dp-cr__pin">
         <div className="dp-cr__frame" ref={frameRef}>
-          <img className={`dp-cr__bg${lang === 'en' ? '' : ' is-off'}`} src={frame} alt="" draggable="false" />
-          <img className={`dp-cr__bg${lang === 'bn' ? '' : ' is-off'}`} src={bgBn} alt="হলদিয়া দুর্গোৎসব কমিটি — ২০২৪ সালের আয়োজন — বাংলার হস্তশিল্প" draggable="false" />
+          <img loading="lazy" decoding="async" className={`dp-cr__bg${lang === 'en' ? '' : ' is-off'}`} src={frame} alt="" draggable="false" />
+          <img loading="lazy" decoding="async" className={`dp-cr__bg${lang === 'bn' ? '' : ' is-off'}`} src={bgBn} alt="হলদিয়া দুর্গোৎসব কমিটি — ২০২৪ সালের আয়োজন — বাংলার হস্তশিল্প" draggable="false" />
 
           {lang === 'en' ? (
             <>
@@ -88,7 +88,7 @@ export default function Craft() {
             </>
           )}
 
-          <img
+          <img loading="lazy" decoding="async"
             className="dp-cr__pic"
             src={art}
             alt={t({ bn: 'মাটির ঘোড়া, বাঁশ ও বেতের হস্তশিল্প', en: 'Terracotta horses, bamboo and cane handicrafts' })}

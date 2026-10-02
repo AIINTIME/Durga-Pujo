@@ -160,7 +160,7 @@ const DIYAS = [
   [1421, 822, 0.9],
 ]
 
-export function createAboutScene(container, opts = {}) {
+function buildScene(container, opts = {}) {
   const { artW = ART_W, artH = ART_H, diyas: DIYA_LIST = DIYAS, band = 0.2 } = opts
   const mobile = window.matchMedia('(max-width: 760px)').matches
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -382,7 +382,35 @@ export function createAboutScene(container, opts = {}) {
       document.removeEventListener('visibilitychange', sync)
       disposables.forEach((d) => d.dispose())
       renderer.dispose()
+      renderer.forceContextLoss() // hand the GPU context back right away: phones only allow a handful at once
       canvas.remove()
+    },
+  }
+}
+
+// Each section has its own overlay, but a WebGL context (and its textures) is only created while the section is within
+// about a screen and a half of the viewport, and released again once it is far away. This keeps start-up light on phones.
+export function createAboutScene(container, opts = {}) {
+  let inst = null
+  let disposed = false
+  const io = new IntersectionObserver(
+    ([e]) => {
+      if (disposed) return
+      if (e.isIntersecting && !inst) inst = buildScene(container, opts)
+      else if (!e.isIntersecting && inst) {
+        inst.dispose()
+        inst = null
+      }
+    },
+    { rootMargin: '150% 0px 150% 0px' },
+  )
+  io.observe(container)
+  return {
+    dispose() {
+      disposed = true
+      io.disconnect()
+      inst?.dispose()
+      inst = null
     },
   }
 }

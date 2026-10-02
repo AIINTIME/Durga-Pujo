@@ -152,7 +152,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    padding: 96px 24px 56px;
+    padding: 96px 16px 56px;
     background: linear-gradient(#fdf1d8, #f7dfb0);
   }
   .dp-ay__backdrop, .dp-ay__bg, .dp-ay__stage { display: none; }
@@ -169,7 +169,7 @@
   :root[lang='bn'] .dp-ay__tag { letter-spacing: 0.08em; font-size: 14px; }
   .dp-ay__awards {
     margin-top: 12px;
-    padding: 18px 18px 20px;
+    padding: 16px 12px 18px;
     border: 1.5px solid #d3a04a;
     border-radius: 18px;
     background: linear-gradient(#8e0f24, #5e0714);
@@ -178,7 +178,8 @@
   .dp-ay__awards h3, :root[lang='bn'] .dp-ay__awards h3 { font-size: 20px; }
   .dp-ay__awards p, :root[lang='bn'] .dp-ay__awards p { font-size: 15px; }
   .dp-ay__awards br { display: none; }
-  .dp-ay__plaques { display: grid; grid-template-columns: 1fr; justify-items: center; gap: 12px; list-style: none; margin: 0; padding: 0; }
-  .dp-ay__plaques li { width: 100%; max-width: 300px; }
+  .dp-ay__plaques { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); justify-items: center; gap: 10px; list-style: none; margin: 0; padding: 0; }
+  .dp-ay__plaques li { width: 100%; max-width: none; }
+  .dp-ay__plaques > li:last-child:nth-child(odd) { grid-column: 1 / -1; max-width: calc(50% - 5px); }
   .dp-ay__plaques img { display: block; width: 100%; height: auto; border-radius: 6px; }
 }

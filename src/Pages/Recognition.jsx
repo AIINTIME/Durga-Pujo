@@ -49,9 +49,9 @@ export default function Recognition() {
   return (
     <section id="recognition" className="dp-rec" ref={trackRef}>
       <div className="dp-rec__pin">
-        <img className="dp-rec__backdrop" src={bg} alt="" draggable="false" aria-hidden="true" />
+        <img loading="lazy" decoding="async" className="dp-rec__backdrop" src={bg} alt="" draggable="false" aria-hidden="true" />
         <div className="dp-rec__frame" ref={frameRef}>
-          <img className="dp-rec__bg" src={bg} alt="" draggable="false" />
+          <img loading="lazy" decoding="async" className="dp-rec__bg" src={bg} alt="" draggable="false" />
 
           <h2 className="dp-rec__title dp-ph" style={ph(0.04, 0.2)}>
             <span className="dp-rec__t1">{t({ bn: 'স্বীকৃতি সেখানে', en: 'Recognised' })}</span>{' '}
@@ -70,7 +70,7 @@ export default function Recognition() {
               className={`dp-rec__card dp-ph is-card ${i === CARDS.length - 1 ? 'is-last' : ''}`}
               style={{ ...ph(0.26 + i * 0.075, 0.2), left: `calc(${c.x} * var(--u))`, width: `calc(${c.w} * var(--u))` }}
             >
-              <img src={c.img} alt="" draggable="false" />
+              <img loading="lazy" decoding="async" src={c.img} alt="" draggable="false" />
               <span className="dp-rec__medal" aria-hidden="true" style={{ '--i': i }} />
               <h3>{t(c.title)}</h3>
               <p className={c.small ? 'is-small' : ''}>{t(c.sub)}</p>
@@ -78,7 +78,7 @@ export default function Recognition() {
           ))}
 
           <div className="dp-rec__banner dp-ph is-banner" style={ph(0.66, 0.2)}>
-            <img src={banner} alt="" draggable="false" />
+            <img loading="lazy" decoding="async" src={banner} alt="" draggable="false" />
             <p className="dp-ph" style={ph(0.8, 0.12)}>
               {t({
                 bn: 'এই সেই তাক, যার পাশে দাঁড়ানোর সুযোগ পান একজন স্পনসর — নজরে পড়ার আশায় থাকা কোনো প্যান্ডেল নয়, বরং রাজ্যের সবচেয়ে বড় বাংলা সংবাদ ব্র্যান্ডগুলি যাকে একাধিকবার নাম ধরে স্বীকৃতি দিয়েছে।',

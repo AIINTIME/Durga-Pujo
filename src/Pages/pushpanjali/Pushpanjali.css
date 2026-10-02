@@ -1,0 +1,412 @@
+/* Laid out on the 1672 x 941 artwork (--u = one artwork pixel at the current frame width).
+   --p (0 -> 1) is the scroll progress; every .dp-ph element turns it into its own phase --e / --k from --s (start) and --l (length). */
+.dp-pj {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22vh);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 22vh);
+  position: relative;
+  z-index: 1;
+  height: 340vh;
+  background: #fbe6c0;
+  color: #3a1a10;
+}
+.dp-pj__anchor { position: absolute; left: 0; top: 120vh; width: 1px; height: 1px; }
+.dp-pj__pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #fbe6c0;
+}
+.dp-pj__backdrop {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(26px) brightness(0.9);
+  transform: scale(1.12);
+  pointer-events: none;
+}
+.dp-pj__frame {
+  /* the artwork is stretched to fill the whole viewport width and the space under the navbar, so there are no side gaps.
+     Positions use --ux / --uy; sizes, fonts and borders --u. */
+  --ux: calc(100cqw / 1672);
+  --uy: calc(100cqh / 941);
+  --u: min(var(--ux), var(--uy));
+  --p: 0;
+  container-type: size;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--dp-nav-h, 62px);
+  bottom: 0;
+  overflow: hidden;
+}
+.dp-pj__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; display: block; }
+.dp-pj__stage { position: absolute; inset: 0; z-index: 6; pointer-events: none; }
+.dp-pj img { -webkit-user-drag: none; user-select: none; }
+.dp-ph {
+  --e: clamp(0, calc((var(--p, 0) - var(--s, 0)) / var(--l, 0.2)), 1);
+  --k: calc(var(--e) * (2 - var(--e)));
+  opacity: var(--k);
+}
+
+/* ---- copy (left) ---- */
+.dp-pj__copy {
+  position: absolute;
+  left: calc(240 * var(--ux));
+  width: calc(660 * var(--ux));
+  top: 0;
+  height: calc(600 * var(--uy));
+  z-index: 2;
+  text-align: center;
+  pointer-events: none;
+}
+.dp-pj__copy > * { position: absolute; left: 0; right: 0; margin: 0; }
+.dp-pj__badge {
+  left: 50% !important;
+  right: auto !important;
+  top: calc(128 * var(--uy));
+  display: inline-flex;
+  align-items: center;
+  gap: calc(10 * var(--u));
+  padding: calc(8 * var(--u)) calc(34 * var(--u));
+  border: calc(1.5 * var(--u)) solid #c9963f;
+  border-radius: calc(22 * var(--u));
+  background: linear-gradient(180deg, #fffaf0, #f8e6bd);
+  box-shadow: 0 0 0 calc(4 * var(--u)) rgba(255, 246, 223, 0.7), 0 calc(4 * var(--u)) calc(12 * var(--u)) rgba(122, 10, 28, 0.15);
+  font: 600 calc(16 * var(--u)) / 1.3 'Cinzel', 'Noto Serif Bengali', Georgia, serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #7a0a1c;
+  transform: translate(-50%, calc((1 - var(--k)) * -16 * var(--u)));
+}
+.dp-pj__badge svg { width: calc(20 * var(--u)); height: calc(20 * var(--u)); color: #a8741f; }
+.dp-pj__title {
+  top: calc(176 * var(--uy));
+  font: 700 calc(70 * var(--u)) / 1.12 'Playfair Display', 'Noto Serif Bengali', Georgia, serif;
+  font-variant-caps: small-caps;
+  color: #7a0a1c;
+  text-shadow: 0 calc(3 * var(--u)) calc(12 * var(--u)) rgba(122, 10, 28, 0.18);
+  white-space: nowrap;
+  transform: translateY(calc((1 - var(--k)) * -26 * var(--u))) scale(calc(0.95 + var(--k) * 0.05));
+}
+.dp-pj__title span { display: block; }
+.dp-pj__rule {
+  top: calc(333 * var(--uy));
+  left: calc(90 * var(--ux));
+  right: calc(90 * var(--ux));
+  height: calc(14 * var(--u));
+  background: linear-gradient(90deg, transparent, #c9963f 18%, #c9963f 42%, transparent 42%, transparent 58%, #c9963f 58%, #c9963f 82%, transparent) center calc(7 * var(--u)) / 100% calc(1.5 * var(--u)) no-repeat;
+}
+.dp-pj__rule::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: calc(1 * var(--u));
+  width: calc(11 * var(--u));
+  height: calc(11 * var(--u));
+  margin-left: calc(-5.5 * var(--u));
+  transform: rotate(45deg);
+  background: #c9963f;
+}
+.dp-pj__rule.is-small { left: calc(230 * var(--ux)); right: calc(230 * var(--ux)); top: calc(414 * var(--uy)); }
+.dp-pj__rule.is-small:last-of-type { top: calc(520 * var(--uy)); }
+.dp-pj__sub {
+  top: calc(354 * var(--uy));
+  left: calc(60 * var(--ux));
+  right: calc(60 * var(--ux));
+  font: 500 calc(20.5 * var(--u)) / 1.4 'Crimson Pro', 'Cormorant Garamond', 'Noto Serif Bengali', Georgia, serif;
+  color: #3a2a20;
+  transform: translateY(calc((1 - var(--k)) * 14 * var(--u)));
+}
+.dp-pj__quote {
+  top: calc(452 * var(--uy));
+  left: calc(120 * var(--ux));
+  right: calc(120 * var(--ux));
+  font: italic 500 calc(21 * var(--u)) / 1.4 'Cormorant Garamond', 'Crimson Pro', 'Noto Serif Bengali', Georgia, serif;
+  color: #5c3a22;
+  transform: translateY(calc((1 - var(--k)) * 14 * var(--u)));
+}
+
+/* ---- offering cards ---- */
+.dp-pj__cards {
+  position: absolute;
+  left: calc(263 * var(--ux));
+  width: calc(1146 * var(--ux));
+  top: calc(612 * var(--uy));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: calc(14 * var(--u));
+  z-index: 3;
+}
+.dp-pj__cards > li {
+  transform-origin: 50% 100%;
+  transform: perspective(calc(1100 * var(--u))) translateY(calc((1 - var(--k)) * 100 * var(--u))) rotateX(calc((1 - var(--k)) * -28deg));
+  will-change: transform, opacity;
+}
+.dp-pj__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: 100%;
+  height: calc(206 * var(--u));
+  box-sizing: border-box;
+  padding: calc(14 * var(--u)) calc(14 * var(--u)) 0;
+  border: calc(1.5 * var(--u)) solid #d6a44c;
+  border-radius: calc(16 * var(--u));
+  background: linear-gradient(180deg, #fffaf0 0%, #fdf0d4 100%);
+  box-shadow: inset 0 0 0 calc(4 * var(--u)) #fdf3dc, inset 0 0 0 calc(5 * var(--u)) rgba(214, 164, 76, 0.5), 0 calc(10 * var(--u)) calc(24 * var(--u)) rgba(122, 60, 10, 0.22);
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.dp-pj__card:hover { transform: translateY(calc(-5 * var(--u))); box-shadow: inset 0 0 0 calc(4 * var(--u)) #fdf3dc, inset 0 0 0 calc(5 * var(--u)) rgba(214, 164, 76, 0.7), 0 calc(16 * var(--u)) calc(30 * var(--u)) rgba(122, 60, 10, 0.3); }
+.dp-pj__card:active { transform: translateY(calc(-1 * var(--u))) scale(0.985); }
+.dp-pj__card:focus-visible { outline: calc(2.5 * var(--u)) solid #7a0a1c; outline-offset: calc(3 * var(--u)); }
+.dp-pj__photo {
+  position: relative;
+  display: block;
+  height: calc(104 * var(--u));
+  border: calc(1.5 * var(--u)) solid #d6a44c;
+  border-radius: calc(8 * var(--u));
+  overflow: hidden;
+  background: #3a1a10;
+}
+.dp-pj__photo img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s ease; }
+.dp-pj__card:hover .dp-pj__photo img { transform: scale(1.08); }
+.dp-pj__medal {
+  position: absolute;
+  left: 50%;
+  top: calc(86 * var(--u));
+  width: calc(64 * var(--u));
+  height: calc(64 * var(--u));
+  margin-left: calc(-32 * var(--u));
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: calc(2 * var(--u)) solid #e2c07a;
+  background: radial-gradient(circle at 50% 35%, #fffdf6, #f8e6bd);
+  box-shadow: 0 0 0 calc(4 * var(--u)) #fdf3dc, 0 calc(3 * var(--u)) calc(9 * var(--u)) rgba(122, 60, 10, 0.3);
+  color: #8a1428;
+}
+.dp-pj__medal svg { width: 52%; height: 52%; transform-origin: 50% 0; }
+.dp-pj__card:active .dp-pj__medal svg,
+.dp-pj__card.is-bell:hover .dp-pj__medal svg { animation: dp-pj-ring 0.7s ease-in-out; }
+.dp-pj__card strong {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(152 * var(--u));
+  font: 700 calc(21 * var(--u)) / 1.2 'Playfair Display', 'Noto Serif Bengali', Georgia, serif;
+  color: #5c0818;
+}
+.dp-pj__card small {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(181 * var(--u));
+  font: 400 calc(14.5 * var(--u)) / 1.2 'Crimson Pro', 'Noto Serif Bengali', Georgia, serif;
+  color: #5c4a3c;
+}
+@keyframes dp-pj-ring {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(22deg); }
+  45% { transform: rotate(-18deg); }
+  70% { transform: rotate(10deg); }
+}
+
+/* petals / sparks that fly out of the photo window when an offering is made */
+.dp-pj__burst { position: absolute; left: 50%; top: 58%; width: 0; height: 0; pointer-events: none; }
+.dp-pj__burst i {
+  position: absolute;
+  left: calc(-5 * var(--u));
+  top: calc(-8 * var(--u));
+  width: calc(10 * var(--u));
+  height: calc(16 * var(--u));
+  border-radius: 80% 20% 80% 20%;
+  background: #ff5a7a;
+  opacity: 0;
+  animation: dp-pj-fly var(--w) cubic-bezier(0.15, 0.7, 0.3, 1) forwards;
+}
+.is-lotus .dp-pj__burst i { background: linear-gradient(160deg, #ffd0f0, #6a5acd); }
+.is-bell .dp-pj__burst i,
+.is-aarti .dp-pj__burst i { width: calc(6 * var(--u)); height: calc(6 * var(--u)); border-radius: 50%; background: #ffd98a; box-shadow: 0 0 calc(8 * var(--u)) #ffb43c; }
+.is-conch .dp-pj__burst i { width: calc(7 * var(--u)); height: calc(7 * var(--u)); border-radius: 50%; background: transparent; border: calc(1.5 * var(--u)) solid #fff4cf; }
+@keyframes dp-pj-fly {
+  0% { opacity: 0; transform: rotate(var(--a)) translateY(0) scale(0.4); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: rotate(var(--a)) translateY(calc(var(--d) * -1 * var(--u))) scale(1.1) rotate(160deg); }
+}
+
+/* lotuses thrown at the goddess: x travels linearly, y arcs up then falls (two nested elements), the flower spins and shrinks on arrival */
+.dp-pj__throw { position: absolute; z-index: 8; width: 0; height: 0; pointer-events: none; }
+.dp-pj__tx, .dp-pj__ty { display: block; width: 0; height: 0; }
+.dp-pj__tx { animation: dp-pj-tx 0.95s linear var(--delay) both; }
+.dp-pj__ty { animation: dp-pj-ty 0.95s var(--delay) both; }
+.dp-pj__fl { display: block; width: var(--sz); margin: calc(var(--sz) * -0.42) 0 0 calc(var(--sz) * -0.5); filter: drop-shadow(0 3px 5px rgba(20, 10, 80, 0.45)); animation: dp-pj-fl 0.95s ease-in var(--delay) both; }
+.dp-pj__fl svg { display: block; width: 100%; height: auto; overflow: visible; }
+@keyframes dp-pj-tx { to { transform: translateX(var(--dx)); } }
+@keyframes dp-pj-ty {
+  0% { transform: translateY(0); animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1); }
+  45% { transform: translateY(var(--peak)); animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.6); }
+  100% { transform: translateY(var(--dy)); }
+}
+@keyframes dp-pj-fl {
+  0% { opacity: 0; transform: scale(0.4) rotate(0); }
+  10% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: scale(0.5) rotate(var(--rot)); }
+}
+/* the glow that blooms where the lotuses land */
+.dp-pj__bless {
+  position: absolute;
+  z-index: 7;
+  width: calc(190 * var(--u));
+  height: calc(190 * var(--u));
+  margin: calc(-95 * var(--u)) 0 0 calc(-95 * var(--u));
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 238, 170, 0.95) 0%, rgba(255, 190, 80, 0.55) 40%, rgba(255, 190, 80, 0) 70%);
+  pointer-events: none;
+  animation: dp-pj-bless 1.3s ease-out var(--delay) both;
+}
+@keyframes dp-pj-bless {
+  0% { opacity: 0; transform: scale(0.3); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+
+/* ---- counter banner ---- */
+.dp-pj__total {
+  position: absolute;
+  left: calc(392 * var(--ux));
+  width: calc(888 * var(--ux));
+  top: calc(832 * var(--uy));
+  height: calc(61 * var(--uy));
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(34 * var(--u));
+  border: calc(2 * var(--u)) solid #d6a44c;
+  border-radius: calc(30 * var(--u));
+  background: linear-gradient(180deg, #8a1428, #5c0818);
+  box-shadow: inset 0 0 0 calc(3 * var(--u)) #5c0818, inset 0 0 0 calc(4 * var(--u)) rgba(226, 172, 79, 0.55), 0 calc(8 * var(--u)) calc(22 * var(--u)) rgba(60, 4, 12, 0.4);
+  color: #fbe6d0;
+  z-index: 3;
+  transform: translateY(calc((1 - var(--k)) * 30 * var(--u)));
+}
+.dp-pj__total i { width: calc(1.5 * var(--u)); height: calc(34 * var(--u)); background: rgba(226, 172, 79, 0.6); }
+.dp-pj__orn { width: calc(34 * var(--u)); height: calc(34 * var(--u)); color: #e2b66a; flex: none; }
+.dp-pj__stat { display: inline-flex; align-items: center; gap: calc(12 * var(--u)); font: 500 calc(18.5 * var(--u)) / 1 'Crimson Pro', 'Noto Serif Bengali', Georgia, serif; white-space: nowrap; }
+.dp-pj__stat svg { width: calc(26 * var(--u)); height: calc(26 * var(--u)); color: #ffd58a; }
+.dp-pj__stat b {
+  display: inline-block;
+  min-width: calc(48 * var(--u));
+  font: 700 calc(34 * var(--u)) / 1 'Playfair Display', 'Noto Serif Bengali', Georgia, serif;
+  font-variant-numeric: lining-nums;
+  color: #ffd98a;
+  animation: dp-pj-pop 0.5s ease;
+}
+@keyframes dp-pj-pop { 0% { transform: scale(1.5); filter: brightness(1.6); } 100% { transform: scale(1); filter: none; } }
+.dp-pj__note {
+  position: absolute;
+  left: calc(392 * var(--ux));
+  width: calc(888 * var(--ux));
+  top: calc(898 * var(--uy));
+  margin: 0;
+  text-align: center;
+  font: italic 500 calc(15 * var(--u)) / 1.2 'Crimson Pro', 'Noto Serif Bengali', Georgia, serif;
+  color: #6b4a30;
+  z-index: 3;
+}
+
+:root[lang='bn'] .dp-pj__badge { font-family: 'Noto Serif Bengali', Georgia, serif; letter-spacing: 0.03em; text-transform: none; font-size: calc(17 * var(--u)); }
+:root[lang='bn'] .dp-pj__title { font-variant-caps: normal; font-size: calc(60 * var(--u)); font-weight: 800; line-height: 1.25; }
+:root[lang='bn'] .dp-pj__sub { font-size: calc(20 * var(--u)); }
+:root[lang='bn'] .dp-pj__quote { font-style: normal; font-size: calc(21 * var(--u)); }
+:root[lang='bn'] .dp-pj__card strong { font-size: calc(19 * var(--u)); }
+:root[lang='bn'] .dp-pj__card small { font-size: calc(14 * var(--u)); }
+:root[lang='bn'] .dp-pj__stat { font-size: calc(17.5 * var(--u)); }
+:root[lang='bn'] .dp-pj__stat b { font-size: calc(31 * var(--u)); }
+
+/* ---- phones / small tablets: no pin; the artwork becomes a hero strip and the cards stack 2 x 2 ---- */
+@media (max-width: 820px) {
+  .dp-pj { height: auto; -webkit-mask-image: none; mask-image: none; }
+  .dp-pj__anchor { top: 0; }
+  .dp-pj__pin { position: relative; height: auto; overflow: visible; }
+  .dp-pj__backdrop, .dp-pj__stage { display: none; }
+  .dp-pj__frame {
+    --ux: 1px; --uy: 1px; --u: 1px;
+    container-type: normal;
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    margin-left: 0;
+    width: 100%;
+    aspect-ratio: auto;
+    overflow: visible;
+    box-sizing: border-box;
+    padding: calc(var(--dp-nav-h, 62px) + 26px) 16px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(#fdf1d8, #f7dfb0);
+  }
+  .dp-ph { opacity: 1; transform: none !important; }
+  /* only the top of the artwork (goddess + ghat) is shown: below ~62% it holds the painted-out card area, which would look blurry */
+  .dp-pj__bg {
+    position: relative;
+    inset: auto;
+    width: 100vw;
+    max-width: 100vw;
+    height: 540px;
+    order: 2;
+    margin: 6px calc(50% - 50vw) -230px;
+    object-fit: cover;
+    object-position: 80% 0;
+    clip-path: inset(0 0 230px 0);
+    -webkit-mask-image: linear-gradient(transparent, #000 14%, #000 40%, transparent 57%);
+    mask-image: linear-gradient(transparent, #000 14%, #000 40%, transparent 57%);
+  }
+  .dp-pj__copy { order: 1; position: relative; left: auto; width: 100%; max-width: 460px; height: auto; margin-top: 0; display: flex; flex-direction: column; align-items: center; }
+  .dp-pj__copy > * { position: relative; left: auto !important; right: auto !important; top: auto !important; }
+  .dp-pj__badge { font-size: 12.5px; padding: 6px 20px; transform: none !important; }
+  :root[lang='bn'] .dp-pj__badge { font-size: 14px; }
+  .dp-pj__title { margin-top: 14px; white-space: normal; font-size: clamp(34px, 10vw, 48px); }
+  :root[lang='bn'] .dp-pj__title { font-size: clamp(30px, 8.8vw, 42px); }
+  .dp-pj__rule, .dp-pj__rule.is-small { width: 70%; margin-top: 12px; }
+  .dp-pj__sub, :root[lang='bn'] .dp-pj__sub { margin-top: 8px; font-size: var(--fs-body); }
+  .dp-pj__quote, :root[lang='bn'] .dp-pj__quote { margin-top: 6px; font-size: calc(var(--fs-body) * 0.98); }
+  .dp-pj__cards { order: 3; position: relative; left: auto; top: auto; width: 100%; max-width: 460px; margin-top: 0; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .dp-pj__card { height: auto; padding: 10px 10px 14px; }
+  .dp-pj__photo { height: auto; aspect-ratio: 248 / 103; }
+  .dp-pj__medal { position: relative; left: auto; top: auto; margin: -22px auto 4px; width: 46px; height: 46px; }
+  .dp-pj__card strong, .dp-pj__card small, :root[lang='bn'] .dp-pj__card strong, :root[lang='bn'] .dp-pj__card small { position: static; display: block; }
+  .dp-pj__card strong, :root[lang='bn'] .dp-pj__card strong { font-size: 17px; }
+  .dp-pj__card small, :root[lang='bn'] .dp-pj__card small { margin-top: 3px; font-size: 14px; }
+  .dp-pj__total { order: 4; position: relative; left: auto; top: auto; width: 100%; max-width: 460px; height: auto; margin-top: 18px; padding: 12px 16px; flex-wrap: wrap; justify-content: center; gap: 8px 18px; border-radius: 22px; }
+  .dp-pj__total i, .dp-pj__orn { display: none; }
+  .dp-pj__stat, :root[lang='bn'] .dp-pj__stat { font-size: 16px; white-space: normal; gap: 10px; }
+  .dp-pj__stat svg { width: 22px; height: 22px; }
+  .dp-pj__stat b, :root[lang='bn'] .dp-pj__stat b { font-size: 28px; }
+  .dp-pj__note { order: 5; position: relative; left: auto; top: auto; width: auto; margin-top: 10px; font-size: 14px; }
+  .dp-pj__burst i { width: 12px; height: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dp-pj__photo img, .dp-pj__card { transition: none; }
+  .dp-pj__medal svg, .dp-pj__stat b, .dp-pj__bless { animation: none !important; }
+}

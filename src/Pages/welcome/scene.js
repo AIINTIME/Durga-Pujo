@@ -407,7 +407,7 @@ function loadTex(loader, url) {
     loader.load(url, (t) => {
       t.colorSpace = THREE.NoColorSpace
       t.minFilter = THREE.LinearMipmapLinearFilter
-      t.anisotropy = 4
+      t.anisotropy = 8
       res(t)
     }, undefined, rej))
 }

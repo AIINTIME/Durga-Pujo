@@ -39,7 +39,7 @@ export default function ArtistYear() {
     const scene = createAboutScene(stageRef.current, { artW: 1733, artH: 907, diyas: [], band: 0.1 })
     return () => scene.dispose()
   }, [])
-  useScrollPhase(trackRef, frameRef, { coverVar: '--cover6', hold: true })
+  useScrollPhase(trackRef, frameRef, { coverVar: '--cover8', hold: true })
 
   const ph = (s, l) => ({ '--s': s, '--l': l })
   const ux = (v) => `calc(${v} * var(--ux))`
@@ -50,9 +50,9 @@ export default function ArtistYear() {
       {/* scroll target for the navbar's "Artist" link: the point where everything has built */}
       <span id="artist" aria-hidden="true" style={{ position: 'absolute', left: 0, top: '220vh', width: 1, height: 1 }} />
       <div className="dp-ay__pin">
-        <img className="dp-ay__backdrop" src={bg} alt="" draggable="false" aria-hidden="true" />
+        <img loading="lazy" decoding="async" className="dp-ay__backdrop" src={bg} alt="" draggable="false" aria-hidden="true" />
         <div className="dp-ay__frame" ref={frameRef}>
-          <img className="dp-ay__bg" src={bg} alt="" draggable="false" />
+          <img loading="lazy" decoding="async" className="dp-ay__bg" src={bg} alt="" draggable="false" />
 
           <h2 className="dp-ay__head">
             <span className="dp-ay__kick dp-ph" style={{ ...ph(0.03, 0.1), left: ux(884), top: uy(111) }}>
@@ -66,7 +66,7 @@ export default function ArtistYear() {
             </span>
           </h2>
 
-          <img className="dp-ay__pic is-portrait" src={portrait} alt={t({ bn: 'শিল্পী অভিজিৎ ঘটক', en: 'Artist Avijit Ghatak' })} draggable="false" />
+          <img loading="lazy" decoding="async" className="dp-ay__pic is-portrait" src={portrait} alt={t({ bn: 'শিল্পী অভিজিৎ ঘটক', en: 'Artist Avijit Ghatak' })} draggable="false" />
 
           <div className="dp-ay__text" style={{ left: ux(636), top: uy(252), width: ux(514) }}>
             <p className="dp-ay__p dp-ph" style={ph(0.2, 0.2)}>
@@ -104,7 +104,7 @@ export default function ArtistYear() {
           <ul className="dp-ay__plaques">
             {AWARDS.map(([src, name]) => (
               <li key={name}>
-                <img src={src} alt={name} draggable="false" loading="lazy" />
+                <img src={src} alt={name} draggable="false" loading="lazy" decoding="async" />
               </li>
             ))}
           </ul>
