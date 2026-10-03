@@ -77,6 +77,7 @@ export default function About({ embedded = false }) {
 
   // fade/slide the content in the first time the section is on screen
   useEffect(() => {
+    if (embedded) return // on Home the page itself decides when About fades in
     const el = rootRef.current
     const io = new IntersectionObserver(
       ([e]) => {
@@ -89,7 +90,7 @@ export default function About({ embedded = false }) {
     )
     io.observe(el)
     return () => io.disconnect()
-  }, [])
+  }, [embedded])
 
   const page = (
     <section id={embedded ? undefined : 'about'} className={`dp-about ${embedded ? 'is-embedded' : ''}`} ref={rootRef}>

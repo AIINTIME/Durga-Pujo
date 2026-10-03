@@ -96,7 +96,7 @@ export default function Gallery() {
     const scene = createAboutScene(stageRef.current, { artW: 1672, artH: 941, diyas: DIYAS, band: 0.12 })
     return () => scene.dispose()
   }, [])
-  useScrollPhase(trackRef, frameRef, { coverVar: '--cover', hold: true })
+  useScrollPhase(trackRef, frameRef, { coverVar: '--cover', hold: true, lead: true })
 
   const pick = (id) => { setFilter(id); setPage(0); setOpen(null) }
   const step = useCallback((d) => setOpen((i) => (i === null || !N ? i : (i + d + N) % N)), [N])

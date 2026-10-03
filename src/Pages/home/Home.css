@@ -16,8 +16,6 @@
   width: 100%;
   overflow: hidden;
   background: #0c0000;
-  /* the video settles back and dims as About blends in over it */
-  filter: brightness(calc(1 - var(--vid, 0) * 0.6));
 }
 
 .dp-scrollvideo__video {
@@ -67,139 +65,168 @@
   }
 }
 
-/* About stays pinned (bottom edge on the viewport bottom) while Recognition slides up over it.
-   The hold adds one screen of scroll; Recognition pulls itself back over that spare screen. */
-.dp-about-hold {
-  position: relative;
-  margin-top: -100vh; /* slides up over the end of the video, blended in by a soft top edge */
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22vh);
-  mask-image: linear-gradient(to bottom, transparent 0, #000 22vh);
-  /* + 60vh of rest: About sits fully in view before Recognition's curtain starts to cover its bottom */
-  height: calc(var(--about-h, 58.77vw) + 160vh);
+/* One continuous page: the scenes share the same cream backdrop, so nothing slides over anything. When a scene
+   ends, the next one fades in on the spot (its own cream + ornament), the old elements lift away under it, and
+   then the new elements build in. Each scene opens with one pinned "lead" screen for that hand-over, laid over the
+   previous scene's closing "hold" screen, so the total scroll length is unchanged.
+   --vid / --enter / --coverN (0 -> 1, set from JS) is the progress of each hand-over. */
+.dp-about-hold { position: relative; }
+.dp-about-hold__anchor { position: absolute; left: 0; top: 0; width: 1px; height: 1px; }
+@media (min-width: 821px) {
+  .dp-about-hold__anchor { top: 100vh; } /* the navbar link lands once About has faded in */
+  .dp-about-hold {
+    margin-top: -200vh;
+    /* + 60vh of rest: About sits fully in view before the next scene's hand-over starts */
+    height: calc(var(--about-h, 58.77vw) + 260vh);
+  }
+  .dp-about-hold > .dp-about {
+    position: sticky;
+    top: min(0px, calc(100vh - var(--about-h, 58.77vw)));
+    opacity: clamp(0, calc((var(--vid, 0) - 0.15) * 1.4), 1);
+  }
+  .dp-about__frame > :not(.dp-about__stage) {
+    translate: 0 calc(var(--enter, 0) * -5vh);
+    scale: calc(1 - var(--enter, 0) * 0.05);
+  }
+
+  .dp-home .dp-gl {
+    margin-top: -200vh;
+    height: calc(420vh + 100vh);
+    background: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .dp-home .dp-gl__pin { opacity: clamp(0, calc((var(--enter, 0) - 0.15) * 1.4), 1); }
+  .dp-home .dp-gl__frame > :not(.dp-gl__bg):not(.dp-gl__stage) {
+    translate: 0 calc(var(--cover1, 0) * -5vh);
+    scale: calc(1 - var(--cover1, 0) * 0.05);
+  }
+  .dp-home .dp-cu {
+    margin-top: -200vh;
+    height: calc(380vh + 100vh);
+    background: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .dp-home .dp-cu__pin { opacity: clamp(0, calc((var(--cover1, 0) - 0.15) * 1.4), 1); }
+  .dp-home .dp-cu__frame > :not(.dp-cu__bg):not(.dp-cu__stage) {
+    translate: 0 calc(var(--cover7, 0) * -5vh);
+    scale: calc(1 - var(--cover7, 0) * 0.05);
+  }
+  .dp-home .dp-sc {
+    margin-top: -200vh;
+    height: calc(520vh + 100vh);
+    background: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .dp-home .dp-sc__pin { opacity: clamp(0, calc((var(--cover7, 0) - 0.15) * 1.4), 1); }
+  .dp-home .dp-sc__frame > :not(.dp-sc__bg):not(.dp-sc__stage) {
+    translate: 0 calc(var(--cover9, 0) * -5vh);
+    scale: calc(1 - var(--cover9, 0) * 0.05);
+  }
+  .dp-home .dp-pj {
+    margin-top: -200vh;
+    height: calc(340vh + 100vh);
+    background: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .dp-home .dp-pj__pin { opacity: clamp(0, calc((var(--cover9, 0) - 0.15) * 1.4), 1); }
+  .dp-home .dp-pj__frame > :not(.dp-pj__bg):not(.dp-pj__stage) {
+    translate: 0 calc(var(--cover10, 0) * -5vh);
+    scale: calc(1 - var(--cover10, 0) * 0.05);
+  }
+  .dp-home .dp-cr {
+    margin-top: -200vh;
+    height: calc(420vh + 100vh);
+    background: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .dp-home .dp-cr__pin { opacity: clamp(0, calc((var(--cover10, 0) - 0.15) * 1.4), 1); }
+  .dp-home .dp-cr__frame > :not(.dp-cr__bg):not(.dp-cr__stage) {
+    translate: 0 calc(var(--cover5, 0) * -5vh);
+    scale: calc(1 - var(--cover5, 0) * 0.05);
+  }
+  .dp-home .dp-th {
+    margin-top: -200vh;
+    height: calc(420vh + 100vh);
+    background: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .dp-home .dp-th__pin { opacity: clamp(0, calc((var(--cover5, 0) - 0.15) * 1.4), 1); }
+  .dp-home .dp-th__frame > :not(.dp-th__bg):not(.dp-th__stage) {
+    translate: 0 calc(var(--cover6, 0) * -5vh);
+    scale: calc(1 - var(--cover6, 0) * 0.05);
+  }
+  .dp-home .dp-cc {
+    margin-top: -200vh;
+    height: calc(520vh + 100vh);
+    background: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .dp-home .dp-cc__pin { opacity: clamp(0, calc((var(--cover6, 0) - 0.15) * 1.4), 1); }
+  .dp-home .dp-cc__frame > :not(.dp-cc__bg):not(.dp-cc__stage) {
+    translate: 0 calc(var(--cover8, 0) * -5vh);
+    scale: calc(1 - var(--cover8, 0) * 0.05);
+  }
+  .dp-home .dp-ay {
+    margin-top: -200vh;
+    height: calc(420vh + 100vh);
+    background: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .dp-home .dp-ay__pin { opacity: clamp(0, calc((var(--cover8, 0) - 0.15) * 1.4), 1); }
+  .dp-home .dp-ay__frame > :not(.dp-ay__bg):not(.dp-ay__stage) {
+    translate: 0 calc(var(--cover4, 0) * -5vh);
+    scale: calc(1 - var(--cover4, 0) * 0.05);
+  }
+  .dp-home .dp-rec {
+    margin-top: -200vh;
+    height: calc(480vh + 100vh);
+    background: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .dp-home .dp-rec__pin { opacity: clamp(0, calc((var(--cover4, 0) - 0.15) * 1.4), 1); }
+  .dp-home .dp-rec__frame > :not(.dp-rec__bg):not(.dp-rec__stage) {
+    translate: 0 calc(var(--cover, 0) * -5vh);
+    scale: calc(1 - var(--cover, 0) * 0.05);
+  }
+  .dp-home .dp-gal {
+    margin-top: -200vh;
+    height: calc(340vh + 100vh);
+    background: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .dp-home .dp-gal__pin { opacity: clamp(0, calc((var(--cover, 0) - 0.15) * 1.4), 1); }
+  .dp-home .dp-gal__frame > :not(.dp-gal__bg):not(.dp-gal__stage) {
+    translate: 0 calc(var(--cover3, 0) * -5vh);
+    scale: calc(1 - var(--cover3, 0) * 0.05);
+  }
+  /* nav targets sit one lead screen further down each track */
+  .dp-home .dp-cu__anchor { top: 280vh; }
+  .dp-home .dp-sc__anchor { top: 260vh; }
+  .dp-home .dp-pj__anchor { top: 220vh; }
+  .dp-home .dp-gal__anchor { top: 210vh; }
+  .dp-home #glance,
+  .dp-home #theme-archive,
+  .dp-home #artist { top: 320vh !important; }
+
+  /* the Gallery stays pinned while Contact (a normal scrolling page) slides up over it */
+  .dp-home .dp-gal__pin { filter: brightness(calc(1 - var(--cover3, 0) * 0.6)); }
+  .dp-home .dp-ct { margin-top: -100vh; }
 }
-.dp-about-hold > .dp-about {
-  position: sticky;
-  top: min(0px, calc(100vh - var(--about-h, 58.77vw)));
-  filter: brightness(calc(1 - var(--enter, 0) * 0.6));
-}
-.dp-home .dp-gl {
-  margin-top: -100vh;
-}
-/* Glance stays pinned while Cultural Events slides up over it */
-.dp-home .dp-gl__pin {
-  filter: brightness(calc(1 - var(--cover1, 0) * 0.6));
-}
-.dp-home .dp-cu {
-  margin-top: -100vh;
-}
-/* Cultural Events stays pinned while the Puja Schedule slides up over it */
-.dp-home .dp-cu__pin {
-  filter: brightness(calc(1 - var(--cover7, 0) * 0.6));
-}
-.dp-home .dp-sc {
-  margin-top: -100vh;
-}
-/* the Puja Schedule stays pinned while Pushpanjali slides up over it */
-.dp-home .dp-sc__pin {
-  filter: brightness(calc(1 - var(--cover9, 0) * 0.6));
-}
-.dp-home .dp-pj {
-  margin-top: -100vh;
-}
-/* Pushpanjali stays pinned while Craft slides up over it */
-.dp-home .dp-pj__pin {
-  filter: brightness(calc(1 - var(--cover10, 0) * 0.6));
-}
-.dp-home .dp-ar {
-  margin-top: -100vh;
-}
-/* the artist page stays pinned while the Craft section slides up over it */
-.dp-home .dp-ar__pin {
-  filter: brightness(calc(1 - var(--cover0, 0) * 0.6));
-}
-.dp-home .dp-cr {
-  margin-top: -100vh;
-}
-/* Craft stays pinned while the 2025 theme slides up over it */
-.dp-home .dp-cr__pin {
-  filter: brightness(calc(1 - var(--cover5, 0) * 0.6));
-}
-.dp-home .dp-th {
-  margin-top: -100vh;
-}
-/* the 2025 theme stays pinned while the 2026 concept slides up over it */
-.dp-home .dp-th__pin {
-  filter: brightness(calc(1 - var(--cover6, 0) * 0.6));
-}
-.dp-home .dp-cc {
-  margin-top: -100vh;
-}
-/* the 2026 concept stays pinned while Artist of the Year slides up over it */
-.dp-home .dp-cc__pin {
-  filter: brightness(calc(1 - var(--cover8, 0) * 0.6));
-}
-.dp-home .dp-ay {
-  margin-top: -100vh;
-}
-/* Artist of the Year stays pinned while Recognition slides up over it */
-.dp-home .dp-ay__pin {
-  filter: brightness(calc(1 - var(--cover4, 0) * 0.6));
-}
-.dp-home .dp-rec {
-  margin-top: -100vh;
-  height: 480vh;
-}
-/* Recognition stays pinned while the Committee section slides up over it */
-.dp-home .dp-rec__pin {
-  filter: brightness(calc(1 - var(--cover, 0) * 0.6));
-}
-.dp-home .dp-org {
-  margin-top: -100vh;
-}
-/* Committee stays pinned while the Gallery slides up over it */
-.dp-home .dp-org__pin {
-  filter: brightness(calc(1 - var(--cover2, 0) * 0.6));
-}
-.dp-home .dp-gal {
-  margin-top: -100vh;
-}
-/* Gallery stays pinned while Contact slides up over it */
-.dp-home .dp-gal__pin {
-  filter: brightness(calc(1 - var(--cover3, 0) * 0.6));
-}
-.dp-home .dp-ct {
-  margin-top: -100vh;
-}
+
+/* phones: the scenes just flow one after another */
 @media (max-width: 820px) {
   .dp-scrollvideo { height: 400vh; }
-  .dp-scrollvideo__pin { transform: none; filter: none; }
-  .dp-about-hold { height: auto; margin-top: 0; -webkit-mask-image: none; mask-image: none; }
-  .dp-about-hold > .dp-about { position: relative; top: auto; transform: none; filter: none; }
-  .dp-home .dp-gl { margin-top: 0; }
-  .dp-home .dp-cu { margin-top: 0; }
-  .dp-home .dp-cu__pin { filter: none; }
-  .dp-home .dp-sc { margin-top: 0; }
-  .dp-home .dp-sc__pin { filter: none; }
-  .dp-home .dp-pj { margin-top: 0; }
-  .dp-home .dp-pj__pin { filter: none; }
-  .dp-home .dp-cc { margin-top: 0; }
-  .dp-home .dp-cc__pin { filter: none; }
-  .dp-home .dp-gl__pin { transform: none; filter: none; }
-  .dp-home .dp-ar { margin-top: 0; }
-  .dp-home .dp-ar__pin { transform: none; filter: none; }
-  .dp-home .dp-cr { margin-top: 0; }
-  .dp-home .dp-cr__pin { transform: none; filter: none; }
-  .dp-home .dp-th { margin-top: 0; }
-  .dp-home .dp-th__pin { transform: none; filter: none; }
-  .dp-home .dp-ay { margin-top: 0; }
-  .dp-home .dp-ay__pin { transform: none; filter: none; }
-  .dp-home .dp-rec { margin-top: 0; height: auto; }
-  .dp-home .dp-rec__pin { transform: none; filter: none; }
-  .dp-home .dp-org { margin-top: 0; }
-  .dp-home .dp-org__pin { transform: none; filter: none; }
-  .dp-home .dp-gal { margin-top: 0; }
-  .dp-home .dp-gal__pin { transform: none; filter: none; }
-  .dp-home .dp-ct { margin-top: 0; }
+  .dp-home .dp-rec { height: auto; }
 }
 
 @keyframes dp-home-in { from { opacity: 0; } to { opacity: 1; } }

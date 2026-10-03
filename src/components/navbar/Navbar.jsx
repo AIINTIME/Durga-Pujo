@@ -42,10 +42,14 @@ export default function Navbar() {
       ['culture', '.dp-cu'],
       ['glance', '.dp-gl'],
     ]
+    const wide = window.matchMedia('(min-width: 821px)')
     const update = () => {
+      const vh = window.innerHeight
       const hit = SECTIONS.find(([, sel]) => {
         const el = document.querySelector(sel)
-        return el && el.getBoundingClientRect().top <= window.innerHeight * 0.5
+        // on desktop a scene opens with one pinned hand-over screen (every scene but Contact), so it counts from the end of that
+        const lead = wide.matches && sel !== '.dp-ct' ? vh : 0
+        return el && el.getBoundingClientRect().top + lead <= vh * 0.5
       })
       setSection(hit ? hit[0] : 'about')
     }
@@ -168,7 +172,6 @@ export default function Navbar() {
       <nav className="dp-side__links" aria-label={t({ bn: 'প্রধান মেনু', en: 'Main menu' })}>
         {linkItems}
       </nav>
-      <p className="dp-side__foot">{t({ bn: 'শারদীয়া দুর্গোৎসব ২০২৬', en: 'Sharodiya Durgotsav 2026' })}</p>
     </aside>
     </>
   )

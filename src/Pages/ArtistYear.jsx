@@ -39,7 +39,7 @@ export default function ArtistYear() {
     const scene = createAboutScene(stageRef.current, { artW: 1733, artH: 907, diyas: [], band: 0.1 })
     return () => scene.dispose()
   }, [])
-  useScrollPhase(trackRef, frameRef, { coverVar: '--cover8', hold: true })
+  useScrollPhase(trackRef, frameRef, { coverVar: '--cover8', hold: true, lead: true })
 
   const ph = (s, l) => ({ '--s': s, '--l': l })
   const ux = (v) => `calc(${v} * var(--ux))`

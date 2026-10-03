@@ -130,7 +130,7 @@ export default function Culture() {
     const scene = createAboutScene(stageRef.current, { artW: 1585, artH: 935, diyas: DIYAS, band: 0.12 })
     return () => scene.dispose()
   }, [])
-  useScrollPhase(trackRef, frameRef, { coverVar: '--cover1', hold: true })
+  useScrollPhase(trackRef, frameRef, { coverVar: '--cover1', hold: true, lead: true })
 
   const ph = (s, l) => ({ '--s': s, '--l': l })
 

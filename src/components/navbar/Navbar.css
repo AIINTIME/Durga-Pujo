@@ -325,16 +325,6 @@
     transform: translateY(-50%) rotate(45deg);
     box-shadow: 0 0 8px rgba(255, 190, 90, 0.9);
   }
-  .dp-side__foot {
-    flex: none;
-    margin: 0;
-    padding: 16px 22px 22px;
-    text-align: center;
-    color: rgba(255, 213, 138, 0.7);
-    font: 500 12px/1 'Cinzel', 'Noto Serif Bengali', Georgia, serif;
-    letter-spacing: 0.16em;
-    border-top: 1px solid rgba(255, 205, 120, 0.25);
-  }
 }
 html.dp-menu-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {

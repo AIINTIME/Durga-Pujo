@@ -1,0 +1,5 @@
+bell.mp3  - the bell (ghanti) recording used on https://haldiadurgotsav.org (/audio/ghanti.mp3), copied unchanged.
+conch.mp3 - the conch (shankha) recording used on https://haldiadurgotsav.org (/audio/Shankh.mp3), copied unchanged.
+aarti.mp3 - clip from "Puja dhak.ogg" (Bengali dhak drums) by Tito Dutta, Wikimedia Commons, licence CC BY-SA 3.0
+            https://commons.wikimedia.org/wiki/File:Puja_dhak.ogg
+            This clip is shared under the same licence (CC BY-SA 3.0). It was trimmed, faded and loudness-normalised.

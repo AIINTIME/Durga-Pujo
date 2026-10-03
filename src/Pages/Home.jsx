@@ -42,11 +42,18 @@ export default function Home() {
     const hold = holdRef.current
     const cls = document.body.classList
     const home = hold.parentElement
+    const wide = window.matchMedia('(min-width: 821px)')
+    const about = hold.lastElementChild
     const update = () => {
       const top = hold.getBoundingClientRect().top
-      cls.toggle('dp-nav-off', top > window.innerHeight * 0.55)
-      // 0 -> 1 while About slides up over the video: the video dims and settles back as it goes
-      home.style.setProperty('--vid', Math.min(1, Math.max(0, 1 - top / window.innerHeight)).toFixed(4))
+      const vh = window.innerHeight
+      // desktop: About opens with one pinned screen where it fades in over the finished video (0 -> 1 = --vid);
+      // phones: it simply scrolls in below the video
+      const v = wide.matches ? Math.min(1, Math.max(0, -top / vh)) : top > vh * 0.55 ? 0 : 1
+      cls.toggle('dp-nav-off', v < 0.45)
+      home.style.setProperty('--vid', v.toFixed(4))
+      // its entrance plays once the fade is under way, so it is not spent while About is still invisible
+      if (v > 0.3) about.classList.add('is-in')
     }
     update()
     window.addEventListener('scroll', update, { passive: true })
@@ -61,7 +68,7 @@ export default function Home() {
   // the pinned About needs its exact height to hold with its bottom edge on the viewport bottom
   useEffect(() => {
     const hold = holdRef.current
-    const about = hold.firstElementChild
+    const about = hold.lastElementChild
     const ro = new ResizeObserver(() => hold.style.setProperty('--about-h', `${about.offsetHeight}px`))
     ro.observe(about)
     return () => ro.disconnect()
@@ -89,7 +96,8 @@ export default function Home() {
           </div>
         </section>
         {/* the navbar scrolls here: the hold is not sticky, so its position is stable (the About inside it is) */}
-        <div id="about" className="dp-about-hold" ref={holdRef}>
+        <div className="dp-about-hold" ref={holdRef}>
+          <span id="about" className="dp-about-hold__anchor" aria-hidden="true" />
           <About embedded />
         </div>
         <Glance />

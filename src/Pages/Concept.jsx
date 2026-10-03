@@ -114,7 +114,7 @@ export default function Concept() {
     const scene = createAboutScene(stageRef.current, { artW: 1683, artH: 935, diyas: DIYAS, band: 0.1 })
     return () => scene.dispose()
   }, [])
-  useScrollPhase(trackRef, frameRef, { coverVar: '--cover6', hold: true })
+  useScrollPhase(trackRef, frameRef, { coverVar: '--cover6', hold: true, lead: true })
 
   const ph = (s, l) => ({ '--s': s, '--l': l })
 

@@ -323,7 +323,7 @@ export default function Schedule() {
     const scene = createAboutScene(stageRef.current, { artW: 1683, artH: 935, diyas: DIYAS, band: 0.1 })
     return () => scene.dispose()
   }, [])
-  useScrollPhase(trackRef, frameRef, { coverVar: '--cover7', hold: true })
+  useScrollPhase(trackRef, frameRef, { coverVar: '--cover7', hold: true, lead: true })
 
   const ph = (s, l) => ({ '--s': s, '--l': l })
   const n = (v) => (lang === 'bn' ? toBn(v) : v)

@@ -20,6 +20,28 @@
   overflow: hidden;
   z-index: 3;
   background: #1a0402;
+  --avail: calc(100vh - var(--dp-nav-h, 62px));
+  --w: min(100vw, calc(var(--avail) * 1683 / 790));
+}
+/* the artwork is fitted, not stretched: where the screen is wider than it, the side strips repeat its own edge, mirrored,
+   so the pillars carry on to the screen edge instead of a flat blurred band (--p is also set on the pin, for the same zoom and light ramp as the frame) */
+@media (min-width: 821px) {
+  .dp-rec__pin::before,
+  .dp-rec__pin::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: calc(var(--dp-nav-h, 62px) + (var(--avail) - var(--w) * 790 / 1683) / 2 - var(--w) * 45 / 1683);
+    width: var(--w);
+    height: calc(var(--w) * 935 / 1683);
+    background: url('../../assets/recognition/bg.webp') center / 100% 100% no-repeat;
+    /* the same zoom and light ramp as the frame's own artwork (mirrored, so it is its reflection across the frame edge) */
+    transform: scaleX(-1) scale(calc(1.16 - var(--p, 0) * 0.16));
+    filter: brightness(calc(0.45 + min(1, var(--p, 0) * 4) * 0.55));
+    pointer-events: none;
+  }
+  .dp-rec__pin::before { right: calc(50% + var(--w) / 2); }
+  .dp-rec__pin::after { left: calc(50% + var(--w) / 2); }
 }
 .dp-rec__backdrop {
   position: absolute;
@@ -40,6 +62,7 @@
   --p: 0;
   container-type: inline-size;
   position: absolute;
+  z-index: 2; /* above the side strips, which the zoom makes overlap it a little */
   left: 50%;
   width: var(--w);
   margin-left: calc(var(--w) / -2);

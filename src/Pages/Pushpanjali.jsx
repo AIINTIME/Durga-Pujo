@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { createAboutScene } from './about/aboutScene.js'
 import { useScrollPhase } from './useScrollPhase.js'
 import { useLanguage } from '../i18n/context.js'
-import { playOffering } from './pushpanjali/sounds.js'
+import { playOffering, preloadOfferings } from './pushpanjali/sounds.js'
 import bg from '../assets/pushpanjali/bg.webp'
 import lotus from '../assets/pushpanjali/lotus.webp'
 import bell from '../assets/pushpanjali/bell.webp'
@@ -123,7 +123,18 @@ export default function Pushpanjali() {
     const scene = createAboutScene(stageRef.current, { artW: 1672, artH: 941, diyas: [], band: 0.15 })
     return () => scene.dispose()
   }, [])
-  useScrollPhase(trackRef, frameRef, { coverVar: '--cover9', hold: true })
+  useScrollPhase(trackRef, frameRef, { coverVar: '--cover9', hold: true, lead: true })
+
+  // the recorded sounds are fetched on the visitor's first touch / click / key press (audio may not start before that)
+  useEffect(() => {
+    const events = ['pointerdown', 'touchstart', 'keydown']
+    const once = () => {
+      preloadOfferings()
+      events.forEach((e) => window.removeEventListener(e, once))
+    }
+    events.forEach((e) => window.addEventListener(e, once, { passive: true }))
+    return () => events.forEach((e) => window.removeEventListener(e, once))
+  }, [])
 
   // lotuses fly from the card to the goddess in arcs, then a golden glow blooms where they land
   const throwLotuses = useCallback((card) => {

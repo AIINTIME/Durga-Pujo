@@ -30,7 +30,7 @@ export default function Theme() {
     const scene = createAboutScene(stageRef.current, { artW: 1670, artH: 941, diyas: DIYAS, band: 0.1 })
     return () => scene.dispose()
   }, [])
-  useScrollPhase(trackRef, frameRef, { coverVar: '--cover5', hold: true })
+  useScrollPhase(trackRef, frameRef, { coverVar: '--cover5', hold: true, lead: true })
 
   const ph = (s, l) => ({ '--s': s, '--l': l })
   const ux = (v) => `calc(${v} * var(--ux))`

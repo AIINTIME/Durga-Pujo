@@ -1,5 +1,8 @@
-// Small Web Audio voices for the virtual offerings (no audio files): a soft chime, a temple bell, a conch and an aarti tinkle.
+// Sounds for the virtual offerings. The bell and the conch are the recordings from haldiadurgotsav.org and the aarti is a Bengali dhak clip (in /public/sounds,
+// credits in CREDITS.txt there); the lotus chime is synthesised. Each recording falls back to a synthesised voice
+// if it has not loaded (offline, or the audio file is missing), so a tap always makes a sound.
 let ac
+const FILES = { bell: '/sounds/bell.mp3', conch: '/sounds/conch.mp3', aarti: '/sounds/aarti.mp3' }
 
 function ctx() {
   const AC = window.AudioContext || window.webkitAudioContext
@@ -70,10 +73,43 @@ const SOUNDS = {
   },
 }
 
+const decoded = {}
+const requested = {}
+
+function load(kind) {
+  const c = ctx()
+  if (!c || !FILES[kind] || requested[kind]) return
+  requested[kind] = true
+  fetch(FILES[kind])
+    .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(r.statusText))))
+    .then((data) => new Promise((ok, fail) => c.decodeAudioData(data, ok, fail)))
+    .then((buf) => { decoded[kind] = buf })
+    .catch(() => { requested[kind] = false })
+}
+
+// fetch the recordings as soon as the page is shown, so the first tap already has them
+export function preloadOfferings() {
+  try {
+    Object.keys(FILES).forEach(load)
+  } catch {
+    /* audio unavailable */
+  }
+}
+
 export function playOffering(kind) {
   try {
     const c = ctx()
-    if (c) SOUNDS[kind]?.(c)
+    if (!c) return
+    if (decoded[kind]) {
+      const src = c.createBufferSource()
+      src.buffer = decoded[kind]
+      src.connect(c.destination)
+      src.start()
+    } else {
+      // recording not here yet (or missing): the synthesised voice covers this tap
+      load(kind)
+      SOUNDS[kind]?.(c)
+    }
   } catch {
     /* audio unavailable: the offering still counts */
   }

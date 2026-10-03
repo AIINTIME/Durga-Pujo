@@ -17,6 +17,26 @@
   height: 100vh;
   overflow: hidden;
   background: #fbe6c0;
+  --avail: calc(100vh - var(--dp-nav-h, 62px));
+  --w: min(100vw, calc(var(--avail) * 1683 / 875));
+}
+/* the artwork is fitted, not stretched: where the screen is wider than it, the side strips repeat its own edge, mirrored,
+   so the pillars carry on to the screen edge instead of a flat blurred band */
+@media (min-width: 821px) {
+  .dp-sc__pin::before,
+  .dp-sc__pin::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: calc(var(--dp-nav-h, 62px) + (var(--avail) - var(--w) * 875 / 1683) / 2 - var(--w) * 40 / 1683);
+    width: var(--w);
+    height: calc(var(--w) * 935 / 1683);
+    background: url('../../assets/committee/bg.webp') center / 100% 100% no-repeat;
+    transform: scaleX(-1);
+    pointer-events: none;
+  }
+  .dp-sc__pin::before { right: calc(50% + var(--w) / 2); }
+  .dp-sc__pin::after { left: calc(50% + var(--w) / 2); }
 }
 .dp-sc__backdrop {
   position: absolute;
@@ -29,8 +49,6 @@
   pointer-events: none;
 }
 .dp-sc__frame {
-  --avail: calc(100vh - var(--dp-nav-h, 62px));
-  --w: min(100vw, calc(var(--avail) * 1683 / 875));
   --u: calc(100cqw / 1683);
   --p: 0;
   container-type: inline-size;
